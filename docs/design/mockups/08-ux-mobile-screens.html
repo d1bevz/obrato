@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Obrato UX mockups - mobile screens</title>
+  <style>
+    :root {
+      --bg: #f7f6f1;
+      --surface: #ffffff;
+      --surface-2: #ebe9df;
+      --ink: #202522;
+      --muted: #69726d;
+      --line: #d8d5ca;
+      --action: #0b7a75;
+      --action-soft: #d9efec;
+      --changed: #d8662a;
+      --changed-soft: #f5dfd1;
+      --check: #c7a62b;
+      --check-soft: #f2e8bd;
+      --danger: #b64b3b;
+      --steel: #4e625c;
+      --tile: #d7ded7;
+      --tile-line: #8fa098;
+      --shadow: 0 18px 48px rgba(32, 37, 34, 0.14);
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .board {
+      width: min(100%, 1480px);
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+    }
+
+    .board-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.45rem, 2vw, 2.05rem);
+      line-height: 1.08;
+      font-weight: 780;
+    }
+
+    .board-subtitle {
+      max-width: 720px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.96rem;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      min-width: min(100%, 360px);
+    }
+
+    .legend span,
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 720;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .ok {
+      background: var(--action-soft);
+      color: #065a55;
+    }
+
+    .changed {
+      background: var(--changed-soft);
+      color: #99410f;
+    }
+
+    .check {
+      background: var(--check-soft);
+      color: #78610e;
+    }
+
+    .muted {
+      background: #ecefeb;
+      color: var(--steel);
+    }
+
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 22px;
+      align-items: start;
+    }
+
+    .screen-block {
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .screen-title {
+      width: min(100%, 390px);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      color: var(--steel);
+      font-size: 0.82rem;
+      font-weight: 780;
+      text-transform: uppercase;
+    }
+
+    .phone {
+      width: min(100%, 390px);
+      aspect-ratio: 390 / 844;
+      background: var(--surface);
+      border: 1px solid #c8c4b8;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .statusbar {
+      min-height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      color: var(--muted);
+      font-size: 0.66rem;
+      font-weight: 700;
+      background: #faf9f5;
+      border-bottom: 1px solid #efede5;
+    }
+
+    .appbar {
+      min-height: 58px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--ink);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 850;
+      font-size: 0.88rem;
+      flex: none;
+    }
+
+    .title-stack {
+      min-width: 0;
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 0.99rem;
+      line-height: 1.15;
+      font-weight: 820;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .app-kicker {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.72rem;
+      line-height: 1.1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .icon-button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      font-weight: 860;
+      color: var(--steel);
+      flex: none;
+    }
+
+    .content {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
+
+    .scroll {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section,
+    .project-card,
+    .room-row,
+    .list-row {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .section-header,
+    .row,
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 1.22rem;
+      line-height: 1.1;
+      font-weight: 840;
+    }
+
+    h3 {
+      font-size: 0.86rem;
+      line-height: 1.15;
+      font-weight: 790;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 0.72rem;
+      line-height: 1.28;
+    }
+
+    .project-card,
+    .room-row,
+    .list-row {
+      display: grid;
+      gap: 10px;
+    }
+
+    .project-card.primary {
+      border-color: #91b5af;
+      box-shadow: inset 0 0 0 1px rgba(11, 122, 117, 0.14);
+    }
+
+    .progress {
+      height: 7px;
+      background: var(--surface-2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress > span {
+      display: block;
+      height: 100%;
+      background: var(--action);
+      border-radius: inherit;
+    }
+
+    .button {
+      min-height: 48px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      padding: 0 14px;
+      font-weight: 820;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .button.primary {
+      background: var(--action);
+      color: white;
+    }
+
+    .button.secondary {
+      background: var(--surface);
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    .button.warn {
+      background: var(--changed);
+      color: white;
+    }
+
+    .bottom-action {
+      padding: 12px 14px 14px;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 8px;
+    }
+
+    .tabs,
+    .segmented,
+    .toolbar {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .tabs {
+      padding: 8px 14px 0;
+      background: var(--bg);
+    }
+
+    .tab,
+    .segment,
+    .tool {
+      min-height: 38px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.76rem;
+      font-weight: 780;
+      color: var(--steel);
+    }
+
+    .tab.active,
+    .segment.active,
+    .tool.active {
+      border-color: var(--action);
+      color: #065a55;
+      background: var(--action-soft);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .field {
+      min-height: 58px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 10px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .field strong {
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+
+    .work-card {
+      min-height: 94px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      display: grid;
+      gap: 9px;
+      align-content: start;
+    }
+
+    .work-card.on {
+      border-color: #8db6af;
+      background: #fbfffd;
+    }
+
+    .work-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 8px;
+    }
+
+    .toggle {
+      width: 38px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      padding: 3px;
+      flex: none;
+    }
+
+    .toggle span {
+      display: block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+    }
+
+    .toggle.on {
+      background: var(--action);
+    }
+
+    .toggle.on span {
+      transform: translateX(16px);
+    }
+
+    .canvas-shell {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: #f0eee5;
+    }
+
+    .canvas-meta {
+      padding: 10px 14px;
+      display: grid;
+      gap: 8px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .canvas {
+      margin: 12px;
+      background:
+        linear-gradient(90deg, var(--tile-line) 1px, transparent 1px),
+        linear-gradient(var(--tile-line) 1px, transparent 1px),
+        var(--tile);
+      background-size: 52px 52px;
+      border: 2px solid #66736e;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cut {
+      position: absolute;
+      left: 210px;
+      top: 156px;
+      width: 52px;
+      height: 52px;
+      background: rgba(216, 102, 42, 0.34);
+      border: 2px solid var(--changed);
+    }
+
+    .suppressed {
+      position: absolute;
+      left: 52px;
+      top: 260px;
+      width: 52px;
+      height: 52px;
+      background:
+        linear-gradient(45deg, rgba(182,75,59,0.42) 25%, transparent 25% 50%, rgba(182,75,59,0.42) 50% 75%, transparent 75%);
+      background-size: 12px 12px;
+      border: 2px solid var(--danger);
+    }
+
+    .datum {
+      position: absolute;
+      left: 104px;
+      top: 104px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--ink);
+      outline: 4px solid rgba(32, 37, 34, 0.18);
+    }
+
+    .toolbar {
+      padding: 10px 12px 14px;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      justify-content: space-between;
+    }
+
+    .tool {
+      min-width: 48px;
+      min-height: 48px;
+      padding: 0 8px;
+      flex: 1;
+    }
+
+    .range {
+      display: grid;
+      gap: 5px;
+    }
+
+    .range-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      position: relative;
+    }
+
+    .range-bar span {
+      position: absolute;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--check);
+      left: 18%;
+      right: 8%;
+    }
+
+    .price {
+      font-weight: 840;
+      font-size: 0.98rem;
+      white-space: nowrap;
+    }
+
+    .entry-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .number-tile {
+      min-height: 52px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      font-weight: 860;
+    }
+
+    @media (max-width: 760px) {
+      .board-header {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .legend {
+        justify-content: flex-start;
+      }
+
+      .screens {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .board {
+        padding: 18px 10px 28px;
+      }
+
+      .phone {
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <header class="board-header">
+      <div>
+        <h1>Obrato UX mockups</h1>
+        <p class="board-subtitle">Mobile-first экраны для пилота Давида: шаблон комнаты, четыре работы, editable Canvas, закупочный лист по этапам и факт покупки офлайн.</p>
+      </div>
+      <div class="legend" aria-label="state legend">
+        <span class="ok">ready</span>
+        <span class="changed">changed</span>
+        <span class="check">needs check</span>
+        <span class="muted">offline safe</span>
+      </div>
+    </header>
+
+    <section class="screens" aria-label="Obrato mobile screen mockups">
+      <article class="screen-block">
+        <div class="screen-title"><span>01 ProjectList</span><span>/projects</span></div>
+        <div class="phone">
+          <div class="statusbar"><span>09:41</span><span>Offline · 3 edits</span></div>
+          <div class="appbar">
+            <div class="brand">
+              <div class="mark">O</div>
+              <div class="title-stack">
+                <p class="app-title">Obrato</p>
+                <p class="app-kicker">Obras activas</p>
+              </div>
+            </div>
+            <button class="icon-button" aria-label="search">⌕</button>
+          </div>
+          <div class="content">
+            <div class="scroll">
+              <section class="project-card primary">
+                <div class="section-header">
+                  <div>
+                    <h2>Casa Monte</h2>
+                    <p class="small">Almada · active</p>
+                  </div>
+                  <span class="badge ok">list ready</span>
+                </div>
+                <div class="progress"><span style="width: 68%"></span></div>
+                <div class="metric-row">
+                  <p class="small">5 rooms · 3 measured</p>
+                  <p class="small">tiling freeze today</p>
+                </div>
+              </section>
+
+              <section class="project-card">
+                <div class="section-header">
+                  <div>
+                    <h2>Rua do Sol</h2>
+                    <p class="small">Lisboa · planning</p>
+                  </div>
+                  <span class="badge check">wide</span>
+                </div>
+                <div class="progress"><span style="width: 34%"></span></div>
+                <div class="metric-row">
+                  <p class="small">2 rooms · template dims</p>
+                  <p class="small">needs measure</p>
+                </div>
+              </section>
+
+              <section class="project-card">
+                <div class="section-header">
+                  <div>
+                    <h2>Ajuda T2</h2>
+                    <p class="small">done · synced</p>
+                  </div>
+                  <span class="badge muted">closed</span>
+                </div>
+                <div class="metric-row">
+                  <p class="small">7 actuals recorded</p>
+                  <p class="small">€2.8k</p>
+                </div>
+              </section>
+            </div>
+            <div class="bottom-action">
+              <button class="button primary">+ Nova obra</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="screen-block">
+        <div class="screen-title"><span>02 ProjectDetail</span><span>/projects/:id</span></div>
+        <div class="phone">
+          <div class="statusbar"><span>09:42</span><span>Online · synced</span></div>
+          <div class="appbar">
+            <div class="brand">
+              <button class="icon-button" aria-label="back">‹</button>
+              <div class="title-stack">
+                <p class="app-title">Casa Monte</p>
+                <p class="app-kicker">3 of 5 rooms measured</p>
+              </div>
+            </div>
+            <span class="badge ok">ready</span>
+          </div>
+          <div class="content">
+            <div class="scroll">
+              <section class="section">
+                <div class="section-header">
+                  <div>
+                    <h2>Próximo passo</h2>
+                    <p class="small">Casa de banho precisa confirmar junta</p>
+                  </div>
+                  <span class="badge check">QTY wide</span>
+                </div>
+              </section>
+
+              <div class="grid-2">
+                <button class="button secondary">+ Quarto</button>
+                <button class="button primary">Lista</button>
+              </div>
+
+              <section class="room-row">
+                <div class="section-header">
+                  <div>
+                    <h3>Casa de banho</h3>
+                    <p class="small">2.4 × 1.8 × 2.6m · wet</p>
+                  </div>
+                  <span class="badge changed">edited</span>
+                </div>
+                <div class="row">
+                  <p class="small">floor · walls · ceiling · electric</p>
+                  <p class="small">layout grid</p>
+                </div>
+              </section>
+
+              <section class="room-row">
+                <div class="section-header">
+                  <div>
+                    <h3>Cozinha</h3>
+                    <p class="small">3.1 × 2.7 × 2.6m</p>
+                  </div>
+                  <span class="badge ok">measured</span>
+                </div>
+                <p class="small">floor · walls · ceiling · electric</p>
+              </section>
+
+              <section class="room-row">
+                <div class="section-header">
+                  <div>
+                    <h3>Sala</h3>
+                    <p class="small">template size</p>
+                  </div>
+                  <span class="badge check">not fit</span>
+                </div>
+                <p class="small">excluded from calibration until measured</p>
+              </section>
+            </div>
+            <div class="bottom-action">
+              <button class="button primary">Abrir lista de compra</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="screen-block">
+        <div class="screen-title"><span>03 RoomEditor</span><span>Q4 input</span></div>
+        <div class="phone">
+          <div class="statusbar"><span>09:45</span><span>Offline · saved local</span></div>
+          <div class="appbar">
+            <div class="brand">
+              <button class="icon-button" aria-label="back">‹</button>
+              <div class="title-stack">
+                <p class="app-title">Casa de banho</p>
+                <p class="app-kicker">template → user delta</p>
+              </div>
+            </div>
+            <span class="badge changed">changed</span>
+          </div>
+          <div class="content">
+            <div class="scroll">
+              <div class="grid-2">
+                <div class="field"><span class="small">Comprimento</span><strong>2.40 m</strong></div>
+                <div class="field"><span class="small">Largura</span><strong>1.80 m</strong></div>
+                <div class="field"><span class="small">Altura</span><strong>2.60 m</strong></div>
+                <div class="field"><span class="small">Zona molhada</span><strong>Sim</strong></div>
+              </div>
+
+              <section class="section">
+                <div class="section-header">
+                  <h3>Aberturas</h3>
+                  <span class="badge muted">1 door</span>
+                </div>
+              </section>
+
+              <div class="grid-2">
+                <section class="work-card on">
+                  <div class="work-top">
+                    <h3>Chão</h3>
+                    <div class="toggle on"><span></span></div>
+                  </div>
+                  <p class="small">tile · straight</p>
+                  <span class="badge ok">template</span>
+                </section>
+                <section class="work-card on">
+                  <div class="work-top">
+                    <h3>Paredes</h3>
+                    <div class="toggle on"><span></span></div>
+                  </div>
+                  <p class="small">tile + waterproof</p>
+                  <span class="badge check">joint?</span>
+                </section>
+                <section class="work-card on">
+                  <div class="work-top">
+                    <h3>Tecto</h3>
+                    <div class="toggle on"><span></span></div>
+                  </div>
+                  <p class="small">paint · 2 coats</p>
+                  <span class="badge ok">template</span>
+                </section>
+                <section class="work-card on">
+                  <div class="work-top">
+                    <h3>Pontos</h3>
+                    <div class="toggle on"><span></span></div>
+                  </div>
+                  <p class="small">1 socket · 1 switch · 2 lights</p>
+                  <span class="badge changed">user</span>
+                </section>
+              </div>
+            </div>
+            <div class="bottom-action">
+              <button class="button primary">Guardar e recalcular</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="screen-block">
+        <div class="screen-title"><span>04 LayoutCanvas</span><span>editable grid</span></div>
+        <div class="phone">
+          <div class="statusbar"><span>09:48</span><span>Offline · 2 overrides</span></div>
+          <div class="appbar">
+            <div class="brand">
+              <button class="icon-button" aria-label="back">‹</button>
+              <div class="title-stack">
+                <p class="app-title">Chão · casa de banho</p>
+                <p class="app-kicker">60×60 · grid · datum centered</p>
+              </div>
+            </div>
+            <span class="badge ok">hash ok</span>
+          </div>
+          <div class="content canvas-shell">
+            <div class="canvas-meta">
+              <div class="segmented">
+                <span class="segment active">Grid</span>
+                <span class="segment">Datum</span>
+                <span class="segment">SKU</span>
+              </div>
+              <p class="small">Tap tile to cut, suppress, or note. Overrides are saved as data.</p>
+            </div>
+            <div class="canvas" role="img" aria-label="tile grid canvas mockup">
+              <div class="datum"></div>
+              <div class="cut"></div>
+              <div class="suppressed"></div>
+            </div>
+            <div class="toolbar">
+              <button class="tool active">Cut</button>
+              <button class="tool">Hide</button>
+              <button class="tool">Note</button>
+              <button class="tool">Undo</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="screen-block">
+        <div class="screen-title"><span>05 PurchaseList</span><span>freeze stage</span></div>
+        <div class="phone">
+          <div class="statusbar"><span>10:03</span><span>Online · prices old</span></div>
+          <div class="appbar">
+            <div class="brand">
+              <button class="icon-button" aria-label="back">‹</button>
+              <div class="title-stack">
+                <p class="app-title">Lista de compra</p>
+                <p class="app-kicker">Casa Monte · estimate</p>
+              </div>
+            </div>
+            <span class="badge check">€ guide</span>
+          </div>
+          <div class="content">
+            <div class="tabs">
+              <span class="tab">Screed</span>
+              <span class="tab active">Tiling</span>
+              <span class="tab">Paint</span>
+            </div>
+            <div class="scroll">
+              <section class="list-row">
+                <div class="section-header">
+                  <div>
+                    <h3>Cola C2TE · 25kg</h3>
+                    <p class="small">Leroy PT · pack 25kg</p>
+                  </div>
+                  <div class="price">€42-56</div>
+                </div>
+                <div class="range">
+                  <div class="range-bar"><span></span></div>
+                  <div class="row">
+                    <p class="small">38-51kg · buy 2 bags</p>
+                    <span class="badge check">wide</span>
+                  </div>
+                </div>
+              </section>
+
+              <section class="list-row">
+                <div class="section-header">
+                  <div>
+                    <h3>Azulejo parede</h3>
+                    <p class="small">60×30 · 1.08m²/box</p>
+                  </div>
+                  <div class="price">€186</div>
+                </div>
+                <div class="range">
+                  <div class="range-bar"><span style="left: 42%; right: 42%"></span></div>
+                  <div class="row">
+                    <p class="small">15.4m² · buy 15 boxes</p>
+                    <span class="badge ok">exact</span>
+                  </div>
+                </div>
+              </section>
+
+              <section class="list-row">
+                <div class="section-header">
+                  <div>
+                    <h3>Argamassa junta</h3>
+                    <p class="small">depends on joint width</p>
+                  </div>
+                  <div class="price">€18-31</div>
+                </div>
+                <div class="row">
+                  <p class="small">0.8-2.4kg · confirm tile lot</p>
+                  <span class="badge check">needs check</span>
+                </div>
+              </section>
+            </div>
+            <div class="bottom-action">
+              <button class="button warn">Levar etapa à loja</button>
+              <p class="small">Freezes this tiling list as PurchaseSnapshot.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="screen-block">
+        <div class="screen-title"><span>06 ProcurementEntry</span><span>actual</span></div>
+        <div class="phone">
+          <div class="statusbar"><span>11:16</span><span>Offline · queued</span></div>
+          <div class="appbar">
+            <div class="brand">
+              <button class="icon-button" aria-label="back">‹</button>
+              <div class="title-stack">
+                <p class="app-title">Registar compra</p>
+                <p class="app-kicker">Tiling · Casa Monte</p>
+              </div>
+            </div>
+            <span class="badge muted">local</span>
+          </div>
+          <div class="content">
+            <div class="scroll">
+              <section class="section">
+                <div class="section-header">
+                  <div>
+                    <h2>Cola C2TE</h2>
+                    <p class="small">linked to frozen estimate · non-editable</p>
+                  </div>
+                  <span class="badge ok">linked</span>
+                </div>
+              </section>
+
+              <div class="grid-2">
+                <div class="field"><span class="small">Packs</span><strong>2</strong></div>
+                <div class="field"><span class="small">Preço</span><strong>€47.80</strong></div>
+                <div class="field"><span class="small">Fonte</span><strong>Talão</strong></div>
+                <div class="field"><span class="small">Confiança</span><strong>Measured</strong></div>
+              </div>
+
+              <section class="section">
+                <div class="section-header">
+                  <h3>Calibração</h3>
+                  <span class="badge ok">narrowing</span>
+                </div>
+                <p class="small">This measured actual can reduce future adhesive range for similar assumptions.</p>
+              </section>
+
+              <div class="entry-pad" aria-hidden="true">
+                <div class="number-tile">1</div>
+                <div class="number-tile">2</div>
+                <div class="number-tile">3</div>
+                <div class="number-tile">4</div>
+                <div class="number-tile">5</div>
+                <div class="number-tile">6</div>
+              </div>
+            </div>
+            <div class="bottom-action">
+              <button class="button primary">Guardar facto</button>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
