@@ -1,0 +1,17 @@
+{
+  "name": "@obrato/compute-core",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Obrato compute-core: детерминированный движок прораба — модель ввода -> нормы -> количества -> упаковки -> SVG -> лист закупок по этапам. UI-free, чистые функции, тестируемо.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "test": "node --test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}
