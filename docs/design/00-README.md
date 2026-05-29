@@ -30,6 +30,8 @@
 | 05 | [Модель данных](05-data-model.md) | ~16 pilot-core сущностей + deferred, контракт ядра, sync |
 | 06 | [Риски и открытые вопросы](06-risks-open-questions.md) | Risk #1 (нормы), #2 (раскладка), #3 (drift), open Q |
 | 07 | [Нормы: методология расчёта](07-norms-methodology.md) | формулы расхода материалов, входы движка (→ NormAssumptions), что только калибровкой |
+| 08 | _UX и потоки (готовится)_ | экраны/флоу + модель ввода (Q4); визуальный дизайн — через `frontend-design` отдельным шагом |
+| 09 | [Архитектура приложения](09-app-architecture.md) | 5 слоёв (React ↔ Canvas ↔ Worker/WASM ↔ IndexedDB ↔ sync ↔ бэкенд), границы/контракты, сквозной поток, offline-first, pilot vs deferred |
 
 ## Текущий фокус
 
