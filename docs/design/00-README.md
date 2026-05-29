@@ -32,6 +32,8 @@
 | 07 | [Нормы: методология расчёта](07-norms-methodology.md) | формулы расхода материалов, входы движка (→ NormAssumptions), что только калибровкой |
 | 08 | _UX и потоки (готовится)_ | экраны/флоу + модель ввода (Q4); визуальный дизайн — через `frontend-design` отдельным шагом |
 | 09 | [Архитектура приложения](09-app-architecture.md) | 5 слоёв (React ↔ Canvas ↔ Worker/WASM ↔ IndexedDB ↔ sync ↔ бэкенд), границы/контракты, сквозной поток, offline-first, pilot vs deferred |
+| 10 | _Каталог (готовится)_ | сбор/поддержка ~50–100 SKU, multi-store, Open Q2 — отдельной сессией (см. `prompts/catalog-dev-session.md`) |
+| 11 | [План пилота / roadmap](11-pilot-plan.md) | метрика D5, build-slice (бумага → ядро → PDF → сверка → Canvas), измеримые вехи, риски графика |
 
 ## Текущий фокус
 
