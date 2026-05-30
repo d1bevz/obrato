@@ -23,8 +23,8 @@
     --hair:#ddd6c8;
     --hair-2:#e9e3d7;
     /* brand / signal */
-    --amber:#f2a01b;
-    --amber-deep:#e07a10;
+    --amber:#1f9d57;        /* brand accent — green (action / precise) */
+    --amber-deep:#14723d;
     --cyan:#1c7e8c;       /* blueprint / wet */
     --cyan-soft:#d6ebee;
     /* confidence language */
@@ -60,7 +60,7 @@
     position:absolute; right:clamp(8px,4vw,56px); top:-26px;
     font-family:var(--mono); font-weight:600;
     font-size:clamp(90px,18vw,220px); line-height:1;
-    color:rgba(242,160,27,.10); letter-spacing:-.04em; pointer-events:none;
+    color:rgba(31,157,87,.10); letter-spacing:-.04em; pointer-events:none;
   }
   .kicker{
     font-family:var(--mono); font-size:12px; letter-spacing:.34em;
@@ -120,7 +120,7 @@
   }
   .cap .id{
     font-family:var(--mono); font-weight:600; font-size:13px; color:var(--amber);
-    background:rgba(242,160,27,.10); border:1px solid rgba(242,160,27,.3);
+    background:rgba(31,157,87,.10); border:1px solid rgba(31,157,87,.3);
     padding:1px 8px; border-radius:2px;
   }
   .cap .nm{font-weight:600; font-size:16px; letter-spacing:.01em; color:#f1ece1; text-transform:uppercase}
@@ -154,10 +154,10 @@
   .ob{
     display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:500;
     letter-spacing:.05em; text-transform:uppercase;
-    color:var(--amber-deep); background:#fcefd5; border:1px solid #f3d79a;
+    color:#b5670f; background:#fcefd5; border:1px solid #f3d79a;
     padding:1px 7px 1px 6px; border-radius:20px;
   }
-  .ob .pulse{width:6px;height:6px;border-radius:50%;background:var(--amber-deep);
+  .ob .pulse{width:6px;height:6px;border-radius:50%;background:#d98324;
     box-shadow:0 0 0 0 rgba(224,122,16,.5); animation:p 2.4s infinite}
   @keyframes p{0%{box-shadow:0 0 0 0 rgba(224,122,16,.45)}70%{box-shadow:0 0 0 6px rgba(224,122,16,0)}100%{box-shadow:0 0 0 0 rgba(224,122,16,0)}}
   .ob.sync{color:#2f7d4f;background:#e6f1e8;border-color:#bcd9c2}
@@ -189,7 +189,7 @@
     font-size:16px; letter-spacing:.02em; text-transform:uppercase;
     padding:15px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:9px;
   }
-  .btn.amber{background:var(--amber); color:#241a06; box-shadow:0 3px 0 var(--amber-deep)}
+  .btn.amber{background:var(--amber); color:#f2fbf5; box-shadow:0 3px 0 var(--amber-deep)}
   .btn.amber:active{transform:translateY(2px); box-shadow:0 1px 0 var(--amber-deep)}
   .btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink)}
   .btn .tiny{font-family:var(--mono); font-weight:400; font-size:11px; opacity:.75; text-transform:none}
@@ -241,7 +241,7 @@
   .seg{display:grid; grid-template-columns:repeat(3,1fr); gap:7px}
   .seg .t{border:1px solid var(--hair); border-radius:9px; padding:9px 4px; text-align:center;
     font-size:13px; font-weight:500; background:var(--surface); color:var(--ink-2)}
-  .seg .t.on{background:#fff5e0; border-color:var(--amber); color:var(--ink); box-shadow:inset 0 0 0 1px var(--amber)}
+  .seg .t.on{background:#eaf5ee; border-color:var(--amber); color:var(--ink); box-shadow:inset 0 0 0 1px var(--amber)}
   .seg .t small{display:block; font-size:17px; margin-bottom:1px}
 
   .dims{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:4px}
@@ -266,7 +266,7 @@
   .work .nm{font-weight:600; font-size:15px; letter-spacing:.01em}
   .work .param{margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--ink-2);
     background:var(--paper); border:1px solid var(--hair); border-radius:6px; padding:3px 8px}
-  .work .param.usr{color:var(--amber-deep); background:#fcefd5; border-color:#f0cf8c}
+  .work .param.usr{color:var(--amber-deep); background:#e7f3ec; border-color:#bcd9c2}
   .work.off{opacity:.5}
   .work.off .checkbox{background:var(--surface);border-color:var(--hair)}
   .prov{font-family:var(--mono); font-size:9.5px; letter-spacing:.05em; text-transform:uppercase}
@@ -361,6 +361,7 @@
   .ln{fill:none; stroke:var(--ink); stroke-width:5; stroke-linecap:round; stroke-linejoin:round}
   .ln-thin{fill:none; stroke:var(--ink); stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round}
   .fill-ink{fill:var(--ink); stroke:none}
+  .mustache{fill:none; stroke:var(--ink); stroke-width:4.6; stroke-linecap:round; stroke-linejoin:round}
   .helmet{fill:var(--amber); stroke:var(--ink); stroke-width:5; stroke-linejoin:round}
   .helmet-sh{fill:var(--amber-deep); stroke:none}
   .paper-fill{fill:var(--surface)}
@@ -478,15 +479,15 @@
         <span class="ttl">Алфама, 3º Dto<small>5 комнат · planning→active</small></span></div>
       <div class="body"><div class="scroll">
 
-        <div class="card" style="background:#fff5e0;border-color:#f0cf8c">
+        <div class="card" style="background:#e7f3ec;border-color:#bcd9c2">
           <div class="row" style="gap:9px">
             <svg class="amigo-av" width="30" height="30" viewBox="0 0 120 120" aria-hidden="true"><use href="#amigo-mark"/></svg>
             <div style="flex:1">
-              <div style="font-weight:600;font-size:13px">Доступна калиброванная норма</div>
-              <div class="note" style="margin:2px 0 0">david-bathroom-v3 · стяжка сужена по факту</div>
+              <div style="font-weight:600;font-size:13px">Уточнил нормы по твоим объектам</div>
+              <div class="note" style="margin:2px 0 0">расход стяжки теперь точнее — пересчитать лист?</div>
             </div>
           </div>
-          <button class="btn amber" style="margin-top:10px;padding:11px;font-size:13px">Пересчитать оценки</button>
+          <button class="btn amber" style="margin-top:10px;padding:11px;font-size:13px">Пересчитать лист</button>
         </div>
 
         <div class="label" style="margin:4px 2px 8px">Комнаты</div>
@@ -573,7 +574,7 @@
               <div class="row between" style="margin-bottom:7px"><span class="label" style="margin:0">Норма: клей плиточный</span><span class="conf c-lo">unvalidated</span></div>
               <div class="nv"><span>2.1</span><div class="bar"><i class="lohi"></i><i class="cen"></i></div><span>5.4 кг/м²</span></div>
               <div class="amigo-tip unc" style="margin-top:9px">
-                <svg class="am s-unc amigo-head" viewBox="46 44 138 150" aria-hidden="true"><g class="head"><use href="#head-unc"/></g></svg>
+                <svg class="am s-unc amigo-head" viewBox="46 48 134 152" aria-hidden="true"><g class="head"><use href="#head-unc"/></g></svg>
                 <div class="bub">⚑ Тут прикину с запасом — <b>уточним по первому замесу.</b></div>
               </div>
             </div>
@@ -607,7 +608,7 @@
         </div>
 
         <div class="amigo-tip hint">
-          <svg class="am amigo-head" viewBox="46 44 138 150" aria-hidden="true"><g class="head"><use href="#head-base"/></g></svg>
+          <svg class="am amigo-head" viewBox="46 48 134 152" aria-hidden="true"><g class="head"><use href="#head-base"/></g></svg>
           <div class="bub">Тапни ячейку — <b>помечу подрез.</b> Правка — это данные, не пиксели.</div>
         </div>
 
@@ -705,7 +706,7 @@
         <div class="note" style="text-align:center">диапазон 470 – 690 € · цены низкой свежести (D10)</div>
 
         <div class="amigo-tip ok" style="margin-top:11px">
-          <svg class="am s-suc amigo-head" viewBox="40 44 152 150" aria-hidden="true">
+          <svg class="am s-suc amigo-head" viewBox="42 48 146 152" aria-hidden="true">
             <g class="head"><use href="#head-suc"/></g>
             <g class="spark" transform="translate(178,62)"><path class="helmet-sh" d="M0 -8 L1.9 -1.9 L8 0 L1.9 1.9 L0 8 L-1.9 1.9 L-8 0 L-1.9 -1.9 Z"/></g>
           </svg>
@@ -787,8 +788,8 @@
     <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
     <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
     <g class="stache">
-      <path class="fill-ink stacheL" d="M115 156 C 110 161, 99 164, 88 164 C 78 164, 71 160, 71 152 C 71 147, 75 144, 78 147 C 77 153, 82 157, 90 156 C 99 155, 108 152, 115 148 Z"/>
-      <path class="fill-ink stacheR" d="M115 156 C 120 161, 131 164, 142 164 C 152 164, 159 160, 159 152 C 159 147, 155 144, 152 147 C 153 153, 148 157, 140 156 C 131 155, 122 152, 115 148 Z"/>
+      <path class="mustache stacheL" d="M115 153 C 110 158, 101 159, 95 156 C 90 153, 91 148, 96 148"/>
+      <path class="mustache stacheR" d="M115 153 C 120 158, 129 159, 135 156 C 140 153, 139 148, 134 148"/>
     </g>
     <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
   </g>

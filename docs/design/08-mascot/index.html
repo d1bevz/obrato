@@ -19,8 +19,8 @@
     --ink-2:#6c6457;
     --ink-3:#9a9182;
     --card:#ddd6c8;
-    --amber:#f2a01b;
-    --amber-d:#e07a10;
+    --amber:#1f9d57;       /* brand accent — green */
+    --amber-d:#14723d;
     --ui:'Saira Semi Condensed',-apple-system,system-ui,sans-serif;
     --mono:'Spline Sans Mono',ui-monospace,Menlo,monospace;
     --sw:5;
@@ -63,7 +63,7 @@
   .hero-stage{background:var(--paper); border:1.5px solid var(--card); border-radius:20px;
     display:flex; align-items:center; justify-content:center; min-height:380px; position:relative; overflow:hidden}
   .hero-stage::before{content:""; position:absolute; inset:0;
-    background:radial-gradient(60% 60% at 50% 42%, rgba(242,160,27,.08), transparent 70%)}
+    background:radial-gradient(60% 60% at 50% 42%, rgba(31,157,87,.08), transparent 70%)}
   #heroStage{width:64%; max-width:300px; position:relative; z-index:1}
   #heroStage svg{width:100%; height:auto; display:block}
   .hero-ctrl{display:flex; flex-direction:column; gap:14px}
@@ -79,8 +79,8 @@
     display:flex; flex-direction:column; align-items:center; gap:3px; transition:.12s}
   .state-btn small{font-family:var(--mono); font-size:9px; letter-spacing:.04em; color:var(--ink-3); text-transform:none}
   .state-btn:hover{background:rgba(255,255,255,.08)}
-  .state-btn.on{background:var(--amber); color:#241a06; border-color:var(--amber-d)}
-  .state-btn.on small{color:#5a3c06}
+  .state-btn.on{background:var(--amber); color:#eafdf0; border-color:var(--amber-d)}
+  .state-btn.on small{color:#cde7d6}
   .tone-note{font-family:var(--mono); font-size:11px; color:var(--ink-3); line-height:1.6}
   .tone-note b{color:#cfc9bc; font-weight:500}
 
@@ -96,7 +96,7 @@
   .cell .stage svg.amigo{width:74%; max-width:184px; height:auto; display:block}
   .cell .label{color:var(--ink); font-weight:600; font-size:17px; display:flex; align-items:center; gap:9px}
   .cell .label .dot{width:8px; height:8px; border-radius:50%; background:var(--amber); flex:none;
-    box-shadow:0 0 0 3px rgba(242,160,27,.16)}
+    box-shadow:0 0 0 3px rgba(31,157,87,.16)}
   .cell .hint{font-family:var(--mono); font-size:10.5px; color:var(--ink-2); margin-top:3px; opacity:.8}
 
   /* ---------------- mark strip ---------------- */
@@ -112,7 +112,7 @@
     border:1px solid var(--card); border-radius:10px; padding:8px 12px; width:fit-content;
     font-family:var(--mono); font-size:12px; color:var(--ink-2)}
   .statusbar .av{width:22px; height:22px; flex:none}
-  .ob{display:inline-flex; align-items:center; gap:6px; color:var(--amber-d); background:#fcefd5;
+  .ob{display:inline-flex; align-items:center; gap:6px; color:#b5670f; background:#fcefd5;
     border:1px solid #f3d79a; border-radius:20px; padding:2px 9px 2px 7px; font-size:11px; font-weight:500;
     text-transform:uppercase; letter-spacing:.04em}
   .ob .av{width:16px; height:16px; flex:none}
@@ -129,6 +129,7 @@
   .ln{fill:none; stroke:var(--ink); stroke-width:var(--sw); stroke-linecap:round; stroke-linejoin:round}
   .ln-thin{fill:none; stroke:var(--ink); stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round}
   .fill-ink{fill:var(--ink); stroke:none}
+  .mustache{fill:none; stroke:var(--ink); stroke-width:4.6; stroke-linecap:round; stroke-linejoin:round}
   .helmet{fill:var(--amber); stroke:var(--ink); stroke-width:var(--sw); stroke-linejoin:round}
   .helmet-sh{fill:var(--amber-d); stroke:none}
   .paper-fill{fill:var(--paper)}
@@ -398,8 +399,8 @@
     <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
     <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
     <g class="stache">
-      <path class="fill-ink stacheL" d="M115 156 C 110 161, 99 164, 88 164 C 78 164, 71 160, 71 152 C 71 147, 75 144, 78 147 C 77 153, 82 157, 90 156 C 99 155, 108 152, 115 148 Z"/>
-      <path class="fill-ink stacheR" d="M115 156 C 120 161, 131 164, 142 164 C 152 164, 159 160, 159 152 C 159 147, 155 144, 152 147 C 153 153, 148 157, 140 156 C 131 155, 122 152, 115 148 Z"/>
+      <path class="mustache stacheL" d="M115 153 C 110 158, 101 159, 95 156 C 90 153, 91 148, 96 148"/>
+      <path class="mustache stacheR" d="M115 153 C 120 158, 129 159, 135 156 C 140 153, 139 148, 134 148"/>
     </g>
     <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
   </g>
