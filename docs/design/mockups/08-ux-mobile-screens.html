@@ -322,6 +322,11 @@
       gap: 10px;
     }
 
+    .room-detail-lines {
+      display: grid;
+      gap: 3px;
+    }
+
     .project-card.primary {
       border-color: #91b5af;
       box-shadow: inset 0 0 0 1px rgba(11, 122, 117, 0.14);
@@ -752,11 +757,11 @@
                     <h3>Ванная</h3>
                     <p class="small">2.4 × 1.8 × 2.6 м · мокрая</p>
                   </div>
-                  <span class="badge changed">правка</span>
+                  <span class="badge changed">электроточки изменены</span>
                 </div>
-                <div class="row">
-                  <p class="small">пол · стены · потолок · точки</p>
-                  <p class="small">сетка</p>
+                <div class="room-detail-lines">
+                  <p class="small">пол плитка · стены плитка · потолок краска</p>
+                  <p class="small">электро: 1 розетка · 1 выкл. · 2 света</p>
                 </div>
               </section>
 
@@ -768,7 +773,7 @@
                   </div>
                   <span class="badge ok">замерено</span>
                 </div>
-                <p class="small">пол · стены · потолок · точки</p>
+                <p class="small">пол плитка · стены краска · электро: 5 розеток · 2 выкл. · 2 света</p>
               </section>
 
               <section class="room-row">
@@ -791,7 +796,7 @@
 
       <article class="screen-block">
         <div class="screen-title"><span>03 CJM: замерить комнату</span><span>ввод Q4</span></div>
-        <p class="journey-note"><strong>Момент:</strong> Давид стоит в комнате с рулеткой, часто офлайн и в спешке.<span>Задача экрана: шаблон -> правка размеров, wet, проёмов и 4 работ.</span></p>
+        <p class="journey-note"><strong>Момент:</strong> Давид стоит в комнате с рулеткой, часто офлайн и в спешке.<span>Задача экрана: выбрать состав работ: пол, стены, потолок и электроточки.</span></p>
         <div class="phone">
           <div class="statusbar"><span>09:45</span><span>Офлайн · локально</span></div>
           <div class="appbar">
@@ -799,7 +804,7 @@
               <button class="icon-button" aria-label="назад">‹</button>
               <div class="title-stack">
                 <p class="app-title">Ванная</p>
-                <p class="app-kicker">шаблон → правка</p>
+                <p class="app-kicker">из шаблона ванной</p>
               </div>
             </div>
             <span class="badge changed">изменено</span>
@@ -823,7 +828,7 @@
               <div class="grid-2">
                 <section class="work-card on">
                   <div class="work-top">
-                    <h3>Пол</h3>
+                    <h3>Пол: плитка</h3>
                     <div class="toggle on"><span></span></div>
                   </div>
                   <p class="small">плитка · прямая</p>
@@ -831,15 +836,15 @@
                 </section>
                 <section class="work-card on">
                   <div class="work-top">
-                    <h3>Стены</h3>
+                    <h3>Стены: плитка</h3>
                     <div class="toggle on"><span></span></div>
                   </div>
-                  <p class="small">плитка + гидро</p>
-                  <span class="badge check">шов?</span>
+                  <p class="small">плитка + гидроизоляция</p>
+                  <span class="badge check">проверить шов</span>
                 </section>
                 <section class="work-card on">
                   <div class="work-top">
-                    <h3>Потолок</h3>
+                    <h3>Потолок: краска</h3>
                     <div class="toggle on"><span></span></div>
                   </div>
                   <p class="small">краска · 2 слоя</p>
@@ -847,11 +852,11 @@
                 </section>
                 <section class="work-card on">
                   <div class="work-top">
-                    <h3>Точки</h3>
+                    <h3>Электроточки</h3>
                     <div class="toggle on"><span></span></div>
                   </div>
-                  <p class="small">1 розетка · 1 выкл. · 2 света</p>
-                  <span class="badge changed">правка</span>
+                  <p class="small">1 розетка · 1 выключатель · 2 светильника</p>
+                  <span class="badge changed">изменено</span>
                 </section>
               </div>
             </div>
