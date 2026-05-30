@@ -374,33 +374,42 @@
       width: 44px;
       height: 44px;
       position: relative;
-      border-radius: 50%;
-      background: #f5d3a5;
+      border-radius: 48% 48% 52% 52%;
+      background:
+        radial-gradient(circle at 50% 70%, rgba(129, 77, 24, 0.14), transparent 34%),
+        linear-gradient(180deg, #f6d7aa 0%, #efc18d 100%);
       border: 2px solid #a87900;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.38),
+        inset 0 -2px 0 rgba(86, 49, 14, 0.12);
       animation: mascot-bob 2.8s ease-in-out infinite;
     }
 
     .mascot::before {
       content: "";
       position: absolute;
-      left: 6px;
-      right: 6px;
+      left: 5px;
+      right: 5px;
       top: -6px;
       height: 18px;
       border-radius: 18px 18px 8px 8px;
-      background: #f2c64f;
+      background:
+        linear-gradient(180deg, #ffe07c 0%, #e9b331 100%);
       border: 2px solid #a87900;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
     .mascot::after {
       content: "";
       position: absolute;
-      left: 18px;
-      top: 32px;
-      width: 7px;
+      left: 20px;
+      top: 27px;
+      width: 5px;
       height: 4px;
-      border-bottom: 2px solid rgba(36, 49, 40, 0.76);
-      border-radius: 0 0 10px 10px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(36, 49, 40, 0.34);
+      z-index: 2;
     }
 
     .eyes {
@@ -421,19 +430,23 @@
 
     .mustache {
       position: absolute;
-      left: 7px;
-      top: 24px;
-      width: 30px;
-      height: 16px;
+      left: 5px;
+      top: 23px;
+      width: 34px;
+      height: 18px;
       overflow: visible;
     }
 
     .mustache path {
-      fill: none;
+      fill: #243128;
       stroke: #243128;
-      stroke-width: 2.4;
+      stroke-width: 0.35;
       stroke-linecap: round;
       stroke-linejoin: round;
+    }
+
+    .mustache .poirot-center {
+      fill: #16221d;
     }
 
     .mascot.mini {
@@ -450,10 +463,10 @@
     }
 
     .mascot.mini::after {
-      left: 15px;
-      top: 25px;
-      width: 7px;
-      height: 4px;
+      left: 16px;
+      top: 22px;
+      width: 4px;
+      height: 3px;
     }
 
     .mascot.mini .eyes {
@@ -468,10 +481,10 @@
     }
 
     .mascot.mini .mustache {
-      left: 5px;
-      top: 19px;
-      width: 26px;
-      height: 14px;
+      left: 3px;
+      top: 18px;
+      width: 30px;
+      height: 16px;
     }
 
     .prop-icon {
@@ -932,9 +945,10 @@
               <section class="section helper-card compact">
                 <div class="mascot mini" aria-hidden="true">
                   <div class="eyes"><span></span><span></span></div>
-                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
-                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
-                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  <svg class="mustache" viewBox="0 0 44 20" aria-hidden="true" focusable="false">
+                    <path class="poirot-left" d="M22 10.3C16.8 8.1 11.8 7.2 7.1 8.9C3.2 10.2 2 13 4.4 15.1C7.4 17.8 15.1 15.6 22 11.4Z" />
+                    <path class="poirot-right" d="M22 10.3C27.2 8.1 32.2 7.2 36.9 8.9C40.8 10.2 42 13 39.6 15.1C36.6 17.8 28.9 15.6 22 11.4Z" />
+                    <path class="poirot-center" d="M20.3 9.6C21.1 8.8 22.9 8.8 23.7 9.6C23.1 10.8 20.9 10.8 20.3 9.6Z" />
                   </svg>
                   <svg class="prop-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#prop-card" /></svg>
                 </div>
@@ -1015,9 +1029,10 @@
               <section class="section helper-card">
                 <div class="mascot" aria-hidden="true">
                   <div class="eyes"><span></span><span></span></div>
-                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
-                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
-                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  <svg class="mustache" viewBox="0 0 44 20" aria-hidden="true" focusable="false">
+                    <path class="poirot-left" d="M22 10.3C16.8 8.1 11.8 7.2 7.1 8.9C3.2 10.2 2 13 4.4 15.1C7.4 17.8 15.1 15.6 22 11.4Z" />
+                    <path class="poirot-right" d="M22 10.3C27.2 8.1 32.2 7.2 36.9 8.9C40.8 10.2 42 13 39.6 15.1C36.6 17.8 28.9 15.6 22 11.4Z" />
+                    <path class="poirot-center" d="M20.3 9.6C21.1 8.8 22.9 8.8 23.7 9.6C23.1 10.8 20.9 10.8 20.3 9.6Z" />
                   </svg>
                   <svg class="prop-icon warm" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#prop-tape" /></svg>
                 </div>
@@ -1103,9 +1118,10 @@
               <section class="section helper-card compact">
                 <div class="mascot mini" aria-hidden="true">
                   <div class="eyes"><span></span><span></span></div>
-                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
-                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
-                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  <svg class="mustache" viewBox="0 0 44 20" aria-hidden="true" focusable="false">
+                    <path class="poirot-left" d="M22 10.3C16.8 8.1 11.8 7.2 7.1 8.9C3.2 10.2 2 13 4.4 15.1C7.4 17.8 15.1 15.6 22 11.4Z" />
+                    <path class="poirot-right" d="M22 10.3C27.2 8.1 32.2 7.2 36.9 8.9C40.8 10.2 42 13 39.6 15.1C36.6 17.8 28.9 15.6 22 11.4Z" />
+                    <path class="poirot-center" d="M20.3 9.6C21.1 8.8 22.9 8.8 23.7 9.6C23.1 10.8 20.9 10.8 20.3 9.6Z" />
                   </svg>
                   <svg class="prop-icon gray" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#prop-signal" /></svg>
                 </div>
@@ -1189,9 +1205,10 @@
               <section class="section helper-card compact">
                 <div class="mascot mini" aria-hidden="true">
                   <div class="eyes"><span></span><span></span></div>
-                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
-                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
-                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  <svg class="mustache" viewBox="0 0 44 20" aria-hidden="true" focusable="false">
+                    <path class="poirot-left" d="M22 10.3C16.8 8.1 11.8 7.2 7.1 8.9C3.2 10.2 2 13 4.4 15.1C7.4 17.8 15.1 15.6 22 11.4Z" />
+                    <path class="poirot-right" d="M22 10.3C27.2 8.1 32.2 7.2 36.9 8.9C40.8 10.2 42 13 39.6 15.1C36.6 17.8 28.9 15.6 22 11.4Z" />
+                    <path class="poirot-center" d="M20.3 9.6C21.1 8.8 22.9 8.8 23.7 9.6C23.1 10.8 20.9 10.8 20.3 9.6Z" />
                   </svg>
                   <svg class="prop-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#prop-plan" /></svg>
                 </div>
@@ -1241,9 +1258,10 @@
               <section class="section helper-card compact">
                 <div class="mascot mini" aria-hidden="true">
                   <div class="eyes"><span></span><span></span></div>
-                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
-                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
-                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  <svg class="mustache" viewBox="0 0 44 20" aria-hidden="true" focusable="false">
+                    <path class="poirot-left" d="M22 10.3C16.8 8.1 11.8 7.2 7.1 8.9C3.2 10.2 2 13 4.4 15.1C7.4 17.8 15.1 15.6 22 11.4Z" />
+                    <path class="poirot-right" d="M22 10.3C27.2 8.1 32.2 7.2 36.9 8.9C40.8 10.2 42 13 39.6 15.1C36.6 17.8 28.9 15.6 22 11.4Z" />
+                    <path class="poirot-center" d="M20.3 9.6C21.1 8.8 22.9 8.8 23.7 9.6C23.1 10.8 20.9 10.8 20.3 9.6Z" />
                   </svg>
                   <svg class="prop-icon warm" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#prop-cart" /></svg>
                 </div>
@@ -1346,9 +1364,10 @@
               <section class="section helper-card compact">
                 <div class="mascot mini" aria-hidden="true">
                   <div class="eyes"><span></span><span></span></div>
-                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
-                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
-                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  <svg class="mustache" viewBox="0 0 44 20" aria-hidden="true" focusable="false">
+                    <path class="poirot-left" d="M22 10.3C16.8 8.1 11.8 7.2 7.1 8.9C3.2 10.2 2 13 4.4 15.1C7.4 17.8 15.1 15.6 22 11.4Z" />
+                    <path class="poirot-right" d="M22 10.3C27.2 8.1 32.2 7.2 36.9 8.9C40.8 10.2 42 13 39.6 15.1C36.6 17.8 28.9 15.6 22 11.4Z" />
+                    <path class="poirot-center" d="M20.3 9.6C21.1 8.8 22.9 8.8 23.7 9.6C23.1 10.8 20.9 10.8 20.3 9.6Z" />
                   </svg>
                   <svg class="prop-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#prop-receipt" /></svg>
                 </div>
