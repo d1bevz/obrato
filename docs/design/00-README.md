@@ -30,7 +30,7 @@
 | 05 | [Модель данных](05-data-model.md) | ~16 pilot-core сущностей + deferred, контракт ядра, sync |
 | 06 | [Риски и открытые вопросы](06-risks-open-questions.md) | Risk #1 (нормы), #2 (раскладка), #3 (drift), open Q |
 | 07 | [Нормы: методология расчёта](07-norms-methodology.md) | формулы расхода материалов, входы движка (→ NormAssumptions), что только калибровкой |
-| 08 | [UX и потоки](08-ux-flows.md) | карта экранов S1–S6, флоу (mermaid), модель ввода (**Q4 закрыт**), два уровня confidence, UX-принципы; макеты — [`08-mockups/index.html`](08-mockups/index.html) |
+| 08 | [UX и потоки](08-ux-flows.md) | карта экранов S1–S6, флоу (mermaid), модель ввода (**Q4 закрыт**), два уровня confidence, UX-принципы, маскот Amigo (§10); макеты — [`08-mockups`](08-mockups/index.html) · [`08-mascot`](08-mascot/index.html) |
 | 09 | [Архитектура приложения](09-app-architecture.md) | 5 слоёв (React ↔ Canvas ↔ Worker/WASM ↔ IndexedDB ↔ sync ↔ бэкенд), границы/контракты, сквозной поток, offline-first, pilot vs deferred |
 | 10 | _Каталог (готовится)_ | сбор/поддержка ~50–100 SKU, multi-store, Open Q2 — отдельной сессией (см. `prompts/catalog-dev-session.md`) |
 | 11 | [План пилота / roadmap](11-pilot-plan.md) | метрика D5, build-slice (бумага → ядро → PDF → сверка → Canvas), измеримые вехи, риски графика |
