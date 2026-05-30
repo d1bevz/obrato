@@ -19,8 +19,16 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
 .helmet-sh{fill:var(--helmet-d);stroke:none}
 .paper-fill{fill:var(--surface)}
 
-/* prop: book lines (text-dashes) */
-.txt{fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;opacity:.55}
+/* prop: book — text-lines, pages, cover */
+.txt{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;opacity:.5}
+.cover{fill:var(--surface);stroke:var(--ink);stroke-width:4.4;stroke-linejoin:round}
+.cover-edge{fill:var(--paper);stroke:var(--ink);stroke-width:4.4;stroke-linejoin:round}
+.page{fill:var(--surface);stroke:var(--ink);stroke-width:3.6;stroke-linejoin:round}
+.page-block{fill:var(--paper);stroke:var(--ink);stroke-width:3.4;stroke-linejoin:round}
+.page-line{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;opacity:.35}
+.spine{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round}
+.table{fill:none;stroke:var(--ink);stroke-width:1.9;stroke-linejoin:round;opacity:.62}
+.table-accent{fill:none;stroke:var(--green);stroke-width:2.2;stroke-linecap:round}
 .approx{fill:none;stroke:var(--green-d);stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round}
 .approx-ring{fill:none;stroke:var(--green);stroke-width:3.2;opacity:0}
 
@@ -28,7 +36,7 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
 .play .approx-grp{animation:approxPulse 2.2s ease-in-out infinite;transform-origin:208px 182px}
 .play .approx-ring{animation:approxRing 2.2s ease-in-out infinite;transform-origin:208px 182px}
 .play .finger{animation:fingerSlide 3.4s ease-in-out infinite;transform-origin:center}
-.play .page-flip{animation:pageFlip 3.4s ease-in-out infinite;transform-origin:171px 240px}
+.play .page-flip{animation:pageFlip 3.4s ease-in-out infinite;transform-origin:115px 232px}
 .play .browL{animation:browLift 3.4s ease-in-out infinite;transform-origin:92px 117px}
 .play .eyeL,.play .eyeR{animation:gazeDown 3.4s ease-in-out infinite}
 
@@ -48,10 +56,10 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
   82%,100%{transform:translate(0,0)}
 }
 @keyframes pageFlip{
-  0%,62%{transform:rotateY(0) scaleX(1)}
-  74%{transform:scaleX(-.12)}
-  86%{transform:scaleX(1)}
-  100%{transform:scaleX(1)}
+  0%,60%{transform:scaleX(1);opacity:.95}
+  72%{transform:scaleX(.1);opacity:.7}
+  84%{transform:scaleX(1);opacity:.95}
+  100%{transform:scaleX(1);opacity:.95}
 }
 @keyframes browLift{
   0%,30%{transform:translateY(0)}
@@ -101,57 +109,123 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
       </g>
       <!-- ===================== /BUST ===================== -->
 
-      <!-- ===================== PROP: open book held in hands ===================== -->
-      <!-- Hands/forearms from shoulders coming up to hold the book edges -->
-      <!-- left forearm + hand -->
-      <path class="ln paper-fill" d="M78 250 q-8 -22 24 -34"/>
-      <path class="ln-thin paper-fill" d="M100 214 q8 -2 14 4"/>
-      <!-- right forearm + hand -->
-      <path class="ln paper-fill" d="M152 250 q8 -22 -24 -34"/>
+      <!-- ===================== PROP: thick open reference tome, held in both hands ===================== -->
+      <!-- Forearms from the shoulders coming forward to the wrists at the book's lower corners -->
+      <path class="ln paper-fill" d="M74 232 q-30 6 -38 30 q-3 9 4 16"/>
+      <path class="ln paper-fill" d="M156 232 q30 6 38 30 q3 9 -4 16"/>
 
-      <!-- Book group -->
+      <!-- ===== BOOK ===== centered on spine x=115; open like a butterfly ===== -->
       <g class="book">
-        <!-- book spine shadow under -->
-        <path class="ln paper-fill" d="M171 235
-          q-56 -16 -56 4
-          q0 -20 -56 -4
-          q0 26 0 26
-          q56 -14 56 2
-          q0 -16 56 -2
-          q0 0 0 -26 Z"/>
-        <!-- left page -->
-        <path class="ln paper-fill" d="M115 239
-          q0 -20 -56 -4
-          q0 26 0 26
-          q56 -14 56 2 Z"/>
-        <!-- right page -->
-        <path class="ln paper-fill" d="M115 239
-          q0 -20 56 -4
-          q0 26 0 26
-          q-56 -14 -56 2 Z"/>
-        <!-- center binding crease -->
-        <path class="ln-thin" d="M115 239 q0 12 0 24" opacity=".5"/>
 
-        <!-- left page text lines (dashes) -->
-        <line class="txt" x1="69" y1="240" x2="106" y2="231"/>
-        <line class="txt" x1="69" y1="247" x2="106" y2="238"/>
-        <line class="txt" x1="69" y1="254" x2="98"  y2="247"/>
+        <!-- COVER: slightly overhangs the page-block on outer edges + bottom -->
+        <path class="cover" d="M115 222
+          q-30 -16 -62 -7
+          q-6 1 -6 8
+          l0 38
+          q0 6 6 8
+          q33 -10 62 5
+          q29 -15 62 -5
+          q6 -2 6 -8
+          l0 -38
+          q0 -7 -6 -8
+          q-32 -9 -62 7 Z"/>
 
-        <!-- right page text lines (dashes) -->
-        <line class="txt" x1="124" y1="231" x2="161" y2="240"/>
-        <line class="txt" x1="124" y1="238" x2="161" y2="247"/>
-        <line class="txt" x1="124" y1="247" x2="153" y2="254"/>
+        <!-- LEFT page-block thickness (stacked pages, side volume) -->
+        <path class="page-block" d="M114 270
+          q-29 -15 -60 -5
+          q-4 1 -4 5
+          q31 -10 60 4
+          q2 -5 4 -9 Z"/>
+        <!-- RIGHT page-block thickness -->
+        <path class="page-block" d="M116 270
+          q29 -15 60 -5
+          q4 1 4 5
+          q-31 -10 -60 4
+          q-2 -5 -4 -9 Z"/>
+        <!-- thin striations on the side page-blocks (visible sheet stack) -->
+        <path class="page-line" d="M55 262 q30 -9 59 3"/>
+        <path class="page-line" d="M55 266 q30 -9 59 3"/>
+        <path class="page-line" d="M175 262 q-30 -9 -59 3"/>
+        <path class="page-line" d="M175 266 q-30 -9 -59 3"/>
 
-        <!-- flipping page (right leaf) -->
+        <!-- LEFT open page (curved sheet, sits above its block) -->
+        <path class="page" d="M115 232
+          q-28 -16 -58 -6
+          q-3 1 -3 5
+          l0 28
+          q0 4 3 5
+          q30 -10 58 4 Z"/>
+        <!-- RIGHT open page -->
+        <path class="page" d="M115 232
+          q28 -16 58 -6
+          q3 1 3 5
+          l0 28
+          q0 4 -3 5
+          q-30 -10 -58 4 Z"/>
+
+        <!-- LEFT page text lines (follow the page curve) -->
+        <line class="txt" x1="64" y1="240" x2="105" y2="231"/>
+        <line class="txt" x1="64" y1="247" x2="105" y2="238"/>
+        <line class="txt" x1="64" y1="254" x2="98"  y2="247"/>
+        <line class="txt" x1="64" y1="261" x2="105" y2="251"/>
+
+        <!-- RIGHT page: small schematic TABLE/GRID, sits on the OUTER half (clear of spine + flip) -->
+        <g class="table">
+          <!-- table frame -->
+          <path d="M137 234 l28 5 l0 16 l-28 -5 Z"/>
+          <!-- vertical divider -->
+          <path d="M151 236.5 l0 16"/>
+          <!-- horizontal rows -->
+          <path d="M138 239.5 l27 5"/>
+          <path d="M137.5 245 l28 5"/>
+        </g>
+        <!-- green accent: one highlighted row-bar in the table -->
+        <line class="table-accent" x1="139" y1="247.5" x2="149.5" y2="249.4" stroke-width="3.4"/>
+        <!-- a few text lines below the table -->
+        <line class="txt" x1="129" y1="259" x2="163" y2="265"/>
+        <line class="txt" x1="129" y1="264" x2="155" y2="269"/>
+
+        <!-- CENTER SPINE: clear groove down the middle of the open tome -->
+        <path class="spine" d="M115 228 q0 22 0 44"/>
+        <path class="page-line" d="M111 230 q-2 21 0 42"/>
+        <path class="page-line" d="M119 230 q2 21 0 42"/>
+
+        <!-- flipping page (a single right leaf lifting from the spine, inner half only) -->
         <g class="page-flip">
-          <path class="ln-thin paper-fill" d="M115 239 q0 -18 52 -3 q0 24 0 24 q-52 -13 -52 1 Z" opacity=".9"/>
-          <line class="txt" x1="124" y1="232" x2="158" y2="240"/>
-          <line class="txt" x1="124" y1="239" x2="158" y2="247"/>
+          <path class="page" d="M115 232 q19 -11 34 -4 q2 1 2 4 l0 26 q0 3 -2 3 q-17 -7 -34 4 Z" stroke-width="2.8"/>
+          <line class="txt" x1="123" y1="237" x2="146" y2="242"/>
+          <line class="txt" x1="123" y1="244" x2="146" y2="249"/>
+          <line class="txt" x1="123" y1="251" x2="141" y2="255"/>
         </g>
 
-        <!-- finger tracing a line on the left page -->
+        <!-- ===== HANDS cupping the lower corners of the open tome (tablet-scene convention) ===== -->
+        <!-- LEFT hand: palm cups the lower-left cover corner, thumb on the front face, fingertips over the edge -->
+        <g class="hand-l">
+          <!-- palm cupping the corner (open arc, not a closed loop) -->
+          <path class="ln paper-fill" d="M58 260 q-16 -1 -22 11 q-6 12 8 17"/>
+          <!-- thumb resting on the front of the cover -->
+          <path class="ln paper-fill" d="M58 260 q-9 5 -8 14"/>
+          <!-- 3 fingertips peeking over the bottom edge -->
+          <path class="ln-thin" d="M46 274 q-1 9 -9 10"/>
+          <path class="ln-thin" d="M53 273 q-1 9 -9 11"/>
+          <path class="ln-thin" d="M60 272 q-1 9 -8 11"/>
+        </g>
+
+        <!-- RIGHT hand: palm cups the lower-right cover corner, thumb on front, fingertips over the edge -->
+        <g class="hand-r">
+          <path class="ln paper-fill" d="M172 260 q16 -1 22 11 q6 12 -8 17"/>
+          <path class="ln paper-fill" d="M172 260 q9 5 8 14"/>
+          <path class="ln-thin" d="M184 274 q1 9 9 10"/>
+          <path class="ln-thin" d="M177 273 q1 9 9 11"/>
+          <path class="ln-thin" d="M170 272 q1 9 8 11"/>
+        </g>
+
+        <!-- tracing finger (free index) reaching up ONTO the left page, resting on a text line -->
         <g class="finger">
-          <path class="ln-thin paper-fill" d="M70 264 q4 -10 13 -12 q5 -1 6 4 q1 5 -5 7" stroke-width="3.2"/>
+          <!-- slim index finger rising from lower-left, fingertip on the page at ~(74,248) -->
+          <path class="ln paper-fill" d="M64 278 q2 -16 9 -24 q4 -4 7 -1 q3 3 -1 7 q-5 6 -6 18 Z"/>
+          <!-- fingernail tip touching the line -->
+          <path class="ln-thin" d="M73 251 q4 -3 7 -1" stroke-width="2.6" opacity=".6"/>
         </g>
       </g>
 

@@ -24,11 +24,13 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
 
 /* prop */
 .tablet-shell{fill:var(--surface);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
-.tablet-screen{fill:var(--paper);stroke:var(--ink);stroke-width:3.4}
-.row{fill:var(--surface);stroke:var(--ink);stroke-width:3.4;stroke-linejoin:round}
-.row-line{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;opacity:.5}
-.row-dot{fill:none;stroke:var(--ink);stroke-width:3.4}
-.row-hi{fill:none;stroke:var(--green);stroke-width:4}
+.tablet-screen{fill:var(--paper);stroke:var(--ink);stroke-width:3}
+.tablet-cam{fill:var(--surface);stroke:var(--ink);stroke-width:2.2}
+.tablet-home{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;opacity:.55}
+.row-icon{fill:var(--surface);stroke:var(--ink);stroke-width:2.8;stroke-linejoin:round}
+.row-line{fill:none;stroke:var(--ink);stroke-width:3.2;stroke-linecap:round;opacity:.5}
+.row-line-2{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;opacity:.32}
+.row-hi{fill:none;stroke:var(--green);stroke-width:3.6}
 .row-hi-fill{fill:var(--green);opacity:.12}
 .tap-ring{fill:none;stroke:var(--green);stroke-width:4}
 
@@ -54,11 +56,14 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
   <div class="scene play">
     <svg viewBox="-24 30 330 280" role="img" aria-label="Amigo выбирает объект на планшете">
 
-      <!-- ░░ BACK ARM: holding hand from right shoulder grips tablet right edge ░░ -->
-      <path class="ln paper-fill" d="M173 214 q33 -2 40 24 q4 16 -8 24"/>
-      <!-- gripping hand / fingers wrapping the tablet's right edge -->
-      <path class="ln-thin" d="M209 248 q9 4 8 13"/>
-      <path class="ln-thin" d="M204 255 q9 4 8 13"/>
+      <!-- ░░ BACK ARM: holding hand from right shoulder cups the tablet's right edge ░░ -->
+      <path class="ln paper-fill" d="M174 224 q33 -3 45 18 q9 18 -4 32"/>
+      <!-- palm cupping the lower-right corner, thumb resting on the front face -->
+      <path class="ln paper-fill" d="M215 274 q9 -11 1 -24 q-8 -13 -27 -12"/>
+      <!-- 3 fingertips peeking over the right edge -->
+      <path class="ln-thin" d="M201 250 q12 0 13 11"/>
+      <path class="ln-thin" d="M196 257 q12 0 12 11"/>
+      <path class="ln-thin" d="M191 264 q12 0 11 11"/>
 
       <!-- ░░░░░ AMIGO BUST — fixed geometry, verbatim ░░░░░ -->
       <g class="amigo">
@@ -90,32 +95,35 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
 
       <!-- ░░ TABLET RIG (front of bust, mid-chest) ░░ -->
       <g class="tablet-rig">
-        <!-- shell, tilted slightly; rounded rect 92..208 x / 158..248 y -->
-        <g transform="rotate(-7 150 203)">
-          <rect class="tablet-shell" x="92" y="158" width="116" height="90" rx="11"/>
-          <rect class="tablet-screen" x="101" y="167" width="98" height="72" rx="5"/>
+        <!-- realistic portrait tablet, tilted slightly; uniform ~7px bezel all round -->
+        <g transform="rotate(-7 150 204)">
+          <!-- outer shell -->
+          <rect class="tablet-shell" x="100" y="152" width="100" height="104" rx="13"/>
+          <!-- front-facing camera dot, centred on the TOP bezel -->
+          <circle class="tablet-cam" cx="150" cy="159.5" r="2"/>
+          <!-- screen, inset uniformly inside the bezel -->
+          <rect class="tablet-screen" x="108" y="166" width="84" height="74" rx="4"/>
+          <!-- home indicator: thin bar centred on the BOTTOM bezel -->
+          <line class="tablet-home" x1="142" y1="248" x2="158" y2="248"/>
 
-          <!-- list rows (the swipe stack slides up into place) -->
+          <!-- clean list: 3 rows, each = square icon + 2 text lines (swipe stack slides up) -->
           <g class="swipeStack">
             <!-- row 1 -->
-            <rect class="row" x="107" y="173" width="86" height="17" rx="4"/>
-            <circle class="row-dot" cx="116" cy="181.5" r="3.4"/>
-            <line class="row-line" x1="126" y1="178" x2="180" y2="178"/>
-            <line class="row-line" x1="126" y1="185" x2="166" y2="185"/>
+            <rect class="row-icon" x="114" y="173" width="14" height="14" rx="3"/>
+            <line class="row-line"   x1="135" y1="178" x2="184" y2="178"/>
+            <line class="row-line-2" x1="135" y1="184" x2="170" y2="184"/>
 
             <!-- row 2 (the one being tapped / highlighted) -->
-            <rect class="row-hi-fill" x="107" y="194" width="86" height="17" rx="4"/>
-            <rect class="row" x="107" y="194" width="86" height="17" rx="4"/>
-            <rect class="row-hi" x="107" y="194" width="86" height="17" rx="4"/>
-            <circle class="row-dot" cx="116" cy="202.5" r="3.4"/>
-            <line class="row-line" x1="126" y1="199" x2="184" y2="199"/>
-            <line class="row-line" x1="126" y1="206" x2="160" y2="206"/>
+            <rect class="row-hi-fill" x="111" y="195" width="78" height="20" rx="4"/>
+            <rect class="row-hi"      x="111" y="195" width="78" height="20" rx="4"/>
+            <rect class="row-icon"    x="114" y="198" width="14" height="14" rx="3"/>
+            <line class="row-line"   x1="135" y1="203" x2="184" y2="203"/>
+            <line class="row-line-2" x1="135" y1="209" x2="166" y2="209"/>
 
             <!-- row 3 -->
-            <rect class="row" x="107" y="215" width="86" height="17" rx="4"/>
-            <circle class="row-dot" cx="116" cy="223.5" r="3.4"/>
-            <line class="row-line" x1="126" y1="220" x2="176" y2="220"/>
-            <line class="row-line" x1="126" y1="227" x2="158" y2="227"/>
+            <rect class="row-icon" x="114" y="223" width="14" height="14" rx="3"/>
+            <line class="row-line"   x1="135" y1="228" x2="180" y2="228"/>
+            <line class="row-line-2" x1="135" y1="234" x2="162" y2="234"/>
           </g>
         </g>
       </g>
@@ -126,9 +134,9 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
         <path class="ln paper-fill" d="M60 218 q-12 14 0 30 q10 14 30 11"/>
         <!-- hand: knuckles + extended index finger pointing up at the highlighted row -->
         <path class="ln-thin paper-fill" d="M86 252 q11 8 23 4 q7 -2 9 -9"/>
-        <path class="ln" d="M118 247 l16 -29"/>
+        <path class="ln" d="M118 247 l14 -38"/>
         <!-- tap ripple ring at fingertip on row 2 -->
-        <circle class="tap-ring" cx="138" cy="212" r="9"/>
+        <circle class="tap-ring" cx="133" cy="205" r="9"/>
       </g>
 
     </svg>

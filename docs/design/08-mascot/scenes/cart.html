@@ -20,12 +20,17 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
 
 /* ===== prop styling ===== */
 .cart{fill:none;stroke:var(--ink);stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
+.cart-wire{fill:none;stroke:var(--ink);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
 .cart-fill{fill:var(--surface);stroke:var(--ink);stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
+.cart-pane{fill:var(--surface);stroke:none}
+.seat{fill:var(--paper);stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.fork{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
 .wheel{fill:var(--surface);stroke:var(--ink);stroke-width:4.2}
 .wheel-hub{fill:var(--ink);stroke:none}
 .box{fill:var(--surface);stroke:var(--ink);stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round}
 .box-line{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
-.box-accent{fill:none;stroke:var(--amber);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.box-label{fill:var(--paper);stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.box-accent{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .arm{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
 
 /* ===== STATIC by default — all motion gated under .play ===== */
@@ -74,50 +79,89 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
   <div class="scene play">
     <svg viewBox="-20 0 340 310" role="img" aria-label="Amigo катит тележку, в корзину падает коробка">
 
-      <!-- ===================== CART (Amigo grips the handle) ===================== -->
+      <!-- ===================== SHOPPING CART (Amigo grips the handle bar) =====================
+           Real supermarket trolley silhouette:
+           - long handle bar at the back-top (Amigo's fist wraps it at ~196,168)
+           - trapezoidal WIRE basket: wider at the open top, narrower at the bottom,
+             with a clear grid of vertical + horizontal bars (see-through, not a solid wall)
+           - fold-down child seat flap hinged off the handle side
+           - bottom frame + two visible wheels on swivel forks (back pair implied)
+      -->
       <g class="rig">
 
-        <!-- handle: post Amigo grips at top, sweeping back-down to the basket rim -->
-        <path class="cart" d="M196 168 q24 -2 34 22 l8 18"/>
+        <!-- pale pane behind the wires so the basket reads as one volume but stays see-through -->
+        <path class="cart-pane" d="M200 198 L312 198 L296 270 L226 270 Z"/>
 
-        <!-- basket: trapezoid, wider at top -->
-        <path class="cart-fill" d="M210 208 l96 0 -16 58 -64 0 Z"/>
-        <!-- basket vertical grid (follow the slanted sides) -->
-        <path class="cart" d="M234 208 l-4 58"/>
-        <path class="cart" d="M258 208 l-2 58"/>
-        <path class="cart" d="M282 208 l2 58"/>
-        <!-- basket horizontal grid -->
-        <path class="cart" d="M218 238 l80 0"/>
+        <!-- ===== handle bar: horizontal grip the fist wraps, then frame sweeping to basket ===== -->
+        <!-- the grip bar Amigo holds -->
+        <path class="cart" d="M192 168 l26 0"/>
+        <!-- bar end caps -->
+        <path class="cart-wire" d="M192 162 l0 12 M218 162 l0 12"/>
+        <!-- frame tubes from the handle bar down to the rear corner of the basket -->
+        <path class="cart" d="M218 168 q22 1 27 16 l5 14"/>
+        <path class="cart" d="M199 174 q1 12 1 24"/>
 
-        <!-- legs down to wheels -->
-        <path class="cart" d="M228 266 l-6 16"/>
-        <path class="cart" d="M288 266 l6 16"/>
+        <!-- ===== basket: trapezoid rim, wider at the open top ===== -->
+        <!-- top rim (the open mouth of the basket) -->
+        <path class="cart" d="M200 198 L312 198"/>
+        <!-- rear wall edge -->
+        <path class="cart" d="M200 198 L226 270"/>
+        <!-- front wall edge -->
+        <path class="cart" d="M312 198 L296 270"/>
+        <!-- bottom of basket -->
+        <path class="cart" d="M226 270 L296 270"/>
 
-        <!-- wheels -->
-        <g class="wheelSpin" style="transform-origin:222px 286px">
-          <circle class="wheel" cx="222" cy="286" r="12"/>
-          <circle class="wheel-hub" cx="222" cy="286" r="3.2"/>
-          <path class="ln-thin" d="M222 276 l0 20 M212 286 l20 0"/>
+        <!-- WIRE GRID — vertical bars (splay outward following the slanted walls) -->
+        <path class="cart-wire" d="M222 198 l-3 72"/>
+        <path class="cart-wire" d="M244 198 l-1 72"/>
+        <path class="cart-wire" d="M266 198 l0 72"/>
+        <path class="cart-wire" d="M288 198 l1 72"/>
+        <!-- WIRE GRID — horizontal bars (3 rails, narrowing toward the base) -->
+        <path class="cart-wire" d="M205 222 l102 0"/>
+        <path class="cart-wire" d="M210 246 l92 0"/>
+
+        <!-- fold-down child seat flap, hinged near the handle, tilted into the basket mouth -->
+        <path class="seat" d="M204 200 l30 -8 l4 14 l-30 8 Z"/>
+        <path class="cart-wire" d="M210 199 l28 -8 M214 211 l27 -8"/>
+
+        <!-- ===== bottom frame + swivel-fork wheels ===== -->
+        <!-- under-basket frame rail -->
+        <path class="cart" d="M222 272 l78 0"/>
+        <!-- front swivel fork -->
+        <g>
+          <path class="fork" d="M236 272 l-2 8 q-1 4 4 5"/>
+          <path class="fork" d="M232 280 l8 0"/>
+          <g class="wheelSpin" style="transform-origin:236px 290px">
+            <circle class="wheel" cx="236" cy="290" r="11"/>
+            <circle class="wheel-hub" cx="236" cy="290" r="3"/>
+            <path class="ln-thin" d="M236 281 l0 18 M227 290 l18 0"/>
+          </g>
         </g>
-        <g class="wheelSpin" style="transform-origin:294px 286px">
-          <circle class="wheel" cx="294" cy="286" r="12"/>
-          <circle class="wheel-hub" cx="294" cy="286" r="3.2"/>
-          <path class="ln-thin" d="M294 276 l0 20 M284 286 l20 0"/>
+        <!-- rear swivel fork -->
+        <g>
+          <path class="fork" d="M290 272 l2 8 q1 4 -4 5"/>
+          <path class="fork" d="M286 280 l8 0"/>
+          <g class="wheelSpin" style="transform-origin:290px 290px">
+            <circle class="wheel" cx="290" cy="290" r="11"/>
+            <circle class="wheel-hub" cx="290" cy="290" r="3"/>
+            <path class="ln-thin" d="M290 281 l0 18 M281 290 l18 0"/>
+          </g>
         </g>
 
-        <!-- landing puff lines above basket rim -->
-        <g class="puff" style="transform-origin:258px 206px">
-          <path class="ln-thin" d="M238 200 l-8 -6 M258 196 l0 -9 M278 200 l8 -6"/>
+        <!-- landing puff lines above the basket mouth -->
+        <g class="puff" style="transform-origin:262px 196px">
+          <path class="ln-thin" d="M242 190 l-8 -6 M262 186 l0 -9 M282 190 l8 -6"/>
         </g>
 
-        <!-- ===================== FALLING PRODUCT (box of tile) ===================== -->
-        <g class="drop" style="transform-origin:258px 222px">
-          <rect class="box" x="232" y="196" width="52" height="40" rx="3"/>
-          <!-- tape cross -->
-          <path class="box-line" d="M258 196 l0 40"/>
-          <path class="box-line" d="M232 216 l52 0"/>
-          <!-- amber accent strip = label -->
-          <path class="box-accent" d="M238 206 l16 0"/>
+        <!-- ===================== FALLING PRODUCT (box of tile, with label) ===================== -->
+        <g class="drop" style="transform-origin:262px 212px">
+          <rect class="box" x="236" y="184" width="52" height="40" rx="3"/>
+          <!-- packing tape cross -->
+          <path class="box-line" d="M262 184 l0 40"/>
+          <path class="box-line" d="M236 204 l52 0"/>
+          <!-- product label panel + green brand stripe -->
+          <rect class="box-label" x="241" y="189" width="20" height="11" rx="1.5"/>
+          <path class="box-accent" d="M244 194 l14 0"/>
         </g>
 
       </g>

@@ -23,9 +23,17 @@ body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-i
 .sheet{fill:var(--paper);stroke:var(--ink);stroke-width:4;stroke-linejoin:round}
 .cut-cell{fill:none;stroke:var(--green);stroke-width:4;stroke-linejoin:round}
 .check{fill:none;stroke:var(--green);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
-.pencil-body{fill:var(--amber);stroke:var(--ink);stroke-width:3.4;stroke-linejoin:round}
-.pencil-tip{fill:var(--surface);stroke:var(--ink);stroke-width:3.2;stroke-linejoin:round}
-.pencil-lead{fill:var(--ink);stroke:none}
+.dim-line{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.dim-arrow{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.dim-ext{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;opacity:.7}
+/* realistic hexagonal pencil */
+.pencil-body{fill:var(--surface);stroke:var(--ink);stroke-width:3.4;stroke-linejoin:round}
+.pencil-facet{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.55}
+.pencil-cone{fill:var(--paper);stroke:var(--ink);stroke-width:3.2;stroke-linejoin:round}
+.pencil-lead{fill:var(--ink);stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.pencil-ferrule{fill:var(--paper);stroke:var(--ink);stroke-width:3.2;stroke-linejoin:round}
+.pencil-ferrule-band{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.6}
+.pencil-eraser{fill:var(--surface);stroke:var(--ink);stroke-width:3.2;stroke-linejoin:round}
 
 /* ALL animation nested under .play -> removing .play = static calm mode */
 .play .sheet-grp{animation:sheetNudge 3.4s ease-in-out infinite; transform-box:view-box; transform-origin:124px 236px}
@@ -91,6 +99,21 @@ body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-i
       <!-- horizontal mid line -->
       <line class="grid-line" x1="44" y1="236" x2="204" y2="236"/>
 
+      <!-- dimension line (horizontal) across the top, spanning the two middle cells: blueprint read -->
+      <line class="dim-ext" x1="84"  y1="203" x2="84"  y2="213"/>
+      <line class="dim-ext" x1="164" y1="203" x2="164" y2="213"/>
+      <line class="dim-line" x1="87" y1="210" x2="161" y2="210"/>
+      <!-- arrowheads at both ends -->
+      <path class="dim-arrow" d="M92 207 L85 210 L92 213"/>
+      <path class="dim-arrow" d="M156 207 L163 210 L156 213"/>
+
+      <!-- dimension line (vertical) on the left edge, spanning full height -->
+      <line class="dim-ext" x1="44" y1="204" x2="55" y2="204"/>
+      <line class="dim-ext" x1="44" y1="268" x2="55" y2="268"/>
+      <line class="dim-line" x1="51" y1="207" x2="51" y2="265"/>
+      <path class="dim-arrow" d="M48 212 L51 205 L54 212"/>
+      <path class="dim-arrow" d="M48 260 L51 267 L54 260"/>
+
       <!-- corner "cut" cell highlight: top-right cell (x164..204, y202..236) -->
       <rect class="cut-cell" x="165" y="201" width="40" height="35" rx="3"/>
       <!-- check mark inside that cell -->
@@ -107,14 +130,24 @@ body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-i
 
     <!-- right arm + hand + pencil marking the cut cell -->
     <g class="hand-grp">
-      <!-- pencil: clean parallelogram, lead aimed at the cut cell check -->
+      <!-- pencil: realistic hexagon. lead (down-left) -> wood cone -> hex barrel -> ferrule -> eraser (up-right) -->
       <g class="pencil">
-        <!-- body (eraser end up-right -> wood end down-left) -->
-        <path class="pencil-body" d="M243 184 L234 173 L194 209 L203 219 Z"/>
-        <!-- wooden cone tip -->
-        <path class="pencil-tip" d="M194 209 L203 219 L188 223 Z"/>
-        <!-- lead point reaching the cell -->
-        <path class="pencil-lead" d="M188 223 L184 226 L184 222 Z"/>
+        <!-- hex barrel: wood-cone base (C) up to ferrule start (F) -->
+        <path class="pencil-body" d="M205.8 220.0 L240.0 195.7 L231.7 183.9 L197.4 208.2 Z"/>
+        <!-- two facet lines for hexagon read along the barrel -->
+        <line class="pencil-facet" x1="203.1" y1="216.3" x2="237.4" y2="192.0"/>
+        <line class="pencil-facet" x1="200.0" y1="211.9" x2="234.3" y2="187.6"/>
+        <!-- wooden sharpened cone: from barrel base (C1,C2) to tip (T) -->
+        <path class="pencil-cone" d="M205.8 220.0 L197.4 208.2 L182.0 228.0 Z"/>
+        <!-- dark graphite lead point at the very tip, touching the cell -->
+        <path class="pencil-lead" d="M182.0 228.0 L189.9 225.3 L187.1 221.4 Z"/>
+        <!-- metal ferrule (band that holds eraser) -->
+        <path class="pencil-ferrule" d="M240.0 195.7 L231.7 183.9 L239.8 178.1 L248.2 189.9 Z"/>
+        <!-- two crimp bands across the ferrule -->
+        <line class="pencil-ferrule-band" x1="238.5" y1="193.6" x2="234.2" y2="187.5"/>
+        <line class="pencil-ferrule-band" x1="241.8" y1="191.2" x2="237.5" y2="185.1"/>
+        <!-- eraser cap (rounded end) -->
+        <path class="pencil-eraser" d="M248.2 189.9 L239.8 178.1 Q243 174 247.5 175.4 Q252.5 177 254.5 182.6 Q256 187 253 189 Z"/>
       </g>
       <!-- hand / fist wrapping the pencil shaft (over the body, near the grip) -->
       <path class="ln-thin paper-fill" d="M205 222 q-9 -6 -5 -16 q4 -10 15 -8 q12 2 14 14 q2 12 -10 16 q-9 3 -14 -6 Z"/>
