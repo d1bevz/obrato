@@ -3,14 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Obrato · персонаж и эмоции v2</title>
+  <title>Obrato · персонаж внутри интерфейса</title>
   <style>
     :root {
       color-scheme: light;
       --bg: #f3f6f4;
-      --paper: #fffef9;
+      --panel: #fffef9;
+      --surface: #f8faf7;
+      --surface-2: #eef3f0;
       --ink: #17231f;
-      --muted: #61716a;
+      --muted: #607069;
       --line: #d7ded8;
       --teal: #118277;
       --teal-soft: #dff2ee;
@@ -18,9 +20,9 @@
       --yellow-soft: #fff0b2;
       --orange: #d47235;
       --orange-soft: #f7dfcf;
-      --blue: #577f91;
-      --blue-soft: #dfedf2;
-      --gray-soft: #ecefeb;
+      --red: #d84a3a;
+      --gray: #61716a;
+      --shadow: 0 16px 42px rgba(23, 35, 31, 0.09);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       letter-spacing: 0;
     }
@@ -33,384 +35,860 @@
 
     body {
       margin: 0;
-      background:
-        linear-gradient(180deg, rgba(17, 130, 119, 0.05), transparent 420px),
-        var(--bg);
       color: var(--ink);
-    }
-
-    .wrap {
-      width: min(100%, 1840px);
-      margin: 0 auto;
-      padding: 18px;
-    }
-
-    svg {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 10px;
-      box-shadow: 0 18px 48px rgba(23, 35, 31, 0.10);
       background: var(--bg);
     }
 
-    .title {
-      font-size: 43px;
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    .board {
+      width: min(100%, 1800px);
+      margin: 0 auto;
+      padding: 24px 24px 28px;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(1.65rem, 2vw, 2.35rem);
+      line-height: 1.04;
       font-weight: 850;
-      fill: var(--ink);
     }
 
     .subtitle {
-      font-size: 21px;
-      font-weight: 520;
-      fill: var(--muted);
+      max-width: 1050px;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.38;
     }
 
-    .card-title {
-      font-size: 26px;
-      font-weight: 840;
-      fill: var(--ink);
+    .scale-note {
+      width: 430px;
+      padding: 11px 13px;
+      border: 1px solid #c2ded8;
+      border-radius: 8px;
+      background: var(--teal-soft);
+      color: #07534f;
+      font-size: 0.83rem;
+      line-height: 1.35;
+      font-weight: 760;
     }
 
-    .card-text {
-      font-size: 17px;
-      font-weight: 540;
-      fill: var(--muted);
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
     }
 
-    .small {
-      font-size: 15px;
-      font-weight: 700;
-      fill: var(--muted);
+    .fit-card {
+      min-height: 414px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
-    .chip-text {
-      font-size: 13px;
-      font-weight: 800;
-      fill: #4d5e57;
+    .fit-head {
+      display: grid;
+      gap: 5px;
     }
 
-    .num-text {
-      font-size: 18px;
+    .fit-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .fit-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .num {
+      flex: 0 0 auto;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: #07534f;
+      background: var(--teal-soft);
+      font-size: 0.78rem;
       font-weight: 900;
-      fill: #07534f;
     }
 
-    .role-text {
-      font-size: 15px;
-      font-weight: 850;
-      fill: #5d4812;
+    .fit-card h2 {
+      font-size: 1.03rem;
+      line-height: 1.1;
+      font-weight: 840;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .stroke {
-      fill: none;
-      stroke: var(--ink);
-      stroke-width: 6;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+    .screen-name {
+      padding: 5px 8px;
+      border-radius: 8px;
+      color: #5d4812;
+      background: var(--yellow-soft);
+      font-size: 0.72rem;
+      line-height: 1;
+      font-weight: 820;
+      white-space: nowrap;
     }
 
-    .thin {
-      stroke-width: 3.5;
+    .fit-card > .small {
+      color: var(--muted);
+      font-size: 0.75rem;
+      line-height: 1.3;
     }
 
-    .skin {
-      fill: #f1c899;
-      stroke: #966b21;
-      stroke-width: 5;
+    .app {
+      min-height: 270px;
+      display: grid;
+      gap: 9px;
+      align-content: start;
+      padding: 12px;
+      border: 1px solid #e2e8e2;
+      border-radius: 8px;
+      background: #f8faf7;
     }
 
-    .skin-line {
-      fill: none;
-      stroke: #f1c899;
-      stroke-width: 17;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+    .appbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 38px;
     }
 
-    .skin-line-outline {
-      fill: none;
-      stroke: #966b21;
-      stroke-width: 22;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
     }
 
-    .helmet {
-      fill: var(--yellow);
-      stroke: #966b21;
-      stroke-width: 5;
-      stroke-linejoin: round;
+    .mark {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: white;
+      background: var(--teal);
+      font-weight: 900;
     }
 
-    .shirt {
-      fill: var(--teal);
-      stroke: #07534f;
-      stroke-width: 5;
-      stroke-linejoin: round;
+    .app-title {
+      font-size: 0.84rem;
+      line-height: 1.1;
+      font-weight: 820;
     }
 
-    .vest {
-      fill: none;
-      stroke: #f5b45c;
-      stroke-width: 6;
-      stroke-linecap: round;
+    .app-kicker,
+    .tiny {
+      color: var(--muted);
+      font-size: 0.66rem;
+      line-height: 1.2;
+      font-weight: 650;
+    }
+
+    .badge {
+      min-height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 8px;
+      border-radius: 8px;
+      color: #07534f;
+      background: var(--teal-soft);
+      font-size: 0.66rem;
+      line-height: 1;
+      font-weight: 820;
+      white-space: nowrap;
+    }
+
+    .badge.warn {
+      color: #6d5014;
+      background: var(--yellow-soft);
+    }
+
+    .badge.changed {
+      color: #8f4319;
+      background: var(--orange-soft);
+    }
+
+    .row,
+    .material-row,
+    .room-row {
+      display: grid;
+      gap: 7px;
+      padding: 10px;
+      border: 1px solid #e2e8e2;
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .row-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .row strong {
+      font-size: 0.9rem;
+      line-height: 1.1;
+    }
+
+    .progress {
+      height: 6px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--surface-2);
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--teal);
+    }
+
+    .support {
+      min-height: 52px;
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 9px;
+      border: 1px solid #c8ddd8;
+      border-radius: 8px;
+      background: #f5fbf9;
+    }
+
+    .support.expanded {
+      min-height: 66px;
+      grid-template-columns: 44px minmax(0, 1fr) auto;
+    }
+
+    .support.toast {
+      min-height: 42px;
+      grid-template-columns: 28px minmax(0, 1fr);
+      background: #f7faf8;
+      border-color: #dfe6e0;
+      box-shadow: 0 10px 22px rgba(23, 35, 31, 0.08);
+    }
+
+    .support-copy {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .support h3 {
+      font-size: 0.78rem;
+      line-height: 1.12;
+      font-weight: 830;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .support p {
+      color: var(--muted);
+      font-size: 0.66rem;
+      line-height: 1.22;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .support-action {
+      min-height: 30px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 8px;
+      color: white;
+      background: var(--teal);
+      font-size: 0.7rem;
+      font-weight: 820;
+    }
+
+    .mini-mascot {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #f1c899;
+      border: 2px solid #966b21;
+      flex: 0 0 auto;
+    }
+
+    .mini-mascot::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      right: 5px;
+      top: -5px;
+      height: 15px;
+      border: 2px solid #966b21;
+      border-radius: 14px 14px 6px 6px;
+      background: var(--yellow);
+    }
+
+    .mini-mascot::after {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 25px;
+      width: 7px;
+      height: 4px;
+      border-bottom: 2px solid #17231f;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .mini-mascot.small {
+      width: 28px;
+      height: 28px;
+    }
+
+    .mini-mascot.small::before {
+      left: 4px;
+      right: 4px;
+      top: -4px;
+      height: 12px;
+    }
+
+    .mini-mascot.small::after {
+      left: 11px;
+      top: 20px;
+      width: 6px;
+    }
+
+    .mini-mascot.large {
+      width: 44px;
+      height: 44px;
+    }
+
+    .mini-mascot.large::before {
+      left: 6px;
+      right: 6px;
+      top: -6px;
+      height: 18px;
+    }
+
+    .mini-mascot.large::after {
+      left: 18px;
+      top: 32px;
+    }
+
+    .mini-mascot.no-mustache .mustache {
+      display: none;
+    }
+
+    .mini-mascot.no-mustache::after {
+      border-bottom-color: var(--gray);
+    }
+
+    .eyes {
+      position: absolute;
+      left: 10px;
+      top: 14px;
+      width: 16px;
+      display: flex;
+      justify-content: space-between;
+      z-index: 2;
+    }
+
+    .eyes span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #17231f;
+    }
+
+    .mini-mascot.small .eyes {
+      left: 8px;
+      top: 11px;
+      width: 12px;
+    }
+
+    .mini-mascot.large .eyes {
+      left: 12px;
+      top: 17px;
+      width: 20px;
     }
 
     .mustache {
+      position: absolute;
+      left: 5px;
+      top: 19px;
+      width: 26px;
+      height: 12px;
+      z-index: 2;
+      overflow: visible;
+    }
+
+    .mini-mascot.large .mustache {
+      left: 7px;
+      top: 24px;
+      width: 30px;
+    }
+
+    .mustache path {
       fill: none;
       stroke: #17231f;
-      stroke-width: 4;
+      stroke-width: 2.4;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
 
-    .smile {
-      fill: none;
-      stroke: #17231f;
-      stroke-width: 4;
-      stroke-linecap: round;
+    .prop {
+      position: absolute;
+      right: -5px;
+      bottom: -4px;
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      border: 2px solid #07534f;
+      border-radius: 6px;
+      background: var(--teal-soft);
+      color: #07534f;
+      font-size: 0.62rem;
+      font-weight: 900;
+      line-height: 1;
+      z-index: 3;
     }
 
-    .tool-dark {
-      fill: #24302b;
-      stroke: #17231f;
-      stroke-width: 5;
-      stroke-linejoin: round;
+    .prop.yellow {
+      border-color: #966b21;
+      background: var(--yellow-soft);
+      color: #6d5014;
     }
 
-    .tool-light {
-      fill: #fffef9;
-      stroke: #17231f;
-      stroke-width: 5;
-      stroke-linejoin: round;
+    .prop.gray {
+      border-color: var(--gray);
+      background: var(--gray-soft);
+      color: #43504b;
     }
 
-    .signal {
-      fill: none;
-      stroke: #61716a;
-      stroke-width: 5;
-      stroke-linecap: round;
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+    }
+
+    .field {
+      min-height: 54px;
+      display: grid;
+      gap: 3px;
+      padding: 8px;
+      border: 1px solid #e2e8e2;
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .field strong {
+      font-size: 0.92rem;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+
+    .work {
+      min-height: 48px;
+      padding: 8px;
+      border: 1px solid #e2e8e2;
+      border-radius: 8px;
+      background: var(--panel);
+      font-size: 0.78rem;
+      font-weight: 820;
+    }
+
+    .canvas {
+      height: 132px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #ccdedf;
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(17, 130, 119, 0.20) 1px, transparent 1px),
+        linear-gradient(rgba(17, 130, 119, 0.20) 1px, transparent 1px),
+        #e5f0f1;
+      background-size: 32px 32px;
+    }
+
+    .cut {
+      position: absolute;
+      left: 186px;
+      top: 50px;
+      width: 44px;
+      height: 32px;
+      border: 2px solid var(--orange);
+      background: rgba(212, 114, 53, 0.18);
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    .tool {
+      min-height: 34px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #dfe6e0;
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 820;
+    }
+
+    .tool.active {
+      color: #07534f;
+      border-color: #b7d4cd;
+      background: var(--teal-soft);
+    }
+
+    .range {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 8px;
+      background: var(--surface-2);
+    }
+
+    .range strong {
+      font-size: 0.9rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+
+    .rule {
+      color: var(--muted);
+      font-size: 0.7rem;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .token {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .token strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.8rem;
+    }
+
+    .token span {
+      color: var(--muted);
+      font-size: 0.7rem;
+      line-height: 1.25;
+      font-weight: 650;
+    }
+
+    @media (max-width: 1200px) {
+      .header,
+      .footer {
+        grid-template-columns: 1fr;
+      }
+
+      .scale-note {
+        width: auto;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .board {
+        padding: 14px 10px 20px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <svg viewBox="0 0 1800 1120" role="img" aria-label="Новый sprite sheet эмоций персонажа Obrato">
-      <defs>
-        <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#17231f" flood-opacity="0.10"/>
-        </filter>
+  <main class="board">
+    <header class="header">
+      <div>
+        <h1>Персонаж Obrato внутри приложения</h1>
+        <p class="subtitle">Перезапуск: персонаж не отдельная крупная иллюстрация. Это маленький аватар-помощник в реальных местах интерфейса: рядом с подсказкой, в тосте, в строке объяснения или раскрытой карточке.</p>
+      </div>
+      <p class="scale-note">Масштаб: 28px статус/тост · 36px компактная подсказка · 44px раскрытая подсказка. Всё больше этого превращает персонажа в главный контент и ломает рабочий интерфейс.</p>
+    </header>
 
-        <g id="builder">
-          <path class="shirt" d="M36 105 Q80 86 124 105 V170 Q80 190 36 170 Z"/>
-          <path class="vest" d="M55 106 V171 M105 106 V171"/>
-          <circle class="skin" cx="80" cy="57" r="38"/>
-          <path class="helmet" d="M42 55 Q47 12 80 12 Q113 12 118 55 Z"/>
-          <path class="stroke thin" d="M54 37 H106"/>
-          <circle cx="67" cy="55" r="4.7" fill="#17231f"/>
-          <circle cx="94" cy="55" r="4.7" fill="#17231f"/>
-          <path class="mustache" d="M78 70 C69 63 58 62 50 57"/>
-          <path class="mustache" d="M82 70 C91 63 102 62 110 57"/>
-          <path class="smile" d="M70 85 Q80 91 90 85"/>
-        </g>
+    <section class="grid" aria-label="in-app states">
+      <article class="fit-card">
+        <div class="fit-head">
+          <div class="fit-top">
+            <div class="fit-title"><span class="num">01</span><h2>Вернуться к работе</h2></div>
+            <span class="screen-name">Список объектов</span>
+          </div>
+          <p class="small">Персонаж стоит в компактной подсказке над активным объектом, а не отдельно от списка.</p>
+        </div>
+        <div class="app">
+          <div class="appbar">
+            <div class="brand"><div class="mark">O</div><div><p class="app-title">Obrato</p><p class="app-kicker">Активные объекты</p></div></div>
+            <span class="badge">офлайн · 3</span>
+          </div>
+          <section class="support">
+            <div class="mini-mascot">
+              <div class="eyes"><span></span><span></span></div>
+              <svg class="mustache" viewBox="0 0 34 14" aria-hidden="true"><path d="M16.5 7 C10 12 5 5 2 6"/><path d="M17.5 7 C24 12 29 5 32 6"/></svg>
+              <span class="prop">→</span>
+            </div>
+            <div class="support-copy">
+              <h3>Дом Монте готов к закупке</h3>
+              <p>Открой этап плитки и возьми список в магазин.</p>
+            </div>
+            <button class="support-action">Открыть</button>
+          </section>
+          <section class="row">
+            <div class="row-head"><strong>Дом Монте</strong><span class="badge">лист готов</span></div>
+            <div class="progress"><span style="width:68%"></span></div>
+            <p class="tiny">5 комнат · 3 замерены · плитка сегодня</p>
+          </section>
+        </div>
+        <p class="rule">Эмоция = движение вперёд: маленькая стрелка на аватаре, не большая сцена.</p>
+      </article>
 
-        <g id="signalWorker">
-          <path class="shirt" d="M36 105 Q80 86 124 105 V170 Q80 190 36 170 Z" fill="#61716a" stroke="#43504b"/>
-          <path d="M55 106 V171 M105 106 V171" fill="none" stroke="#d7ded8" stroke-width="6" stroke-linecap="round"/>
-          <circle class="skin" cx="80" cy="57" r="38"/>
-          <path class="helmet" d="M42 55 Q47 12 80 12 Q113 12 118 55 Z" fill="#ecefeb" stroke="#61716a"/>
-          <path class="signal" d="M107 18 L131 -5"/>
-          <circle cx="136" cy="-10" r="7" fill="#61716a"/>
-          <path class="stroke thin" d="M54 37 H106" stroke="#61716a"/>
-          <circle cx="67" cy="55" r="4.7" fill="#17231f"/>
-          <circle cx="94" cy="55" r="4.7" fill="#17231f"/>
-          <path class="smile" d="M68 82 Q80 88 92 82"/>
-        </g>
+      <article class="fit-card">
+        <div class="fit-head">
+          <div class="fit-top">
+            <div class="fit-title"><span class="num">02</span><h2>Замеры</h2></div>
+            <span class="screen-name">Комната</span>
+          </div>
+          <p class="small">При вводе размеров персонаж живёт в подсказке между полями и карточками работ, не занимает место формы.</p>
+        </div>
+        <div class="app">
+          <div class="appbar">
+            <div class="brand"><div class="mark">O</div><div><p class="app-title">Ванная</p><p class="app-kicker">Размеры и работы</p></div></div>
+            <span class="badge changed">изменено</span>
+          </div>
+          <div class="fields">
+            <div class="field"><span class="tiny">Длина</span><strong>2.40 м</strong></div>
+            <div class="field"><span class="tiny">Ширина</span><strong>1.80 м</strong></div>
+            <div class="field"><span class="tiny">Высота</span><strong>2.60 м</strong></div>
+          </div>
+          <section class="support">
+            <div class="mini-mascot">
+              <div class="eyes"><span></span><span></span></div>
+              <svg class="mustache" viewBox="0 0 34 14" aria-hidden="true"><path d="M16.5 7 C10 12 5 5 2 6"/><path d="M17.5 7 C24 12 29 5 32 6"/></svg>
+              <span class="prop yellow">м</span>
+            </div>
+            <div class="support-copy">
+              <h3>Рулетка наготове</h3>
+              <p>Лазер показываем только для плитки пола и стен.</p>
+            </div>
+            <span class="badge warn">плитка</span>
+          </section>
+          <div class="work-grid">
+            <div class="work">Пол · плитка</div>
+            <div class="work">Стены · плитка</div>
+          </div>
+        </div>
+        <p class="rule">36px достаточно: предмет читается как маленький знак, форма остаётся главным действием.</p>
+      </article>
 
-        <g id="spark">
-          <path d="M0 -18 L6 -5 L20 0 L6 5 L0 18 L-6 5 L-20 0 L-6 -5 Z" fill="#f2c64f" stroke="#966b21" stroke-width="4" stroke-linejoin="round"/>
-        </g>
-      </defs>
+      <article class="fit-card">
+        <div class="fit-head">
+          <div class="fit-top">
+            <div class="fit-title"><span class="num">03</span><h2>Сетка и правки</h2></div>
+            <span class="screen-name">Чертёж</span>
+          </div>
+          <p class="small">На чертеже персонаж не перекрывает рабочую область. Он появляется только в строке над панелью инструментов.</p>
+        </div>
+        <div class="app">
+          <div class="appbar">
+            <div class="brand"><div class="mark">O</div><div><p class="app-title">Пол · ванная</p><p class="app-kicker">Плитка 60×60</p></div></div>
+            <span class="badge warn">черновик</span>
+          </div>
+          <div class="canvas"><span class="cut"></span></div>
+          <section class="support">
+            <div class="mini-mascot">
+              <div class="eyes"><span></span><span></span></div>
+              <svg class="mustache" viewBox="0 0 34 14" aria-hidden="true"><path d="M16.5 7 C10 12 5 5 2 6"/><path d="M17.5 7 C24 12 29 5 32 6"/></svg>
+              <span class="prop">▦</span>
+            </div>
+            <div class="support-copy">
+              <h3>Правка сохранится на плане</h3>
+              <p>Подрез, скрытие и заметка не зависят от масштаба.</p>
+            </div>
+          </section>
+          <div class="toolbar"><div class="tool active">Подрез</div><div class="tool">Скрыть</div><div class="tool">Заметка</div><div class="tool">Отмена</div><div class="tool">Готово</div></div>
+        </div>
+        <p class="rule">Чертёж остаётся рабочей областью; персонаж не стоит поверх плитки.</p>
+      </article>
 
-      <rect x="0" y="0" width="1800" height="1120" fill="#f3f6f4"/>
-      <text class="title" x="42" y="70">Персонаж Obrato: эмоции v2 с нуля</text>
-      <text class="subtitle" x="42" y="108">Шесть крупных рабочих поз: планшет, рулетка/лазер, чертёж, тележка, энциклопедия, связист.</text>
-      <text class="subtitle" x="42" y="136">Сначала силуэт и предмет, потом эмоция. Без мелких деталей, которые разъезжаются в рендере.</text>
-      <rect x="1326" y="38" width="430" height="76" rx="12" fill="#dff2ee" stroke="#c2ded8"/>
-      <text class="small" x="1350" y="70" fill="#07534f">Лист поз для обсуждения</text>
-      <text class="small" x="1350" y="94" fill="#07534f">горизонтальный формат, крупные силуэты</text>
+      <article class="fit-card">
+        <div class="fit-head">
+          <div class="fit-top">
+            <div class="fit-title"><span class="num">04</span><h2>Закупки</h2></div>
+            <span class="screen-name">Закупки</span>
+          </div>
+          <p class="small">Персонаж объясняет только риск строки: широкий диапазон, устаревшая цена или фиксация списка.</p>
+        </div>
+        <div class="app">
+          <div class="appbar">
+            <div class="brand"><div class="mark">O</div><div><p class="app-title">Закупки</p><p class="app-kicker">Плитка и клей</p></div></div>
+            <span class="badge">В магазин</span>
+          </div>
+          <section class="material-row">
+            <div class="row-head"><strong>Клей C2TE</strong><span class="badge warn">широко</span></div>
+            <div class="range"><span class="tiny">Оценка</span><strong>1.6-2.4 мешка</strong><span class="tiny">€27-41</span></div>
+          </section>
+          <section class="support">
+            <div class="mini-mascot">
+              <div class="eyes"><span></span><span></span></div>
+              <svg class="mustache" viewBox="0 0 34 14" aria-hidden="true"><path d="M16.5 7 C10 12 5 5 2 6"/><path d="M17.5 7 C24 12 29 5 32 6"/></svg>
+              <span class="prop yellow">🛒</span>
+            </div>
+            <div class="support-copy">
+              <h3>Покупай 2 мешка</h3>
+              <p>Шов и ровность основания уточнят расход позже.</p>
+            </div>
+            <button class="support-action">Взять</button>
+          </section>
+        </div>
+        <p class="rule">Тележка не рисуется крупно: это маленький знак закупочного контекста.</p>
+      </article>
 
-      <g id="card-return" transform="translate(40 150)" filter="url(#softShadow)">
-        <rect width="560" height="430" rx="10" fill="#fffef9" stroke="#d7ded8"/>
-        <rect x="16" y="16" width="42" height="42" rx="10" fill="#dff2ee"/><text class="num-text" x="28" y="44">01</text>
-        <rect x="426" y="22" width="104" height="30" rx="10" fill="#fff0b2"/><text class="role-text" x="444" y="43">координатор</text>
-        <text class="card-title" x="72" y="43">Вернуться к работе</text>
-        <text class="card-text" x="72" y="73">Планшет, движение вперёд, подсветка объекта.</text>
-        <rect x="22" y="96" width="516" height="214" rx="14" fill="#eef3f0"/>
-        <ellipse cx="282" cy="288" rx="118" ry="14" fill="rgba(23,35,31,.10)"/>
-        <path class="stroke thin" d="M78 272 H488"/>
-        <g transform="translate(192 106) scale(1.06)">
-          <path class="skin-line-outline" d="M121 110 C151 93 169 80 190 58"/><path class="skin-line" d="M121 110 C151 93 169 80 190 58"/>
-          <path class="skin-line-outline" d="M39 111 C18 99 5 83 -6 64"/><path class="skin-line" d="M39 111 C18 99 5 83 -6 64"/>
-          <use href="#builder"/>
-          <rect x="178" y="30" width="86" height="64" rx="13" class="tool-light"/>
-          <rect x="194" y="47" width="45" height="8" rx="4" fill="#bfe3dc"/>
-          <rect x="194" y="63" width="32" height="8" rx="4" fill="#bfe3dc"/>
-          <path class="stroke thin" d="M230 72 H255 M244 61 L256 72 L244 83" stroke="#118277"/>
-          <use href="#spark" transform="translate(273 32) scale(.72)"/>
-        </g>
-        <text class="small" x="28" y="342">Анимация: планшет к кнопке; короткая искра.</text>
-        <rect x="28" y="368" width="74" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="43" y="387">объект</text>
-        <rect x="110" y="368" width="74" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="125" y="387">дальше</text>
-        <rect x="192" y="368" width="64" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="207" y="387">пауза</text>
-        <rect x="264" y="368" width="52" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="279" y="387">тап</text>
-      </g>
+      <article class="fit-card">
+        <div class="fit-head">
+          <div class="fit-top">
+            <div class="fit-title"><span class="num">05</span><h2>Факты и нормы</h2></div>
+            <span class="screen-name">Факт</span>
+          </div>
+          <p class="small">В раскрытой подсказке допускается 44px: это единственный вариант с объяснением.</p>
+        </div>
+        <div class="app">
+          <div class="appbar">
+            <div class="brand"><div class="mark">O</div><div><p class="app-title">Факт закупки</p><p class="app-kicker">Связать с листом</p></div></div>
+            <span class="badge warn">чек</span>
+          </div>
+          <div class="form-grid">
+            <div class="field"><span class="tiny">Куплено</span><strong>2 мешка</strong></div>
+            <div class="field"><span class="tiny">Сумма</span><strong>€34.80</strong></div>
+          </div>
+          <section class="support expanded">
+            <div class="mini-mascot large">
+              <div class="eyes"><span></span><span></span></div>
+              <svg class="mustache" viewBox="0 0 34 14" aria-hidden="true"><path d="M16.5 7 C10 12 5 5 2 6"/><path d="M17.5 7 C24 12 29 5 32 6"/></svg>
+              <span class="prop">i</span>
+            </div>
+            <div class="support-copy">
+              <h3>Этот чек можно учесть</h3>
+              <p>Будущие похожие комнаты получат более узкий диапазон.</p>
+            </div>
+            <span class="badge">учтём</span>
+          </section>
+          <section class="row"><div class="row-head"><strong>Источник</strong><span class="badge">надёжно</span></div><p class="tiny">Черновые факты остаются историей и нормы не уточняют.</p></section>
+        </div>
+        <p class="rule">44px максимум только когда карточка раскрыта и нужна короткая причина.</p>
+      </article>
 
-      <g id="card-measure" transform="translate(620 150)" filter="url(#softShadow)">
-        <rect width="560" height="430" rx="10" fill="#fffef9" stroke="#d7ded8"/>
-        <rect x="16" y="16" width="42" height="42" rx="10" fill="#dff2ee"/><text class="num-text" x="27" y="44">02</text>
-        <rect x="452" y="22" width="78" height="30" rx="10" fill="#fff0b2"/><text class="role-text" x="468" y="43">замерщик</text>
-        <text class="card-title" x="72" y="43">Замеры комнаты</text>
-        <text class="card-text" x="72" y="73">Рулетка наготове; для плитки включается лазер.</text>
-        <rect x="22" y="96" width="516" height="214" rx="14" fill="#f4f1e6"/>
-        <ellipse cx="280" cy="288" rx="120" ry="14" fill="rgba(23,35,31,.10)"/>
-        <path class="stroke thin" d="M65 272 H496"/>
-        <path class="stroke thin" d="M96 123 V272" stroke="#9ca7a0"/>
-        <path class="stroke thin" d="M98 133 H494" stroke="#d84a3a"/>
-        <circle cx="98" cy="133" r="8" fill="#d84a3a"/>
-        <rect x="70" y="256" width="136" height="18" rx="9" fill="#f2c64f" stroke="#966b21" stroke-width="4"/>
-        <path class="stroke thin" d="M88 265 H188" stroke="#966b21" stroke-dasharray="4 8"/>
-        <g transform="translate(195 107) scale(1.04)">
-          <path class="skin-line-outline" d="M39 112 C11 126 -8 144 -31 170"/><path class="skin-line" d="M39 112 C11 126 -8 144 -31 170"/>
-          <path class="skin-line-outline" d="M121 110 C147 95 170 74 199 38"/><path class="skin-line" d="M121 110 C147 95 170 74 199 38"/>
-          <rect x="176" y="27" width="56" height="27" rx="8" class="tool-dark"/>
-          <circle cx="188" cy="41" r="5" fill="#d84a3a"/>
-          <use href="#builder"/>
-        </g>
-        <text class="small" x="28" y="342">Анимация: рулетка к полю; лазер только для плитки.</text>
-        <rect x="28" y="368" width="72" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="43" y="387">размер</text>
-        <rect x="108" y="368" width="72" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="123" y="387">валидно</text>
-        <rect x="188" y="368" width="70" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="203" y="387">ошибка</text>
-        <rect x="266" y="368" width="68" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="281" y="387">плитка</text>
-      </g>
+      <article class="fit-card">
+        <div class="fit-head">
+          <div class="fit-top">
+            <div class="fit-title"><span class="num">06</span><h2>Офлайн и синхронизация</h2></div>
+            <span class="screen-name">Система</span>
+          </div>
+          <p class="small">Офлайн-персонаж без усов появляется как тихий статус или тост, не как экран ошибки.</p>
+        </div>
+        <div class="app">
+          <div class="appbar">
+            <div class="brand"><div class="mark">O</div><div><p class="app-title">Ванная</p><p class="app-kicker">Размеры сохранены</p></div></div>
+            <span class="badge warn">нет сети</span>
+          </div>
+          <section class="row">
+            <div class="row-head"><strong>Последние правки</strong><span class="badge changed">локально</span></div>
+            <p class="tiny">Комната, чертёж и факт попадут в очередь синхронизации.</p>
+          </section>
+          <section class="support toast">
+            <div class="mini-mascot small no-mustache">
+              <div class="eyes"><span></span><span></span></div>
+              <svg class="mustache" viewBox="0 0 34 14" aria-hidden="true"><path d="M16.5 7 C10 12 5 5 2 6"/><path d="M17.5 7 C24 12 29 5 32 6"/></svg>
+              <span class="prop gray">•</span>
+            </div>
+            <div class="support-copy">
+              <h3>Сохранено на телефоне</h3>
+              <p>Отправлю, когда вернётся сеть.</p>
+            </div>
+          </section>
+          <section class="support toast">
+            <div class="mini-mascot small no-mustache">
+              <div class="eyes"><span></span><span></span></div>
+              <svg class="mustache" viewBox="0 0 34 14" aria-hidden="true"><path d="M16.5 7 C10 12 5 5 2 6"/><path d="M17.5 7 C24 12 29 5 32 6"/></svg>
+              <span class="prop gray">✓</span>
+            </div>
+            <div class="support-copy">
+              <h3>Очередь отправлена</h3>
+              <p>Без конфетти и красной тревоги.</p>
+            </div>
+          </section>
+        </div>
+        <p class="rule">28px: это системное состояние, а не отдельный герой.</p>
+      </article>
+    </section>
 
-      <g id="card-canvas" transform="translate(1200 150)" filter="url(#softShadow)">
-        <rect width="560" height="430" rx="10" fill="#fffef9" stroke="#d7ded8"/>
-        <rect x="16" y="16" width="42" height="42" rx="10" fill="#dff2ee"/><text class="num-text" x="27" y="44">03</text>
-        <rect x="438" y="22" width="92" height="30" rx="10" fill="#fff0b2"/><text class="role-text" x="454" y="43">чертёжник</text>
-        <text class="card-title" x="72" y="43">Сетка и ручные правки</text>
-        <text class="card-text" x="72" y="73">План, инструмент, отметка и устаревшая сетка.</text>
-        <rect x="22" y="96" width="516" height="214" rx="14" fill="#e8f0f2"/>
-        <ellipse cx="283" cy="288" rx="126" ry="14" fill="rgba(23,35,31,.10)"/>
-        <rect x="84" y="130" width="286" height="142" rx="10" fill="#577f91" stroke="#315969" stroke-width="5"/>
-        <path d="M112 160 H340 M112 192 H340 M112 224 H340 M148 143 V258 M196 143 V258 M244 143 V258 M292 143 V258" class="stroke thin" stroke="#d6edf2" opacity=".86"/>
-        <path d="M160 174 H260 V232 H210 V204 H160 Z" fill="none" stroke="#fffef9" stroke-width="5" stroke-linejoin="round"/>
-        <path d="M280 218 L316 254" class="stroke thin" stroke="#f2c64f"/><circle cx="280" cy="218" r="8" fill="#f2c64f" stroke="#966b21" stroke-width="4"/>
-        <g transform="translate(205 106) scale(1.03)">
-          <path class="skin-line-outline" d="M39 112 C7 101 -19 83 -42 58"/><path class="skin-line" d="M39 112 C7 101 -19 83 -42 58"/>
-          <path class="skin-line-outline" d="M121 110 C149 112 175 119 205 134"/><path class="skin-line" d="M121 110 C149 112 175 119 205 134"/>
-          <path d="M186 114 L238 136 L225 154 L174 132 Z" fill="#f2c64f" stroke="#966b21" stroke-width="5" stroke-linejoin="round"/>
-          <use href="#builder"/>
-        </g>
-        <text class="small" x="28" y="342">Анимация: карандаш к инструменту; отметка на плане.</text>
-        <rect x="28" y="368" width="88" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="43" y="387">подсказка</text>
-        <rect x="124" y="368" width="100" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="139" y="387">инструмент</text>
-        <rect x="232" y="368" width="70" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="247" y="387">правка</text>
-        <rect x="310" y="368" width="84" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="325" y="387">устарело</text>
-      </g>
-
-      <g id="card-purchase" transform="translate(40 600)" filter="url(#softShadow)">
-        <rect width="560" height="430" rx="10" fill="#fffef9" stroke="#d7ded8"/>
-        <rect x="16" y="16" width="42" height="42" rx="10" fill="#dff2ee"/><text class="num-text" x="27" y="44">04</text>
-        <rect x="454" y="22" width="76" height="30" rx="10" fill="#fff0b2"/><text class="role-text" x="470" y="43">закупщик</text>
-        <text class="card-title" x="72" y="43">Закупки и фиксация</text>
-        <text class="card-text" x="72" y="73">Тележка, чек-лист и материал: «едем покупать».</text>
-        <rect x="22" y="96" width="516" height="214" rx="14" fill="#eef3f0"/>
-        <ellipse cx="284" cy="288" rx="130" ry="14" fill="rgba(23,35,31,.10)"/>
-        <path class="stroke thin" d="M70 272 H493"/>
-        <path d="M234 178 H404 L384 264 H254 Z" fill="#fffef9" stroke="#17231f" stroke-width="6" stroke-linejoin="round"/>
-        <path d="M222 154 L246 178" class="stroke"/>
-        <path d="M264 200 H390 M260 225 H382" class="stroke thin" stroke="#9ca7a0"/>
-        <circle cx="272" cy="278" r="12" fill="#17231f"/><circle cx="366" cy="278" r="12" fill="#17231f"/>
-        <rect x="272" y="135" width="52" height="40" rx="8" fill="#f2c64f" stroke="#966b21" stroke-width="5"/>
-        <rect x="334" y="144" width="48" height="31" rx="7" fill="#dff2ee" stroke="#118277" stroke-width="5"/>
-        <path class="stroke thin" d="M345 157 L354 166 L370 151" stroke="#07534f"/>
-        <g transform="translate(131 106) scale(1.04)">
-          <path class="skin-line-outline" d="M121 110 C147 96 173 87 201 78"/><path class="skin-line" d="M121 110 C147 96 173 87 201 78"/>
-          <path class="skin-line-outline" d="M39 112 C15 124 -1 143 -15 166"/><path class="skin-line" d="M39 112 C15 124 -1 143 -15 166"/>
-          <use href="#builder"/>
-        </g>
-        <text class="small" x="28" y="342">Анимация: колесо делает шаг; чек-лист в корзине.</text>
-        <rect x="28" y="368" width="86" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="43" y="387">диапазон</text>
-        <rect x="122" y="368" width="76" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="137" y="387">почему</text>
-        <rect x="206" y="368" width="58" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="221" y="387">цены</text>
-        <rect x="272" y="368" width="58" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="287" y="387">фикс</text>
-      </g>
-
-      <g id="card-facts" transform="translate(620 600)" filter="url(#softShadow)">
-        <rect width="560" height="430" rx="10" fill="#fffef9" stroke="#d7ded8"/>
-        <rect x="16" y="16" width="42" height="42" rx="10" fill="#dff2ee"/><text class="num-text" x="27" y="44">05</text>
-        <rect x="438" y="22" width="92" height="30" rx="10" fill="#fff0b2"/><text class="role-text" x="454" y="43">справочник</text>
-        <text class="card-title" x="72" y="43">Факты и нормы</text>
-        <text class="card-text" x="72" y="73">Энциклопедия: факт уточняет будущее.</text>
-        <rect x="22" y="96" width="516" height="214" rx="14" fill="#eef3f0"/>
-        <ellipse cx="280" cy="288" rx="118" ry="14" fill="rgba(23,35,31,.10)"/>
-        <path class="stroke thin" d="M78 272 H486"/>
-        <path d="M92 138 Q144 114 198 140 V264 Q145 242 92 264 Z" fill="#fffef9" stroke="#17231f" stroke-width="6" stroke-linejoin="round"/>
-        <path d="M198 140 Q252 114 306 138 V264 Q252 242 198 264 Z" fill="#fffef9" stroke="#17231f" stroke-width="6" stroke-linejoin="round"/>
-        <path class="stroke thin" d="M198 140 V264"/>
-        <path class="stroke thin" d="M122 166 H177 M122 190 H166 M220 166 H276 M220 190 H267" stroke="#9ca7a0"/>
-        <path d="M260 126 V177 L274 164 L288 177 V133" fill="#f2c64f" stroke="#966b21" stroke-width="4" stroke-linejoin="round"/>
-        <rect x="322" y="152" width="52" height="72" rx="7" fill="#dff2ee" stroke="#118277" stroke-width="5"/>
-        <path class="stroke thin" d="M335 171 H362 M335 190 H356 M335 209 H363" stroke="#07534f"/>
-        <g transform="translate(196 108) scale(1.02)">
-          <path class="skin-line-outline" d="M39 112 C19 98 7 78 -5 55"/><path class="skin-line" d="M39 112 C19 98 7 78 -5 55"/>
-          <path class="skin-line-outline" d="M121 110 C144 94 160 75 173 52"/><path class="skin-line" d="M121 110 C144 94 160 75 173 52"/>
-          <use href="#builder"/>
-        </g>
-        <text class="small" x="28" y="342">Анимация: закладка меняет цвет; чек можно учесть.</text>
-        <rect x="28" y="368" width="58" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="43" y="387">факт</text>
-        <rect x="94" y="368" width="90" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="109" y="387">черновик</text>
-        <rect x="192" y="368" width="54" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="207" y="387">чек</text>
-        <rect x="254" y="368" width="72" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="269" y="387">нормы</text>
-      </g>
-
-      <g id="card-offline" transform="translate(1200 600)" filter="url(#softShadow)">
-        <rect width="560" height="430" rx="10" fill="#fffef9" stroke="#d7ded8"/>
-        <rect x="16" y="16" width="42" height="42" rx="10" fill="#dff2ee"/><text class="num-text" x="27" y="44">06</text>
-        <rect x="466" y="22" width="64" height="30" rx="10" fill="#fff0b2"/><text class="role-text" x="482" y="43">связист</text>
-        <text class="card-title" x="72" y="43">Офлайн без усов</text>
-        <text class="card-text" x="72" y="73">Отдельный персонаж с антенной и маяком.</text>
-        <rect x="22" y="96" width="516" height="214" rx="14" fill="#edf0ee"/>
-        <ellipse cx="280" cy="288" rx="118" ry="14" fill="rgba(23,35,31,.10)"/>
-        <path class="stroke thin" d="M78 272 H486"/>
-        <path class="signal" d="M344 127 Q370 151 344 176"/><path class="signal" d="M367 104 Q412 151 367 198"/>
-        <circle cx="326" cy="151" r="13" fill="#61716a"/>
-        <ellipse cx="119" cy="226" rx="38" ry="14" fill="#dff2ee" stroke="#118277" stroke-width="4"/>
-        <path d="M81 226 V258 C81 269 157 269 157 258 V226" fill="#dff2ee" stroke="#118277" stroke-width="4"/>
-        <path class="stroke thin" d="M103 249 H135" stroke="#07534f"/>
-        <g transform="translate(197 108) scale(1.02)">
-          <path class="skin-line-outline" d="M39 112 C13 116 -8 130 -29 153"/><path class="skin-line" d="M39 112 C13 116 -8 130 -29 153"/>
-          <path class="skin-line-outline" d="M121 110 C148 105 172 96 198 80"/><path class="skin-line" d="M121 110 C148 105 172 96 198 80"/>
-          <rect x="180" y="62" width="48" height="52" rx="10" fill="#ecefeb" stroke="#61716a" stroke-width="5"/>
-          <circle cx="204" cy="84" r="6" fill="#118277"/>
-          <use href="#signalWorker"/>
-        </g>
-        <text class="small" x="28" y="342">Анимация: маяк пульсирует; сигнал возвращается.</text>
-        <rect x="28" y="368" width="86" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="43" y="387">локально</text>
-        <rect x="122" y="368" width="58" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="137" y="387">синк</text>
-        <rect x="188" y="368" width="66" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="203" y="387">повтор</text>
-        <rect x="264" y="368" width="82" height="28" rx="9" fill="#ecefeb"/><text class="chip-text" x="279" y="387">конфликт</text>
-      </g>
-
-      <rect x="40" y="1042" width="840" height="58" rx="10" fill="#fffef9" stroke="#d7ded8"/>
-      <text class="small" x="62" y="1068">Контракт: экран отдаёт действие-триггер, карточка выбирает роль.</text>
-      <text class="small" x="62" y="1091">Анимация 120-650 ms, без сдвига вёрстки и перекрытия кнопок.</text>
-      <rect x="920" y="1042" width="840" height="58" rx="10" fill="#fffef9" stroke="#d7ded8"/>
-      <text class="small" x="942" y="1068">Персонаж молчит на скролл, каждый tap и каждую цифру в input.</text>
-      <text class="small" x="942" y="1091">Повторно закрытая подсказка не просит внимания ещё раз.</text>
-    </svg>
-  </div>
+    <section class="footer" aria-label="rules">
+      <div class="token"><strong>Не герой</strong><span>Персонаж не занимает отдельный экран и не вытесняет данные.</span></div>
+      <div class="token"><strong>Только подсказки</strong><span>Появляется там, где есть подсказка, риск или следующий шаг.</span></div>
+      <div class="token"><strong>Без шума</strong><span>Нет реакции на скролл, каждую цифру и повторно закрытую подсказку.</span></div>
+      <div class="token"><strong>Предмет вместо мимики</strong><span>Эмоция читается через маленький знак: стрелка, метр, план, тележка, книга, сигнал.</span></div>
+    </section>
+  </main>
 </body>
 </html>
