@@ -15,6 +15,7 @@ body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-i
 .ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
 .fill-ink{fill:var(--ink);stroke:none}
 .mustache{fill:var(--ink);stroke:none}
+  .hl{fill:var(--surface)}
 .helmet{fill:var(--helmet);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
 .helmet-sh{fill:var(--helmet-d);stroke:none}
 .paper-fill{fill:var(--surface)}
@@ -84,24 +85,21 @@ body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-i
       <path class="ln-thin" d="M115 222 q0 19 0 38"/>
       <!-- head -->
       <g class="head">
-        <path class="ln paper-fill" d="M68 139 q-10 1 -9 12 q1 9 10 7"/>
-        <path class="ln paper-fill" d="M162 139 q10 1 9 12 q-1 9 -10 7"/>
-        <path class="ln paper-fill" d="M71 121 C 66 138 67 155 76 166 C 86 177 102 181 115 181 C 128 181 144 177 154 166 C 163 155 164 138 159 121 C 131 113 99 113 71 121 Z"/>
-        <path class="helmet" d="M60 106 q1 -54 55 -54 q54 0 55 54 q-27 -10 -55 -10 q-28 0 -55 10 Z"/>
-        <path class="helmet-sh" d="M60 106 q27 -10 55 -10 q28 0 55 10 q-3 7 -11 6 q-44 -9 -88 0 q-8 1 -11 -6 Z"/>
-        <path class="ln" d="M115 53 q0 26 0 43" opacity=".5"/>
-        <path class="ln" d="M50 106 q65 -19 130 0"/>
-        
-        
-        <ellipse class="eyeL fill-ink" cx="97" cy="128" rx="4.4" ry="5.4"/>
-        <ellipse class="eyeR fill-ink" cx="143" cy="128" rx="4.4" ry="5.4"/>
-        <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
-        <g class="stache">
-          <path class="mustache" d="M115 151 C 108 153 101 154 95 154 C 90 154 86 153 84 150 C 81 146 81 140 84 137 C 86 134 90 134 90 138 C 89 142 87 147 89 151 C 90 156 95 161 102 162 C 108 163 112 162 115 160 Z"/>
-          <path class="mustache" d="M115 151 C 122 153 129 154 135 154 C 140 154 144 153 146 150 C 149 146 149 140 146 137 C 144 134 140 134 140 138 C 141 142 143 147 141 151 C 140 156 135 161 128 162 C 122 163 118 162 115 160 Z"/>
-        </g>
-        <path class="ln-thin mouth" d="M106 176 q9 4 18 0"/>
-      </g>
+    <path class="ln paper-fill" d="M63 143 q-11 1 -10 13 q1 10 11 7"/>
+    <path class="ln paper-fill" d="M167 143 q11 1 10 13 q-1 10 -11 7"/>
+    <path class="ln paper-fill" d="M64 118 C 58 140 60 162 75 173 C 88 182 102 186 115 186 C 128 186 142 182 155 173 C 170 162 172 140 166 118 C 132 110 98 110 64 118 Z"/>
+    <path class="helmet" d="M58 110 q1 -56 57 -56 q56 0 57 56 q-28 -10 -57 -10 q-29 0 -57 10 Z"/>
+    <path class="helmet-sh" d="M58 110 q28 -10 57 -10 q29 0 57 10 q-3 7 -11 6 q-46 -9 -92 0 q-8 1 -11 -6 Z"/>
+    <path class="ln" d="M115 55 q0 27 0 45" opacity=".5"/>
+    <path class="ln" d="M48 110 q67 -20 134 0"/>
+    <circle class="fill-ink" cx="92" cy="124" r="6.4"/>
+    <circle class="fill-ink" cx="138" cy="124" r="6.4"/>
+    <circle class="hl" cx="94.3" cy="121.7" r="2"/>
+    <circle class="hl" cx="140.3" cy="121.7" r="2"/>
+    <path class="ln-thin" d="M111 134 q4 8 4 11 q0 4 5 3"/>
+    <g class="stache"><path class="mustache" d="M115 158 C 127 152 140 150 152 151 C 162 152 169 147 173 131 C 171 140 167 149 160 155 C 151 162 140 166 129 168 C 123 169 118 169 115 170 Z"/><path class="mustache" d="M115 158 C 127 152 140 150 152 151 C 162 152 169 147 173 131 C 171 140 167 149 160 155 C 151 162 140 166 129 168 C 123 169 118 169 115 170 Z" transform="translate(230,0) scale(-1,1)"/></g>
+    <path class="ln-thin mouth" d="M105 181 q10 6 20 0"/>
+  </g>
     </g>
 
     <!-- ===== LEFT SIDE — TAPE MEASURE clipped LOW on the belt (well below + left of laser) ===== -->
