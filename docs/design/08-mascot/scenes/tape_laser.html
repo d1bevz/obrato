@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amigo · 02 Замеры — лазер + рулетка</title>
+<style>
+:root{--ink:#1b1813;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
+body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.title{color:#6b6456;font-size:13px;letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase}
+.scene{width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.scene svg{width:340px;height:auto;display:block;overflow:visible}
+.ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.fill-ink{fill:var(--ink);stroke:none}
+.mustache{fill:none;stroke:var(--ink);stroke-width:4.6;stroke-linecap:round;stroke-linejoin:round}
+.helmet{fill:var(--green);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
+.helmet-sh{fill:var(--green-d);stroke:none}
+.paper-fill{fill:var(--surface)}
+
+/* prop styling */
+.prop{fill:var(--surface);stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.prop-thin{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.green-glint{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;opacity:.85}
+.wall{fill:none;stroke:var(--ink);stroke-width:4.4;stroke-linecap:round;opacity:.85}
+.beam{fill:none;stroke:#d33;stroke-width:2.4;stroke-linecap:round}
+.dot{fill:#d33;stroke:none}
+
+/* ===== STATIC (calm) state: defaults, no animation ===== */
+.beam{transform-origin:262px 150px;transform:scaleX(1)}
+.dot{transform-origin:340px 150px;opacity:1}
+
+/* ===== ANIMATIONS — ONLY under .play (remove .play => static calm) ===== */
+.scene.play .beam{animation:beamShoot 2.4s ease-in-out infinite}
+.scene.play .dot{animation:dotPing 2.4s ease-in-out infinite}
+.scene.play .laser-arm{animation:aim 2.4s ease-in-out infinite;transform-origin:200px 230px}
+.scene.play .tape{animation:swing 3.1s ease-in-out infinite;transform-origin:96px 232px}
+
+@keyframes beamShoot{
+  0%   {transform:scaleX(0)}
+  18%  {transform:scaleX(1)}
+  82%  {transform:scaleX(1)}
+  100% {transform:scaleX(1)}
+}
+@keyframes dotPing{
+  0%,16%   {opacity:0;transform:scale(.2)}
+  22%      {opacity:1;transform:scale(1.5)}
+  30%      {opacity:1;transform:scale(1)}
+  55%      {opacity:.55;transform:scale(1)}
+  70%      {opacity:1;transform:scale(1.25)}
+  85%,100% {opacity:1;transform:scale(1)}
+}
+@keyframes aim{
+  0%,100% {transform:rotate(0deg) translateY(0)}
+  20%     {transform:rotate(-1.4deg) translateY(-1px)}
+  60%     {transform:rotate(.8deg) translateY(.5px)}
+}
+@keyframes swing{
+  0%,100% {transform:rotate(-2.5deg)}
+  50%     {transform:rotate(2.5deg)}
+}
+
+@media (prefers-reduced-motion: reduce){ .play *{animation:none!important} }
+</style>
+</head>
+<body>
+<div class="title">02 · Замеры — лазер + рулетка</div>
+<div class="scene play">
+  <svg viewBox="-10 0 360 290" role="img" aria-label="Amigo замеряет лазерным дальномером, рулетка наготове">
+
+    <!-- ===== WALL (background, far right) ===== -->
+    <path class="wall" d="M340 96 q4 54 0 108"/>
+
+    <!-- ===== AMIGO BUST — fixed geometry verbatim ===== -->
+    <g class="amigo">
+      <!-- shoulders -->
+      <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
+      <path class="ln-thin" d="M95 214 q20 14 40 0"/>
+      <path class="ln-thin" d="M115 222 q0 19 0 38"/>
+      <!-- head -->
+      <g class="head">
+        <path class="ln paper-fill" d="M71 134 q-9 1 -8 12 q1 9 9 7"/>
+        <path class="ln paper-fill" d="M159 134 q9 1 8 12 q-1 9 -9 7"/>
+        <path class="ln paper-fill" d="M71 120 q-3 26 4 38 q11 18 40 18 q29 0 40 -18 q7 -12 4 -38 q-44 -10 -88 0 Z"/>
+        <path class="helmet" d="M60 106 q1 -54 55 -54 q54 0 55 54 q-27 -10 -55 -10 q-28 0 -55 10 Z"/>
+        <path class="helmet-sh" d="M60 106 q27 -10 55 -10 q28 0 55 10 q-3 7 -11 6 q-44 -9 -88 0 q-8 1 -11 -6 Z"/>
+        <path class="ln" d="M115 53 q0 26 0 43" opacity=".5"/>
+        <path class="ln" d="M50 106 q65 -19 130 0"/>
+        <path class="ln-thin browL" d="M83 117 q9 -5 18 -1"/>
+        <path class="ln-thin browR" d="M129 116 q9 -4 18 1"/>
+        <ellipse class="eyeL fill-ink" cx="92" cy="130" rx="4.4" ry="5.4"/>
+        <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
+        <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
+        <g class="stache">
+          <path class="mustache stacheL" d="M115 153 C 110 158, 101 159, 95 156 C 90 153, 91 148, 96 148"/>
+          <path class="mustache stacheR" d="M115 153 C 120 158, 129 159, 135 156 C 140 153, 139 148, 134 148"/>
+        </g>
+        <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
+      </g>
+    </g>
+
+    <!-- ===== LEFT ARM + TAPE MEASURE (ready at belt) ===== -->
+    <!-- forearm from left shoulder down to belt -->
+    <path class="ln-thin" d="M72 224 q8 22 24 28" fill="none"/>
+    <g class="tape">
+      <!-- tape body -->
+      <rect class="prop" x="78" y="226" width="34" height="30" rx="7"/>
+      <!-- reel ring -->
+      <circle class="prop-thin" cx="95" cy="241" r="7"/>
+      <circle class="fill-ink" cx="95" cy="241" r="2"/>
+      <!-- amber tab + a bit of pulled tape -->
+      <path class="prop-thin" d="M78 250 q-9 4 -14 12" stroke="var(--amber)"/>
+      <rect x="61" y="261" width="9" height="6" rx="2" fill="var(--surface)" stroke="var(--amber)" stroke-width="2.4"/>
+      <!-- grip hand over tape -->
+      <path class="ln-thin" d="M96 224 q14 4 16 14" fill="none"/>
+    </g>
+
+    <!-- ===== RIGHT ARM + LASER RANGEFINDER (aiming right) ===== -->
+    <g class="laser-arm">
+      <!-- forearm from right shoulder out to device -->
+      <path class="ln-thin" d="M168 226 q26 6 44 -4" fill="none"/>
+      <!-- gripping hand strokes -->
+      <path class="ln-thin" d="M206 214 q8 1 9 12" fill="none"/>
+      <path class="ln-thin" d="M210 236 q6 -2 7 -11" fill="none"/>
+      <!-- rangefinder body -->
+      <rect class="prop" x="214" y="206" width="40" height="40" rx="8"/>
+      <!-- screen -->
+      <rect x="220" y="212" width="28" height="14" rx="3" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.6"/>
+      <line x1="224" y1="219" x2="244" y2="219" stroke="var(--ink)" stroke-width="2" opacity=".55"/>
+      <!-- green glint / power -->
+      <path class="green-glint" d="M221 236 q12 -3 26 0"/>
+      <circle cx="240" cy="232" r="2.4" fill="var(--green)"/>
+      <!-- emitter nose pointing right -->
+      <rect class="prop" x="254" y="220" width="9" height="12" rx="3"/>
+    </g>
+
+    <!-- ===== LASER BEAM + DOT (in front, hitting wall) ===== -->
+    <line class="beam" x1="263" y1="226" x2="338" y2="150"/>
+    <circle class="dot" cx="338" cy="150" r="4.2"/>
+
+  </svg>
+</div>
+
+<script>addEventListener("message",function(e){var s=document.querySelector(".scene");if(s)s.classList.toggle("play",e.data!=="calm");});</script>
+</body>
+</html>

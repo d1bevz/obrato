@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amigo · 03 Сетка и правки — чертёж</title>
+<style>
+:root{--ink:#1b1813;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
+body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+.cap{color:#6b6457;font-size:12px;letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase}
+.scene{width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.scene svg{width:300px;height:auto;display:block;overflow:visible}
+.ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.fill-ink{fill:var(--ink);stroke:none}
+.mustache{fill:none;stroke:var(--ink);stroke-width:4.6;stroke-linecap:round;stroke-linejoin:round}
+.helmet{fill:var(--green);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
+.helmet-sh{fill:var(--green-d);stroke:none}
+.paper-fill{fill:var(--surface)}
+
+/* prop styling */
+.grid-line{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round}
+.sheet{fill:var(--paper);stroke:var(--ink);stroke-width:4;stroke-linejoin:round}
+.cut-cell{fill:none;stroke:var(--green);stroke-width:4;stroke-linejoin:round}
+.check{fill:none;stroke:var(--green);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.pencil-body{fill:var(--amber);stroke:var(--ink);stroke-width:3.4;stroke-linejoin:round}
+.pencil-tip{fill:var(--surface);stroke:var(--ink);stroke-width:3.2;stroke-linejoin:round}
+.pencil-lead{fill:var(--ink);stroke:none}
+
+/* ALL animation nested under .play -> removing .play = static calm mode */
+.play .sheet-grp{animation:sheetNudge 3.4s ease-in-out infinite; transform-box:view-box; transform-origin:124px 236px}
+.play .hand-grp{animation:handMark 3.4s ease-in-out infinite; transform-box:view-box; transform-origin:228px 200px}
+.play .check{animation:checkDraw 3.4s ease-in-out infinite; transform-box:fill-box; transform-origin:left bottom}
+.play .cut-cell{animation:cutGlow 3.4s ease-in-out infinite}
+.play .eyeL,.play .eyeR{animation:blink 5.4s ease-in-out infinite; transform-box:fill-box; transform-origin:center}
+
+@keyframes sheetNudge{0%,40%{transform:translate(0,0) rotate(0)}55%{transform:translate(-3px,1px) rotate(-.8deg)}70%,100%{transform:translate(0,0) rotate(0)}}
+@keyframes handMark{0%,12%{transform:translate(0,0) rotate(0)}24%{transform:translate(-4px,6px) rotate(2deg)}30%{transform:translate(-4px,6px) rotate(2deg)}42%{transform:translate(0,0) rotate(0)}100%{transform:translate(0,0) rotate(0)}}
+@keyframes checkDraw{0%,22%{opacity:0;transform:scale(.5)}30%{opacity:1;transform:scale(1.12)}40%{opacity:1;transform:scale(1)}82%{opacity:1;transform:scale(1)}92%,100%{opacity:0;transform:scale(1)}}
+@keyframes cutGlow{0%,40%{opacity:0}50%{opacity:1}82%{opacity:1}92%,100%{opacity:0}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95.5%{transform:scaleY(.08)}}
+
+@media (prefers-reduced-motion: reduce){ .play *{animation:none!important} }
+</style>
+</head>
+<body>
+
+<div class="scene play">
+  <svg viewBox="-20 0 300 280" role="img" aria-label="Amigo помечает карандашом подрез на плиточной сетке">
+
+    <!-- ===== AMIGO BUST — fixed geometry, reused verbatim ===== -->
+    <g class="amigo">
+      <!-- shoulders -->
+      <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
+      <path class="ln-thin" d="M95 214 q20 14 40 0"/>
+      <path class="ln-thin" d="M115 222 q0 19 0 38"/>
+      <!-- head -->
+      <g class="head">
+        <path class="ln paper-fill" d="M71 134 q-9 1 -8 12 q1 9 9 7"/>
+        <path class="ln paper-fill" d="M159 134 q9 1 8 12 q-1 9 -9 7"/>
+        <path class="ln paper-fill" d="M71 120 q-3 26 4 38 q11 18 40 18 q29 0 40 -18 q7 -12 4 -38 q-44 -10 -88 0 Z"/>
+        <path class="helmet" d="M60 106 q1 -54 55 -54 q54 0 55 54 q-27 -10 -55 -10 q-28 0 -55 10 Z"/>
+        <path class="helmet-sh" d="M60 106 q27 -10 55 -10 q28 0 55 10 q-3 7 -11 6 q-44 -9 -88 0 q-8 1 -11 -6 Z"/>
+        <path class="ln" d="M115 53 q0 26 0 43" opacity=".5"/>
+        <path class="ln" d="M50 106 q65 -19 130 0"/>
+        <path class="ln-thin browL" d="M83 117 q9 -5 18 -1"/>
+        <path class="ln-thin browR" d="M129 116 q9 -4 18 1"/>
+        <ellipse class="eyeL fill-ink" cx="92" cy="130" rx="4.4" ry="5.4"/>
+        <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
+        <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
+        <g class="stache">
+          <path class="mustache stacheL" d="M115 153 C 110 158, 101 159, 95 156 C 90 153, 91 148, 96 148"/>
+          <path class="mustache stacheR" d="M115 153 C 120 158, 129 159, 135 156 C 140 153, 139 148, 134 148"/>
+        </g>
+        <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
+      </g>
+    </g>
+
+    <!-- ===== TABLET (held in front) + GRID + HANDS + PENCIL ===== -->
+
+    <!-- the drawing tablet (nudges slightly during a mark) -->
+    <g class="sheet-grp">
+      <!-- tablet body: inner drawing area x44..204, y202..270 -->
+      <rect class="sheet" x="38" y="196" width="172" height="82" rx="7"/>
+
+      <!-- tile grid 4 cols x 2 rows; cells 40w x 34h; inset to x44..204 / y202..270 -->
+      <!-- vertical lines -->
+      <line class="grid-line" x1="84"  y1="202" x2="84"  y2="270"/>
+      <line class="grid-line" x1="124" y1="202" x2="124" y2="270"/>
+      <line class="grid-line" x1="164" y1="202" x2="164" y2="270"/>
+      <!-- horizontal mid line -->
+      <line class="grid-line" x1="44" y1="236" x2="204" y2="236"/>
+
+      <!-- corner "cut" cell highlight: top-right cell (x164..204, y202..236) -->
+      <rect class="cut-cell" x="165" y="201" width="40" height="35" rx="3"/>
+      <!-- check mark inside that cell -->
+      <path class="check" d="M173 218 l7 9 l13 -16"/>
+    </g>
+
+    <!-- LEFT hand: fingers curling over the tablet bottom-left edge (holding it) -->
+    <g class="lhand">
+      <path class="ln-thin paper-fill" d="M52 270 q-4 -16 10 -19 q9 -2 16 3 q6 4 5 12 q-1 9 -11 12 q-14 4 -20 -8 Z"/>
+      <!-- knuckle creases over the edge -->
+      <path class="ln-thin" d="M63 254 q1 6 -1 12"/>
+      <path class="ln-thin" d="M73 256 q1 6 -2 12"/>
+    </g>
+
+    <!-- right arm + hand + pencil marking the cut cell -->
+    <g class="hand-grp">
+      <!-- pencil: clean parallelogram, lead aimed at the cut cell check -->
+      <g class="pencil">
+        <!-- body (eraser end up-right -> wood end down-left) -->
+        <path class="pencil-body" d="M243 184 L234 173 L194 209 L203 219 Z"/>
+        <!-- wooden cone tip -->
+        <path class="pencil-tip" d="M194 209 L203 219 L188 223 Z"/>
+        <!-- lead point reaching the cell -->
+        <path class="pencil-lead" d="M188 223 L184 226 L184 222 Z"/>
+      </g>
+      <!-- hand / fist wrapping the pencil shaft (over the body, near the grip) -->
+      <path class="ln-thin paper-fill" d="M205 222 q-9 -6 -5 -16 q4 -10 15 -8 q12 2 14 14 q2 12 -10 16 q-9 3 -14 -6 Z"/>
+      <!-- two finger creases over the shaft for grip read -->
+      <path class="ln-thin" d="M214 200 q4 7 1 16"/>
+      <path class="ln-thin" d="M223 204 q3 6 0 14"/>
+      <!-- short forearm stub emerging up-right toward the shoulder -->
+      <path class="ln" d="M226 210 q14 -4 22 -16"/>
+    </g>
+
+  </svg>
+</div>
+
+<script>addEventListener("message",function(e){var s=document.querySelector(".scene");if(s)s.classList.toggle("play",e.data!=="calm");});</script>
+</body>
+</html>

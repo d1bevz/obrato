@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amigo · 05 Факты и нормы</title>
+<style>
+:root{--ink:#1b1813;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
+body{margin:0;background:var(--paper);display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{display:flex;flex-direction:column;align-items:center;gap:0}
+.title{font-size:13px;letter-spacing:.04em;color:#8a8170;margin-bottom:10px;text-transform:uppercase;font-weight:600}
+.scene{width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.scene svg{width:300px;height:auto;display:block;overflow:visible}
+.ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.fill-ink{fill:var(--ink);stroke:none}
+.mustache{fill:none;stroke:var(--ink);stroke-width:4.6;stroke-linecap:round;stroke-linejoin:round}
+.helmet{fill:var(--green);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
+.helmet-sh{fill:var(--green-d);stroke:none}
+.paper-fill{fill:var(--surface)}
+
+/* prop: book lines (text-dashes) */
+.txt{fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;opacity:.55}
+.approx{fill:none;stroke:var(--green-d);stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round}
+.approx-ring{fill:none;stroke:var(--green);stroke-width:3.2;opacity:0}
+
+/* ===== ALL animation gated under .play (calm static mode without it) ===== */
+.play .approx-grp{animation:approxPulse 2.2s ease-in-out infinite;transform-origin:208px 182px}
+.play .approx-ring{animation:approxRing 2.2s ease-in-out infinite;transform-origin:208px 182px}
+.play .finger{animation:fingerSlide 3.4s ease-in-out infinite;transform-origin:center}
+.play .page-flip{animation:pageFlip 3.4s ease-in-out infinite;transform-origin:171px 240px}
+.play .browL{animation:browLift 3.4s ease-in-out infinite;transform-origin:92px 117px}
+.play .eyeL,.play .eyeR{animation:gazeDown 3.4s ease-in-out infinite}
+
+@keyframes approxPulse{
+  0%,100%{transform:scale(1);opacity:.85}
+  50%{transform:scale(1.18);opacity:1}
+}
+@keyframes approxRing{
+  0%,100%{transform:scale(.85);opacity:0}
+  45%{opacity:.5}
+  100%{transform:scale(1.5);opacity:0}
+}
+@keyframes fingerSlide{
+  0%,8%{transform:translate(0,0)}
+  40%{transform:translate(34px,0)}
+  50%{transform:translate(34px,4px)}
+  82%,100%{transform:translate(0,0)}
+}
+@keyframes pageFlip{
+  0%,62%{transform:rotateY(0) scaleX(1)}
+  74%{transform:scaleX(-.12)}
+  86%{transform:scaleX(1)}
+  100%{transform:scaleX(1)}
+}
+@keyframes browLift{
+  0%,30%{transform:translateY(0)}
+  50%,70%{transform:translateY(-3px)}
+  100%{transform:translateY(0)}
+}
+@keyframes gazeDown{
+  0%,100%{transform:translateY(2px)}
+  50%{transform:translateY(2.5px)}
+}
+
+@media (prefers-reduced-motion: reduce){ .play *{animation:none!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title">05 · Факты и нормы — справочник</div>
+  <div class="scene play">
+    <svg viewBox="-8 34 262 252" role="img" aria-label="Amigo сверяется по справочнику норм">
+
+      <!-- ===================== BUST (verbatim) ===================== -->
+      <g class="amigo">
+        <!-- shoulders -->
+        <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
+        <path class="ln-thin" d="M95 214 q20 14 40 0"/>
+        <path class="ln-thin" d="M115 222 q0 19 0 38"/>
+        <!-- head -->
+        <g class="head">
+          <path class="ln paper-fill" d="M71 134 q-9 1 -8 12 q1 9 9 7"/>
+          <path class="ln paper-fill" d="M159 134 q9 1 8 12 q-1 9 -9 7"/>
+          <path class="ln paper-fill" d="M71 120 q-3 26 4 38 q11 18 40 18 q29 0 40 -18 q7 -12 4 -38 q-44 -10 -88 0 Z"/>
+          <path class="helmet" d="M60 106 q1 -54 55 -54 q54 0 55 54 q-27 -10 -55 -10 q-28 0 -55 10 Z"/>
+          <path class="helmet-sh" d="M60 106 q27 -10 55 -10 q28 0 55 10 q-3 7 -11 6 q-44 -9 -88 0 q-8 1 -11 -6 Z"/>
+          <path class="ln" d="M115 53 q0 26 0 43" opacity=".5"/>
+          <path class="ln" d="M50 106 q65 -19 130 0"/>
+          <path class="ln-thin browL" d="M83 117 q9 -5 18 -1"/>
+          <path class="ln-thin browR" d="M129 116 q9 -4 18 1"/>
+          <ellipse class="eyeL fill-ink" cx="92" cy="130" rx="4.4" ry="5.4"/>
+          <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
+          <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
+          <g class="stache">
+            <path class="mustache stacheL" d="M115 153 C 110 158, 101 159, 95 156 C 90 153, 91 148, 96 148"/>
+            <path class="mustache stacheR" d="M115 153 C 120 158, 129 159, 135 156 C 140 153, 139 148, 134 148"/>
+          </g>
+          <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
+        </g>
+      </g>
+      <!-- ===================== /BUST ===================== -->
+
+      <!-- ===================== PROP: open book held in hands ===================== -->
+      <!-- Hands/forearms from shoulders coming up to hold the book edges -->
+      <!-- left forearm + hand -->
+      <path class="ln paper-fill" d="M78 250 q-8 -22 24 -34"/>
+      <path class="ln-thin paper-fill" d="M100 214 q8 -2 14 4"/>
+      <!-- right forearm + hand -->
+      <path class="ln paper-fill" d="M152 250 q8 -22 -24 -34"/>
+
+      <!-- Book group -->
+      <g class="book">
+        <!-- book spine shadow under -->
+        <path class="ln paper-fill" d="M171 235
+          q-56 -16 -56 4
+          q0 -20 -56 -4
+          q0 26 0 26
+          q56 -14 56 2
+          q0 -16 56 -2
+          q0 0 0 -26 Z"/>
+        <!-- left page -->
+        <path class="ln paper-fill" d="M115 239
+          q0 -20 -56 -4
+          q0 26 0 26
+          q56 -14 56 2 Z"/>
+        <!-- right page -->
+        <path class="ln paper-fill" d="M115 239
+          q0 -20 56 -4
+          q0 26 0 26
+          q-56 -14 -56 2 Z"/>
+        <!-- center binding crease -->
+        <path class="ln-thin" d="M115 239 q0 12 0 24" opacity=".5"/>
+
+        <!-- left page text lines (dashes) -->
+        <line class="txt" x1="69" y1="240" x2="106" y2="231"/>
+        <line class="txt" x1="69" y1="247" x2="106" y2="238"/>
+        <line class="txt" x1="69" y1="254" x2="98"  y2="247"/>
+
+        <!-- right page text lines (dashes) -->
+        <line class="txt" x1="124" y1="231" x2="161" y2="240"/>
+        <line class="txt" x1="124" y1="238" x2="161" y2="247"/>
+        <line class="txt" x1="124" y1="247" x2="153" y2="254"/>
+
+        <!-- flipping page (right leaf) -->
+        <g class="page-flip">
+          <path class="ln-thin paper-fill" d="M115 239 q0 -18 52 -3 q0 24 0 24 q-52 -13 -52 1 Z" opacity=".9"/>
+          <line class="txt" x1="124" y1="232" x2="158" y2="240"/>
+          <line class="txt" x1="124" y1="239" x2="158" y2="247"/>
+        </g>
+
+        <!-- finger tracing a line on the left page -->
+        <g class="finger">
+          <path class="ln-thin paper-fill" d="M70 264 q4 -10 13 -12 q5 -1 6 4 q1 5 -5 7" stroke-width="3.2"/>
+        </g>
+      </g>
+
+      <!-- ===================== «≈» approximate sign — floats upper-right, clear of head ===================== -->
+      <g transform="translate(208,182)">
+        <circle class="approx-ring" cx="0" cy="0" r="22"/>
+        <g class="approx-grp">
+          <path class="approx" d="M-12 -5 q6 -7 12 0 q6 7 12 0"/>
+          <path class="approx" d="M-12 6 q6 -7 12 0 q6 7 12 0"/>
+        </g>
+      </g>
+      <!-- thought dots leading from book up to the «≈» sign -->
+      <circle class="fill-ink" cx="180" cy="232" r="2"   opacity=".3"/>
+      <circle class="fill-ink" cx="190" cy="218" r="2.4" opacity=".38"/>
+      <circle class="fill-ink" cx="198" cy="202" r="2.8" opacity=".45"/>
+
+    </svg>
+  </div>
+</div>
+
+<script>addEventListener("message",function(e){var s=document.querySelector(".scene");if(s)s.classList.toggle("play",e.data!=="calm");});</script>
+</body>
+</html>

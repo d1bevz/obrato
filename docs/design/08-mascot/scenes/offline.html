@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amigo · 06 Офлайн — без усов</title>
+<style>
+:root{--ink:#1b1813;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
+body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+.cap{color:#6b6457;font-size:12px;letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase}
+.scene{width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.scene svg{width:300px;height:auto;display:block;overflow:visible}
+.ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.fill-ink{fill:var(--ink);stroke:none}
+.mustache{fill:none;stroke:var(--ink);stroke-width:4.6;stroke-linecap:round;stroke-linejoin:round}
+.helmet{fill:var(--green);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
+.helmet-sh{fill:var(--green-d);stroke:none}
+.paper-fill{fill:var(--surface)}
+
+/* prop styling — calm "no signal" badge */
+.wifi-arc{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round}
+.wifi-dot{fill:var(--ink);stroke:none}
+.wifi-slash{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round}
+/* the falling mustache only exists in play mode */
+.ghost-stache{display:none}
+
+/* ===== ALL animation nested under .play -> removing .play = static calm mode ===== */
+/* one-shot mustache drop at cycle start, then steady offline-but-calm loop */
+.play .ghost-stache{display:block; animation:stacheDrop 6s cubic-bezier(.4,0,.7,1) infinite; transform-box:view-box; transform-origin:115px 153px}
+.play .amigo{animation:shrug 6s ease-in-out infinite; transform-box:view-box; transform-origin:115px 260px}
+.play .head{animation:headTip 6s ease-in-out infinite; transform-box:view-box; transform-origin:115px 200px}
+.play .wifi-badge{animation:wifiDim 2.6s ease-in-out infinite}
+.play .eyeL,.play .eyeR{animation:blink 5.2s ease-in-out infinite; transform-box:fill-box; transform-origin:center}
+
+/* mustache falls once (0-14% of the 6s loop), then stays gone the rest */
+@keyframes stacheDrop{
+  0%{opacity:1; transform:translateY(0) rotate(0)}
+  4%{opacity:1; transform:translateY(2px) rotate(2deg)}
+  10%{opacity:.85; transform:translateY(34px) rotate(-10deg)}
+  14%{opacity:0; transform:translateY(56px) rotate(-16deg)}
+  100%{opacity:0; transform:translateY(56px) rotate(-16deg)}
+}
+/* relaxed shrug — happens after the mustache is gone */
+@keyframes shrug{
+  0%,30%{transform:translateY(0)}
+  46%{transform:translateY(-3px)}
+  60%{transform:translateY(0)}
+  100%{transform:translateY(0)}
+}
+/* tiny "oh well" head tilt synced with the shrug */
+@keyframes headTip{
+  0%,32%{transform:rotate(0)}
+  48%{transform:rotate(2.2deg)}
+  64%{transform:rotate(0)}
+  100%{transform:rotate(0)}
+}
+/* no-signal badge breathes / dim-blinks */
+@keyframes wifiDim{
+  0%,100%{opacity:.9}
+  50%{opacity:.32}
+}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95.5%{transform:scaleY(.08)}}
+
+@media (prefers-reduced-motion: reduce){ .play *{animation:none!important} .play .ghost-stache{display:none} }
+</style>
+</head>
+<body>
+
+<div class="scene play">
+  <svg viewBox="-10 0 290 280" role="img" aria-label="Amigo офлайн: без усов, рядом перечёркнутый значок Wi-Fi, спокойно пожимает плечами">
+
+    <!-- ===== AMIGO BUST — fixed geometry, reused verbatim (mustache OMITTED for offline) ===== -->
+    <g class="amigo">
+      <!-- shoulders -->
+      <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
+      <path class="ln-thin" d="M95 214 q20 14 40 0"/>
+      <path class="ln-thin" d="M115 222 q0 19 0 38"/>
+      <!-- head -->
+      <g class="head">
+        <path class="ln paper-fill" d="M71 134 q-9 1 -8 12 q1 9 9 7"/>
+        <path class="ln paper-fill" d="M159 134 q9 1 8 12 q-1 9 -9 7"/>
+        <path class="ln paper-fill" d="M71 120 q-3 26 4 38 q11 18 40 18 q29 0 40 -18 q7 -12 4 -38 q-44 -10 -88 0 Z"/>
+        <path class="helmet" d="M60 106 q1 -54 55 -54 q54 0 55 54 q-27 -10 -55 -10 q-28 0 -55 10 Z"/>
+        <path class="helmet-sh" d="M60 106 q27 -10 55 -10 q28 0 55 10 q-3 7 -11 6 q-44 -9 -88 0 q-8 1 -11 -6 Z"/>
+        <path class="ln" d="M115 53 q0 26 0 43" opacity=".5"/>
+        <path class="ln" d="M50 106 q65 -19 130 0"/>
+        <path class="ln-thin browL" d="M83 117 q9 -5 18 -1"/>
+        <path class="ln-thin browR" d="M129 116 q9 -4 18 1"/>
+        <ellipse class="eyeL fill-ink" cx="92" cy="130" rx="4.4" ry="5.4"/>
+        <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
+        <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
+        <!-- NO <g class="stache"> here: offline Amigo has lost his mustache. -->
+        <!-- calm, slightly wider mouth (taking it in stride) -->
+        <path class="ln-thin mouth" d="M104 174 q11 5 22 0"/>
+      </g>
+    </g>
+
+    <!-- ===== GHOST MUSTACHE — exists only in .play; falls off once at loop start ===== -->
+    <!-- same verbatim mustache paths, animated as one group dropping below the face -->
+    <g class="ghost-stache">
+      <path class="mustache" d="M115 153 C 110 158, 101 159, 95 156 C 90 153, 91 148, 96 148"/>
+      <path class="mustache" d="M115 153 C 120 158, 129 159, 135 156 C 140 153, 139 148, 134 148"/>
+    </g>
+
+    <!-- ===== "NO SIGNAL" BADGE — crossed-out Wi-Fi, calm, upper-right ===== -->
+    <!-- Wi-Fi glyph: base dot at (200,88) with two concentric arcs rising above it.
+         outer arc spans x184..216 (top ~y58), inner arc x191..209 (top ~y72).
+         A single diagonal "no" slash cuts through the whole glyph. -->
+    <g class="wifi-badge">
+      <circle class="wifi-dot" cx="200" cy="88" r="3.4"/>
+      <path class="wifi-arc" d="M191 78 q9 -9 18 0"/>
+      <path class="wifi-arc" d="M184 70 q16 -15 32 0"/>
+      <!-- diagonal cancel slash: lower-left to upper-right, crossing dot + arcs -->
+      <path class="wifi-slash" d="M181 95 l38 -38"/>
+    </g>
+
+  </svg>
+</div>
+
+<script>addEventListener("message",function(e){var s=document.querySelector(".scene");if(s)s.classList.toggle("play",e.data!=="calm");});</script>
+</body>
+</html>

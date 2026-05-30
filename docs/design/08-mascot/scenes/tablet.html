@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amigo · 01 Выбор объектов</title>
+<style>
+:root{--ink:#1b1813;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.stage{display:flex;flex-direction:column;align-items:center;gap:10px}
+.cap{font-size:12px;letter-spacing:.04em;color:#8a8174;text-transform:uppercase}
+.cap b{color:var(--green-d);font-weight:600}
+.scene{position:relative;width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.scene svg{width:300px;height:auto;display:block;overflow:visible}
+
+.ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.fill-ink{fill:var(--ink);stroke:none}
+.mustache{fill:none;stroke:var(--ink);stroke-width:4.6;stroke-linecap:round;stroke-linejoin:round}
+.helmet{fill:var(--green);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
+.helmet-sh{fill:var(--green-d);stroke:none}
+.paper-fill{fill:var(--surface)}
+
+/* prop */
+.tablet-shell{fill:var(--surface);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
+.tablet-screen{fill:var(--paper);stroke:var(--ink);stroke-width:3.4}
+.row{fill:var(--surface);stroke:var(--ink);stroke-width:3.4;stroke-linejoin:round}
+.row-line{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;opacity:.5}
+.row-dot{fill:none;stroke:var(--ink);stroke-width:3.4}
+.row-hi{fill:none;stroke:var(--green);stroke-width:4}
+.row-hi-fill{fill:var(--green);opacity:.12}
+.tap-ring{fill:none;stroke:var(--green);stroke-width:4}
+
+/* ── ALL animation gated under .play (calm/static otherwise) ── */
+.play .tablet-rig{animation:tab-rock 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:150px 203px}
+.play .tap-arm{animation:tap-poke 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:62px 218px}
+.play .tap-ring{animation:tap-ring 3.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.play .row-hi,.play .row-hi-fill{animation:row-flash 3.6s ease-in-out infinite}
+.play .swipeStack{animation:swipe 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:150px 203px}
+
+@keyframes tab-rock{0%,100%{transform:rotate(-1.4deg)}40%{transform:rotate(1.6deg)}70%{transform:rotate(.4deg)}}
+@keyframes tap-poke{0%,30%,100%{transform:translate(0,0)}45%,55%{transform:translate(7px,-6px) rotate(-2deg)}}
+@keyframes tap-ring{0%,42%,100%{opacity:0;transform:scale(.35)}50%{opacity:.9;transform:scale(1)}72%{opacity:0;transform:scale(1.5)}}
+@keyframes row-flash{0%,40%,100%{opacity:0}52%{opacity:1}80%{opacity:0}}
+@keyframes swipe{0%,12%{transform:translateY(8px);opacity:.0}24%,100%{transform:translateY(0);opacity:1}}
+
+@media (prefers-reduced-motion: reduce){ .play *{animation:none!important} .play .row-hi,.play .row-hi-fill{opacity:1} }
+</style>
+</head>
+<body>
+<div class="stage">
+  
+  <div class="scene play">
+    <svg viewBox="-24 30 330 280" role="img" aria-label="Amigo выбирает объект на планшете">
+
+      <!-- ░░ BACK ARM: holding hand from right shoulder grips tablet right edge ░░ -->
+      <path class="ln paper-fill" d="M173 214 q33 -2 40 24 q4 16 -8 24"/>
+      <!-- gripping hand / fingers wrapping the tablet's right edge -->
+      <path class="ln-thin" d="M209 248 q9 4 8 13"/>
+      <path class="ln-thin" d="M204 255 q9 4 8 13"/>
+
+      <!-- ░░░░░ AMIGO BUST — fixed geometry, verbatim ░░░░░ -->
+      <g class="amigo">
+        <!-- shoulders -->
+        <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
+        <path class="ln-thin" d="M95 214 q20 14 40 0"/>
+        <path class="ln-thin" d="M115 222 q0 19 0 38"/>
+        <!-- head -->
+        <g class="head">
+          <path class="ln paper-fill" d="M71 134 q-9 1 -8 12 q1 9 9 7"/>
+          <path class="ln paper-fill" d="M159 134 q9 1 8 12 q-1 9 -9 7"/>
+          <path class="ln paper-fill" d="M71 120 q-3 26 4 38 q11 18 40 18 q29 0 40 -18 q7 -12 4 -38 q-44 -10 -88 0 Z"/>
+          <path class="helmet" d="M60 106 q1 -54 55 -54 q54 0 55 54 q-27 -10 -55 -10 q-28 0 -55 10 Z"/>
+          <path class="helmet-sh" d="M60 106 q27 -10 55 -10 q28 0 55 10 q-3 7 -11 6 q-44 -9 -88 0 q-8 1 -11 -6 Z"/>
+          <path class="ln" d="M115 53 q0 26 0 43" opacity=".5"/>
+          <path class="ln" d="M50 106 q65 -19 130 0"/>
+          <path class="ln-thin browL" d="M83 117 q9 -5 18 -1"/>
+          <path class="ln-thin browR" d="M129 116 q9 -4 18 1"/>
+          <ellipse class="eyeL fill-ink" cx="92" cy="130" rx="4.4" ry="5.4"/>
+          <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
+          <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
+          <g class="stache">
+            <path class="mustache stacheL" d="M115 153 C 110 158, 101 159, 95 156 C 90 153, 91 148, 96 148"/>
+            <path class="mustache stacheR" d="M115 153 C 120 158, 129 159, 135 156 C 140 153, 139 148, 134 148"/>
+          </g>
+          <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
+        </g>
+      </g>
+
+      <!-- ░░ TABLET RIG (front of bust, mid-chest) ░░ -->
+      <g class="tablet-rig">
+        <!-- shell, tilted slightly; rounded rect 92..208 x / 158..248 y -->
+        <g transform="rotate(-7 150 203)">
+          <rect class="tablet-shell" x="92" y="158" width="116" height="90" rx="11"/>
+          <rect class="tablet-screen" x="101" y="167" width="98" height="72" rx="5"/>
+
+          <!-- list rows (the swipe stack slides up into place) -->
+          <g class="swipeStack">
+            <!-- row 1 -->
+            <rect class="row" x="107" y="173" width="86" height="17" rx="4"/>
+            <circle class="row-dot" cx="116" cy="181.5" r="3.4"/>
+            <line class="row-line" x1="126" y1="178" x2="180" y2="178"/>
+            <line class="row-line" x1="126" y1="185" x2="166" y2="185"/>
+
+            <!-- row 2 (the one being tapped / highlighted) -->
+            <rect class="row-hi-fill" x="107" y="194" width="86" height="17" rx="4"/>
+            <rect class="row" x="107" y="194" width="86" height="17" rx="4"/>
+            <rect class="row-hi" x="107" y="194" width="86" height="17" rx="4"/>
+            <circle class="row-dot" cx="116" cy="202.5" r="3.4"/>
+            <line class="row-line" x1="126" y1="199" x2="184" y2="199"/>
+            <line class="row-line" x1="126" y1="206" x2="160" y2="206"/>
+
+            <!-- row 3 -->
+            <rect class="row" x="107" y="215" width="86" height="17" rx="4"/>
+            <circle class="row-dot" cx="116" cy="223.5" r="3.4"/>
+            <line class="row-line" x1="126" y1="220" x2="176" y2="220"/>
+            <line class="row-line" x1="126" y1="227" x2="158" y2="227"/>
+          </g>
+        </g>
+      </g>
+
+      <!-- ░░ FRONT ARM: tapping hand from left shoulder, index finger lands on row 2 ░░ -->
+      <g class="tap-arm">
+        <!-- forearm from left shoulder reaching up to screen -->
+        <path class="ln paper-fill" d="M60 218 q-12 14 0 30 q10 14 30 11"/>
+        <!-- hand: knuckles + extended index finger pointing up at the highlighted row -->
+        <path class="ln-thin paper-fill" d="M86 252 q11 8 23 4 q7 -2 9 -9"/>
+        <path class="ln" d="M118 247 l16 -29"/>
+        <!-- tap ripple ring at fingertip on row 2 -->
+        <circle class="tap-ring" cx="138" cy="212" r="9"/>
+      </g>
+
+    </svg>
+  </div>
+</div>
+
+<script>addEventListener("message",function(e){var s=document.querySelector(".scene");if(s)s.classList.toggle("play",e.data!=="calm");});</script>
+</body>
+</html>
