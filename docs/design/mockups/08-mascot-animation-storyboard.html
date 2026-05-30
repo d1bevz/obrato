@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Obrato · персонаж и интерактивная анимация</title>
+  <style>
+    :root {
+      --bg: #f6f4ee;
+      --surface: #fffefa;
+      --surface-2: #e4dfd3;
+      --ink: #1d251f;
+      --muted: #637069;
+      --line: #d8d3c8;
+      --action: #118277;
+      --action-soft: #e0f0ec;
+      --changed: #c65d30;
+      --changed-soft: #f4ddcf;
+      --check: #a87900;
+      --check-soft: #f7d965;
+      --danger: #b64b3b;
+      --steel: #54645d;
+      --shadow: 0 18px 48px rgba(29, 37, 31, 0.12);
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    .board {
+      width: min(100%, 2320px);
+      margin: 0 auto;
+      padding: 28px 24px 34px;
+    }
+
+    .header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 22px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 2vw, 2.35rem);
+      line-height: 1.06;
+      font-weight: 820;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.42;
+      max-width: 860px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      min-width: min(100%, 440px);
+    }
+
+    .pill,
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 9px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      line-height: 1;
+      font-weight: 780;
+      white-space: nowrap;
+    }
+
+    .pill {
+      color: var(--steel);
+      background: #ecefeb;
+    }
+
+    .pill.action,
+    .badge.action {
+      color: #065a55;
+      background: var(--action-soft);
+    }
+
+    .pill.check,
+    .badge.check {
+      color: #78610e;
+      background: var(--check-soft);
+    }
+
+    .pill.changed,
+    .badge.changed {
+      color: #99410f;
+      background: var(--changed-soft);
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(220px, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .state-card {
+      min-height: 510px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-rows: auto 180px auto 1fr auto;
+      overflow: hidden;
+    }
+
+    .state-head {
+      min-height: 82px;
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid #eee9dd;
+      display: grid;
+      gap: 8px;
+    }
+
+    .state-head h2 {
+      font-size: 1.02rem;
+      line-height: 1.12;
+      font-weight: 840;
+    }
+
+    .state-head p,
+    .copy,
+    .motion-rule {
+      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.32;
+    }
+
+    .stage {
+      position: relative;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 58%, rgba(17, 130, 119, 0.08), transparent 36%),
+        #efede4;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .surface-line {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 30px;
+      height: 2px;
+      background: #d5cec0;
+    }
+
+    .mascot-wrap {
+      position: relative;
+      width: 118px;
+      height: 128px;
+      display: grid;
+      place-items: center;
+      animation: enter 520ms cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    .mascot {
+      width: 78px;
+      height: 78px;
+      position: relative;
+      border-radius: 50%;
+      background: #f5d3a5;
+      border: 3px solid #a87900;
+      animation: breathe 3.2s ease-in-out infinite;
+      transform-origin: 50% 82%;
+      z-index: 2;
+    }
+
+    .helmet {
+      position: absolute;
+      left: 9px;
+      right: 9px;
+      top: -12px;
+      height: 34px;
+      border-radius: 24px 24px 10px 10px;
+      background: #f2c64f;
+      border: 3px solid #a87900;
+    }
+
+    .helmet::after {
+      content: "";
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      top: 7px;
+      height: 2px;
+      background: rgba(168, 121, 0, 0.45);
+      border-radius: 999px;
+    }
+
+    .eyes {
+      position: absolute;
+      left: 21px;
+      top: 34px;
+      width: 36px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .eye {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #243128;
+      animation: blink 5.8s ease-in-out infinite;
+    }
+
+    .mustache {
+      position: absolute;
+      left: 12px;
+      top: 43px;
+      width: 54px;
+      height: 24px;
+      overflow: visible;
+    }
+
+    .mustache path {
+      fill: none;
+      stroke: #243128;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .mouth {
+      position: absolute;
+      left: 34px;
+      top: 61px;
+      width: 12px;
+      height: 7px;
+      border-bottom: 3px solid rgba(36, 49, 40, 0.76);
+      border-radius: 0 0 12px 12px;
+    }
+
+    .arm {
+      position: absolute;
+      width: 44px;
+      height: 10px;
+      background: #f5d3a5;
+      border: 3px solid #a87900;
+      border-radius: 999px;
+      z-index: 1;
+      opacity: 0;
+      transform-origin: 7px 50%;
+    }
+
+    .arm.right {
+      right: 0;
+      top: 63px;
+      transform: rotate(-28deg);
+    }
+
+    .arm.left {
+      left: 0;
+      top: 70px;
+      transform: rotate(28deg);
+    }
+
+    .cue {
+      position: absolute;
+      right: 16px;
+      top: 20px;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 860;
+      font-size: 0.9rem;
+      color: #065a55;
+      background: var(--action-soft);
+      border: 1px solid #b7d4cd;
+      opacity: 0;
+      transform: scale(.88);
+    }
+
+    .dots {
+      position: absolute;
+      right: 18px;
+      top: 28px;
+      display: flex;
+      gap: 4px;
+      opacity: 0;
+    }
+
+    .dots span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--action);
+      animation: dot 900ms ease-in-out infinite;
+    }
+
+    .dots span:nth-child(2) {
+      animation-delay: 120ms;
+    }
+
+    .dots span:nth-child(3) {
+      animation-delay: 240ms;
+    }
+
+    .state-next .arm.right,
+    .state-focus .arm.left,
+    .state-check .arm.right {
+      opacity: 1;
+      animation: point 1.9s ease-in-out infinite;
+    }
+
+    .state-next .mascot,
+    .state-focus .mascot {
+      animation-name: breathe, look-right;
+      animation-duration: 3.2s, 2.8s;
+      animation-timing-function: ease-in-out, ease-in-out;
+      animation-iteration-count: infinite, infinite;
+    }
+
+    .state-valid .mascot,
+    .state-offline .mascot,
+    .state-success .mascot {
+      animation-name: breathe, nod;
+      animation-duration: 3.2s, 1.7s;
+      animation-timing-function: ease-in-out, ease-in-out;
+      animation-iteration-count: infinite, infinite;
+    }
+
+    .state-thinking .mascot {
+      animation-name: thinking;
+      animation-duration: 760ms;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+
+    .state-thinking .dots {
+      opacity: 1;
+    }
+
+    .state-check .mascot,
+    .state-error .mascot {
+      animation-name: breathe, tilt;
+      animation-duration: 3.2s, 1.8s;
+      animation-timing-function: ease-in-out, ease-in-out;
+      animation-iteration-count: infinite, infinite;
+    }
+
+    .state-success .cue,
+    .state-valid .cue {
+      opacity: 1;
+      transform: scale(1);
+      animation: pop 1.8s ease-in-out infinite;
+    }
+
+    .state-offline .cue {
+      opacity: 1;
+      color: var(--steel);
+      background: #ecefeb;
+      border-color: #dbe0db;
+      transform: scale(1);
+    }
+
+    .state-check .cue {
+      opacity: 1;
+      color: #78610e;
+      background: var(--check-soft);
+      border-color: #e7c94d;
+      transform: scale(1);
+    }
+
+    .state-error .cue {
+      opacity: 1;
+      color: #8d2f25;
+      background: #f4d7d1;
+      border-color: #dca69d;
+      transform: scale(1);
+    }
+
+    .trigger {
+      padding: 12px 14px 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .trigger h3 {
+      font-size: 0.82rem;
+      line-height: 1.18;
+      font-weight: 820;
+    }
+
+    .copy {
+      padding: 0 14px 14px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .motion-rule {
+      padding: 10px 14px 12px;
+      background: #f7f5ee;
+      border-top: 1px solid #eee9dd;
+      color: var(--steel);
+      font-weight: 680;
+    }
+
+    .footer {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 14px;
+    }
+
+    .rule-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .rule-card h2 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .rule-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.42;
+      font-size: 0.82rem;
+    }
+
+    @keyframes enter {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(.94);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes breathe {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    @keyframes blink {
+      0%,
+      92%,
+      100% {
+        transform: scaleY(1);
+      }
+
+      95% {
+        transform: scaleY(.15);
+      }
+    }
+
+    @keyframes look-right {
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      45%,
+      68% {
+        transform: translateY(-3px) rotate(4deg);
+      }
+    }
+
+    @keyframes nod {
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      48% {
+        transform: translateY(2px) rotate(2deg);
+      }
+    }
+
+    @keyframes thinking {
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-5px) rotate(-2deg);
+      }
+    }
+
+    @keyframes tilt {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      50% {
+        transform: rotate(-5deg);
+      }
+    }
+
+    @keyframes point {
+      0%,
+      100% {
+        transform: rotate(-24deg) translateX(0);
+      }
+
+      50% {
+        transform: rotate(-18deg) translateX(5px);
+      }
+    }
+
+    @keyframes dot {
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: .45;
+      }
+
+      50% {
+        transform: translateY(-4px);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pop {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.08);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .story-grid {
+        grid-template-columns: repeat(2, minmax(260px, 1fr));
+      }
+
+      .footer {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .board {
+        padding: 18px 12px 28px;
+      }
+
+      .header {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .legend {
+        justify-content: flex-start;
+      }
+
+      .story-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <header class="header">
+      <div>
+        <h1>Персонаж Obrato: интерактивная анимация</h1>
+        <p class="subtitle">Состояния персонажа привязаны к действиям интерфейса. Он помогает понять следующий шаг, подтверждает сохранение и спокойно объясняет неопределённость, но не превращает рабочий экран в игру.</p>
+      </div>
+      <div class="legend" aria-label="motion limits">
+        <span class="pill action">120-650 ms</span>
+        <span class="pill">без layout shift</span>
+        <span class="pill check">без конфетти</span>
+        <span class="pill changed">respect reduced motion</span>
+      </div>
+    </header>
+
+    <section class="story-grid" aria-label="state machine персонажа">
+      <article class="state-card">
+        <div class="state-head">
+          <span class="badge action">idle</span>
+          <h2>Появился support-card</h2>
+          <p>Экран открылся, подсказка нужна, но не срочная.</p>
+        </div>
+        <div class="stage state-idle">
+          <div class="surface-line"></div>
+          <div class="mascot-wrap">
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="trigger">
+          <h3>Trigger</h3>
+          <p class="copy">Support-card впервые попал в viewport.</p>
+        </div>
+        <p class="copy">Fade/slide на входе, потом спокойное дыхание и редкое моргание.</p>
+        <p class="motion-rule">Не повторять входную анимацию при обычном скролле назад.</p>
+      </article>
+
+      <article class="state-card">
+        <div class="state-head">
+          <span class="badge check">next_step</span>
+          <h2>Пора нажать CTA</h2>
+          <p>Пользователь остановился или только открыл хаб объекта.</p>
+        </div>
+        <div class="stage state-next">
+          <div class="surface-line"></div>
+          <div class="cue">→</div>
+          <div class="mascot-wrap">
+            <div class="arm right"></div>
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="trigger">
+          <h3>Trigger</h3>
+          <p class="copy">6-8 секунд без действия на экране со следующим шагом.</p>
+        </div>
+        <p class="copy">Взгляд и маленький жест в сторону CTA, без прыжков и навязчивого повтора.</p>
+        <p class="motion-rule">Один раз на сессию экрана.</p>
+      </article>
+
+      <article class="state-card">
+        <div class="state-head">
+          <span class="badge action">input_focus</span>
+          <h2>Редактируется поле</h2>
+          <p>Фокус на размере, work-card или инструменте canvas.</p>
+        </div>
+        <div class="stage state-focus">
+          <div class="surface-line"></div>
+          <div class="mascot-wrap">
+            <div class="arm left"></div>
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="trigger">
+          <h3>Trigger</h3>
+          <p class="copy">Поле получило фокус или выбран режим правки сетки.</p>
+        </div>
+        <p class="copy">Персонаж смотрит в сторону активного блока и снижает idle motion.</p>
+        <p class="motion-rule">Не реагировать на каждый tap и scroll.</p>
+      </article>
+
+      <article class="state-card">
+        <div class="state-head">
+          <span class="badge action">thinking</span>
+          <h2>Сохранить и пересчитать</h2>
+          <p>Расчёт, freeze или sync ещё выполняются.</p>
+        </div>
+        <div class="stage state-thinking">
+          <div class="surface-line"></div>
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="mascot-wrap">
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="trigger">
+          <h3>Trigger</h3>
+          <p class="copy">После primary action до результата или optimistic save.</p>
+        </div>
+        <p class="copy">Helmet bounce и 2-3 dots показывают, что экран живой.</p>
+        <p class="motion-rule">Максимум 2 секунды, дальше обычный loading state.</p>
+      </article>
+
+      <article class="state-card">
+        <div class="state-head">
+          <span class="badge">offline_saved</span>
+          <h2>Офлайн сохранено</h2>
+          <p>Данные ушли в локальную очередь, сети нет.</p>
+        </div>
+        <div class="stage state-offline">
+          <div class="surface-line"></div>
+          <div class="cue">⌁</div>
+          <div class="mascot-wrap">
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="trigger">
+          <h3>Trigger</h3>
+          <p class="copy">Room, canvas override, snapshot или fact сохранён без сети.</p>
+        </div>
+        <p class="copy">Спокойный nod: это не ошибка, данные не потеряны.</p>
+        <p class="motion-rule">Не показывать красный и не блокировать следующий шаг.</p>
+      </article>
+
+      <article class="state-card">
+        <div class="state-head">
+          <span class="badge check">needs_check</span>
+          <h2>Нужно проверить</h2>
+          <p>Шов, широкий диапазон, rough-факт или физическая невозможность.</p>
+        </div>
+        <div class="stage state-check">
+          <div class="surface-line"></div>
+          <div class="cue">!</div>
+          <div class="mascot-wrap">
+            <div class="arm right"></div>
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="trigger">
+          <h3>Trigger</h3>
+          <p class="copy">QuantityEstimate wide или local validation warning.</p>
+        </div>
+        <p class="copy">Наклон головы и указание на бейдж «проверить».</p>
+        <p class="motion-rule">Не пугать: жёлтый warning, красный только для блокера.</p>
+      </article>
+
+      <article class="state-card">
+        <div class="state-head">
+          <span class="badge action">success</span>
+          <h2>Шаг завершён</h2>
+          <p>Freeze создан, факт учтён, расчёт стал надёжнее.</p>
+        </div>
+        <div class="stage state-success">
+          <div class="surface-line"></div>
+          <div class="cue">✓</div>
+          <div class="mascot-wrap">
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="trigger">
+          <h3>Trigger</h3>
+          <p class="copy">Сохранение завершилось или факт можно учесть в будущих нормах.</p>
+        </div>
+        <p class="copy">Короткий nod и check. Радость есть, но без праздника на рабочем экране.</p>
+        <p class="motion-rule">После 650ms вернуться в idle.</p>
+      </article>
+    </section>
+
+    <section class="footer" aria-label="правила интерактивности">
+      <div class="rule-card">
+        <h2>Интерактивное правило</h2>
+        <ul>
+          <li>Персонаж реагирует на ближайший support-контекст: next step, поле, canvas, offline, широкий диапазон, факт.</li>
+          <li>Тап по персонажу раскрывает короткое объяснение карточки; второй тап сворачивает.</li>
+          <li>Если пользователь активно вводит данные, idle-анимация приглушается и не спорит с фокусом.</li>
+        </ul>
+      </div>
+      <div class="rule-card">
+        <h2>Технический контракт</h2>
+        <ul>
+          <li>MVP: SVG/CSS внутри SupportCard, intent приходит из состояния экрана.</li>
+          <li>Brand pass: Rive/Lottie state machine с тем же API и SVG fallback.</li>
+          <li>Без звуков, без layout shift, с поддержкой prefers-reduced-motion.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
