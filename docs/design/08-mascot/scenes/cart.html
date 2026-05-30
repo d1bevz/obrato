@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Amigo · 04 Закупки</title>
 <style>
-:root{--ink:#1b1813;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
+:root{--ink:#1b1813;--helmet:#f7b500;--helmet-d:#d49400;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
 body{margin:0;background:var(--paper);display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:system-ui,sans-serif}
 .wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
 .cap{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8a8270;font-weight:600}
@@ -13,9 +13,9 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
 .ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
 .ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
 .fill-ink{fill:var(--ink);stroke:none}
-.mustache{fill:none;stroke:var(--ink);stroke-width:4.6;stroke-linecap:round;stroke-linejoin:round}
-.helmet{fill:var(--green);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
-.helmet-sh{fill:var(--green-d);stroke:none}
+.mustache{fill:var(--ink);stroke:none}
+.helmet{fill:var(--helmet);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
+.helmet-sh{fill:var(--helmet-d);stroke:none}
 .paper-fill{fill:var(--surface)}
 
 /* ===== prop styling ===== */
@@ -143,8 +143,8 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
           <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
           <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
           <g class="stache">
-            <path class="mustache stacheL" d="M115 153 C 110 158, 101 159, 95 156 C 90 153, 91 148, 96 148"/>
-            <path class="mustache stacheR" d="M115 153 C 120 158, 129 159, 135 156 C 140 153, 139 148, 134 148"/>
+            <path class="mustache stacheL" d="M115 154 C 110 159, 102 161, 96 160 C 90 159, 86 156, 86 151 C 86 147, 89 145, 91 148 C 90 152, 94 155, 100 154 C 106 153, 111 151, 115 149 Z"/>
+            <path class="mustache stacheR" d="M115 154 C 120 159, 128 161, 134 160 C 140 159, 144 156, 144 151 C 144 147, 141 145, 139 148 C 140 152, 136 155, 130 154 C 124 153, 119 151, 115 149 Z"/>
           </g>
           <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
         </g>
