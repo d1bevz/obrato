@@ -14,8 +14,9 @@ export type Currency = 'EUR';
 /** Магазин-вендор (гл.05 §4 Store). Курируемый, маленький, GLOBAL. */
 export interface CatalogStore {
   id: string;
-  /** slug, UNIQUE (leroy-pt, local). Проецируется в Sku.store движка. */
-  key: 'leroy-pt' | 'local';
+  /** slug, UNIQUE (leroy-pt, obramat, maxmat, brico-depot, armazens-reis, aleluia,
+   *  coriprel, bigmat, bricomarche). Проецируется в Sku.store движка. */
+  key: string;
   name: string;
   /** chain=scrapeable/url; local=ручная цена. */
   kind: 'chain' | 'local' | 'online';

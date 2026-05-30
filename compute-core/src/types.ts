@@ -95,7 +95,8 @@ export interface Sku {
   packUnit: Unit;
   /** Цена за упаковку, EUR. */
   priceEur: number;
-  store: 'leroy-pt' | 'local';
+  /** Slug магазина (Store.key каталога): leroy-pt, obramat, maxmat, brico-depot, ... */
+  store: string;
   url?: string;
 }
 
