@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Obrato · trigger inventory персонажа</title>
+  <title>Obrato · эмоции персонажа по триггерам</title>
   <style>
     :root {
       --bg: #f6f4ee;
@@ -18,7 +18,6 @@
       --changed-soft: #f4ddcf;
       --check: #a87900;
       --check-soft: #f7d965;
-      --danger: #b64b3b;
       --danger-soft: #f4d7d1;
       --steel: #54645d;
       --shadow: 0 18px 48px rgba(29, 37, 31, 0.12);
@@ -38,8 +37,15 @@
       background: var(--bg);
     }
 
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
     .board {
-      width: min(100%, 2220px);
+      width: min(100%, 2160px);
       margin: 0 auto;
       padding: 28px 24px 34px;
     }
@@ -54,13 +60,6 @@
       margin-bottom: 22px;
     }
 
-    h1,
-    h2,
-    h3,
-    p {
-      margin: 0;
-    }
-
     h1 {
       font-size: clamp(1.6rem, 2vw, 2.35rem);
       line-height: 1.06;
@@ -72,7 +71,7 @@
       color: var(--muted);
       font-size: 0.96rem;
       line-height: 1.42;
-      max-width: 920px;
+      max-width: 940px;
     }
 
     .legend {
@@ -80,7 +79,7 @@
       gap: 8px;
       flex-wrap: wrap;
       justify-content: flex-end;
-      min-width: min(100%, 500px);
+      min-width: min(100%, 520px);
     }
 
     .pill,
@@ -101,38 +100,35 @@
       background: #ecefeb;
     }
 
-    .tag.action,
-    .pill.action {
+    .action {
       color: #065a55;
       background: var(--action-soft);
     }
 
-    .tag.check,
-    .pill.check {
+    .check {
       color: #78610e;
       background: var(--check-soft);
     }
 
-    .tag.changed,
-    .pill.changed {
+    .changed {
       color: #99410f;
       background: var(--changed-soft);
     }
 
-    .tag.danger {
+    .danger {
       color: #8d2f25;
       background: var(--danger-soft);
     }
 
-    .grid {
+    .emotion-grid {
       display: grid;
-      grid-template-columns: repeat(7, minmax(260px, 1fr));
+      grid-template-columns: repeat(6, minmax(285px, 1fr));
       gap: 14px;
       align-items: stretch;
     }
 
-    .group-card {
-      min-height: 720px;
+    .emotion-card {
+      min-height: 760px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--surface);
@@ -142,8 +138,8 @@
       overflow: hidden;
     }
 
-    .group-head {
-      min-height: 102px;
+    .card-head {
+      min-height: 128px;
       padding: 14px;
       border-bottom: 1px solid #eee9dd;
       display: grid;
@@ -151,76 +147,439 @@
       background: #fffdf7;
     }
 
-    .group-head h2 {
+    .card-head h2 {
       font-size: 1.08rem;
       line-height: 1.12;
       font-weight: 840;
     }
 
-    .group-head p,
-    .small {
+    .card-head p,
+    .small,
+    li {
       color: var(--muted);
       font-size: 0.75rem;
       line-height: 1.34;
     }
 
-    .trigger-list {
-      padding: 12px;
+    .scene {
+      position: relative;
+      height: 205px;
       display: grid;
-      gap: 8px;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 60%, rgba(17, 130, 119, 0.08), transparent 38%),
+        var(--surface-2);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .ground {
+      position: absolute;
+      left: 34px;
+      right: 34px;
+      bottom: 32px;
+      height: 2px;
+      background: #d2cbbb;
+    }
+
+    .mascot-wrap {
+      position: relative;
+      width: 150px;
+      height: 142px;
+      display: grid;
+      place-items: center;
+      z-index: 2;
+    }
+
+    .mascot {
+      width: 78px;
+      height: 78px;
+      position: relative;
+      border-radius: 50%;
+      background: #f5d3a5;
+      border: 3px solid #a87900;
+      transform-origin: 50% 82%;
+      z-index: 3;
+    }
+
+    .helmet {
+      position: absolute;
+      left: 9px;
+      right: 9px;
+      top: -12px;
+      height: 34px;
+      border-radius: 24px 24px 10px 10px;
+      background: #f2c64f;
+      border: 3px solid #a87900;
+    }
+
+    .helmet::after {
+      content: "";
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      top: 7px;
+      height: 2px;
+      background: rgba(168, 121, 0, 0.45);
+      border-radius: 999px;
+    }
+
+    .eyes {
+      position: absolute;
+      left: 21px;
+      top: 34px;
+      width: 36px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .eye {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #243128;
+    }
+
+    .mustache {
+      position: absolute;
+      left: 12px;
+      top: 43px;
+      width: 54px;
+      height: 24px;
+      overflow: visible;
+    }
+
+    .mustache path {
+      fill: none;
+      stroke: #243128;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .mouth {
+      position: absolute;
+      left: 34px;
+      top: 61px;
+      width: 12px;
+      height: 7px;
+      border-bottom: 3px solid rgba(36, 49, 40, 0.76);
+      border-radius: 0 0 12px 12px;
+    }
+
+    .arm {
+      position: absolute;
+      width: 50px;
+      height: 10px;
+      background: #f5d3a5;
+      border: 3px solid #a87900;
+      border-radius: 999px;
+      z-index: 2;
+      transform-origin: 7px 50%;
+    }
+
+    .arm.left {
+      left: 12px;
+      top: 74px;
+      transform: rotate(22deg);
+    }
+
+    .arm.right {
+      right: 12px;
+      top: 72px;
+      transform: rotate(-22deg);
+    }
+
+    .tablet,
+    .blueprint,
+    .book,
+    .cart,
+    .laser,
+    .tape,
+    .offline-mark {
+      position: absolute;
+      border-radius: 8px;
+      z-index: 4;
+    }
+
+    .tablet {
+      left: 16px;
+      top: 58px;
+      width: 62px;
+      height: 48px;
+      border: 3px solid #243128;
+      background: #f7f4e9;
+      transform: rotate(-7deg);
+      box-shadow: inset 0 0 0 5px #dceeea;
+    }
+
+    .tablet::after {
+      content: "→";
+      position: absolute;
+      right: -20px;
+      top: -18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #065a55;
+      background: var(--action-soft);
+      border: 1px solid #b7d4cd;
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .emoji-spark {
+      position: absolute;
+      right: -14px;
+      bottom: -14px;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--check-soft);
+      border: 1px solid #e8cc4e;
+      font-size: 1rem;
+    }
+
+    .tape {
+      left: 10px;
+      top: 82px;
+      width: 72px;
+      height: 16px;
+      background: #f2c64f;
+      border: 2px solid #a87900;
+      transform: rotate(-16deg);
+    }
+
+    .tape::after {
+      content: "";
+      position: absolute;
+      inset: 5px 6px auto;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, #a87900 0 4px, transparent 4px 8px);
+    }
+
+    .laser {
+      right: 8px;
+      top: 52px;
+      width: 60px;
+      height: 20px;
+      background: #26352c;
+      border: 2px solid #111a15;
+      transform: rotate(12deg);
+    }
+
+    .laser::after {
+      content: "";
+      position: absolute;
+      right: 54px;
+      top: -10px;
+      width: 92px;
+      height: 3px;
+      background: #d94836;
+      box-shadow: 0 0 10px rgba(217, 72, 54, .55);
+    }
+
+    .blueprint {
+      left: 12px;
+      top: 44px;
+      width: 112px;
+      height: 78px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.38) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.38) 1px, transparent 1px),
+        #7a9faa;
+      background-size: 18px 18px;
+      border: 3px solid #45626a;
+      transform: rotate(-5deg);
+    }
+
+    .blueprint::after {
+      content: "";
+      position: absolute;
+      left: 20px;
+      top: 18px;
+      width: 48px;
+      height: 28px;
+      border: 2px solid white;
+      border-right: 0;
+    }
+
+    .cart {
+      left: 11px;
+      top: 58px;
+      width: 82px;
+      height: 54px;
+      border: 4px solid #243128;
+      border-top: 0;
+      border-radius: 4px 4px 10px 10px;
+      transform: rotate(-4deg);
+    }
+
+    .cart::before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: -18px;
+      width: 28px;
+      height: 4px;
+      background: #243128;
+      transform: rotate(18deg);
+      border-radius: 999px;
+    }
+
+    .cart::after {
+      content: "";
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: -14px;
+      height: 8px;
+      background:
+        radial-gradient(circle, #243128 0 4px, transparent 5px) left center / 18px 8px no-repeat,
+        radial-gradient(circle, #243128 0 4px, transparent 5px) right center / 18px 8px no-repeat;
+    }
+
+    .book {
+      left: 8px;
+      top: 50px;
+      width: 90px;
+      height: 70px;
+      background: #f7f2df;
+      border: 3px solid #243128;
+      border-radius: 8px 10px 10px 8px;
+      transform: rotate(-6deg);
+    }
+
+    .book::before {
+      content: "";
+      position: absolute;
+      left: 42px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #243128;
+      opacity: .5;
+    }
+
+    .book::after {
+      content: "i";
+      position: absolute;
+      left: 19px;
+      top: 18px;
+      width: 20px;
+      height: 28px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      background: var(--action-soft);
+      color: #065a55;
+      font-weight: 900;
+      font-size: 1.2rem;
+    }
+
+    .offline-mark {
+      right: 14px;
+      top: 46px;
+      width: 54px;
+      height: 54px;
+      border: 3px solid #637069;
+      border-radius: 50%;
+      background: #ecefeb;
+    }
+
+    .offline-mark::before,
+    .offline-mark::after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      height: 3px;
+      background: #637069;
+      border-radius: 999px;
+    }
+
+    .offline-mark::before {
+      top: 18px;
+      transform: rotate(45deg);
+    }
+
+    .offline-mark::after {
+      top: 18px;
+      transform: rotate(-45deg);
+    }
+
+    .offline .mustache {
+      display: none;
+    }
+
+    .offline .mouth {
+      left: 31px;
+      width: 18px;
+      border-bottom-color: #637069;
+    }
+
+    .offline .helmet::before {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: -16px;
+      width: 18px;
+      height: 18px;
+      border-top: 3px solid #637069;
+      border-right: 3px solid #637069;
+      border-radius: 0 12px 0 0;
+      transform: rotate(-18deg);
+    }
+
+    .emotion-body {
+      padding: 12px 14px 14px;
+      display: grid;
+      gap: 11px;
       flex: 1;
       align-content: start;
     }
 
-    .trigger {
+    .emotion-row {
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--surface);
+      background: #fffdf8;
       padding: 10px;
       display: grid;
-      gap: 7px;
+      gap: 5px;
     }
 
-    .trigger.primary {
-      border-color: #b7d4cd;
-      background: #fbfffd;
-    }
-
-    .trigger.warn {
-      border-color: #ead477;
-      background: #fffaf0;
-    }
-
-    .trigger.block {
-      border-color: #e0aaa0;
-      background: #fff8f6;
-    }
-
-    .trigger h3 {
+    .emotion-row h3 {
       font-size: 0.82rem;
       line-height: 1.16;
       font-weight: 820;
     }
 
-    .trigger-meta {
+    .trigger-list {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
-    .route {
+    .trigger-chip {
+      min-height: 26px;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: #ecefeb;
       color: var(--steel);
       font-size: 0.68rem;
       line-height: 1;
       font-weight: 760;
-      text-transform: uppercase;
+      white-space: nowrap;
     }
 
-    .next-layer {
+    .no-react {
       margin-top: 16px;
       display: grid;
-      grid-template-columns: 1.4fr 1fr;
+      grid-template-columns: 1.2fr 1fr;
       gap: 14px;
     }
 
@@ -240,21 +599,18 @@
     .rule-card ul {
       margin: 0;
       padding-left: 18px;
-      color: var(--muted);
-      line-height: 1.42;
-      font-size: 0.82rem;
     }
 
     @media (max-width: 1400px) {
-      .grid {
+      .emotion-grid {
         grid-template-columns: repeat(2, minmax(280px, 1fr));
       }
 
-      .group-card {
+      .emotion-card {
         min-height: 0;
       }
 
-      .next-layer {
+      .no-react {
         grid-template-columns: 1fr;
       }
     }
@@ -273,7 +629,7 @@
         justify-content: flex-start;
       }
 
-      .grid {
+      .emotion-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -283,284 +639,283 @@
   <main class="board">
     <header class="header">
       <div>
-        <h1>Персонаж Obrato: trigger inventory</h1>
-        <p class="subtitle">Сначала фиксируем события, на которые персонаж имеет право реагировать. Эмоции и позы придумываются следующим слоем, чтобы разные действия не склеивались в одинаковый nod/tilt.</p>
+        <h1>Персонаж Obrato: эмоции поверх триггеров</h1>
+        <p class="subtitle">Каждая группа триггеров получает свою рабочую роль и предмет. Так персонаж отличается не только наклоном головы: он работает с планшетом, рулеткой, лазером, чертежом, корзиной, энциклопедией или отдельным offline-образом.</p>
       </div>
       <div class="legend" aria-label="легенда">
-        <span class="pill action">react</span>
-        <span class="pill check">needs attention</span>
+        <span class="pill action">tool-based emotion</span>
+        <span class="pill check">attention without panic</span>
         <span class="pill changed">user delta</span>
-        <span class="pill">emotion TBD</span>
+        <span class="pill">no reaction list retained</span>
       </div>
     </header>
 
-    <section class="grid" aria-label="список триггеров персонажа">
-      <article class="group-card">
-        <div class="group-head">
+    <section class="emotion-grid" aria-label="эмоциональный слой персонажа">
+      <article class="emotion-card return">
+        <div class="card-head">
           <span class="tag action">01 return</span>
-          <h2>Вернуться к работе</h2>
-          <p>Триггеры, где персонаж помогает понять, куда идти дальше.</p>
+          <h2>Планшет: вернуться к работе</h2>
+          <p>Вариации работы с планшетом: открыть объект, подсветить движение вперёд, раскрыть support.</p>
         </div>
-        <div class="trigger-list">
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">ProjectList</span><span class="tag action">react</span></div>
-            <h3>Открыт список объектов с активным объектом</h3>
-            <p class="small">Подсказать актуальный объект и текущий next step.</p>
+        <div class="scene">
+          <div class="ground"></div>
+          <div class="mascot-wrap">
+            <div class="tablet"><span class="emoji-spark">✨</span></div>
+            <div class="arm left"></div>
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="emotion-body">
+          <section class="emotion-row">
+            <h3>Emotion intent: деловой старт</h3>
+            <p class="small">Персонаж смотрит в планшет и показывает «вперёд». Spark/emoji-подсветка живёт на активном объекте, не на лице.</p>
           </section>
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">ProjectDetail</span><span class="tag action">react</span></div>
-            <h3>Открыт объект и есть следующий шаг</h3>
-            <p class="small">Направить к комнате, листу, чертежу или проверке.</p>
+          <section class="emotion-row">
+            <h3>Вариации</h3>
+            <p class="small">ProjectList: планшет + forward spark. ProjectDetail: планшет повернут к CTA. Idle: читает планшет спокойно.</p>
           </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">any support</span><span class="tag check">maybe</span></div>
-            <h3>6-8 секунд без действия на экране с CTA</h3>
-            <p class="small">Один мягкий attention cue, без повторов и давления.</p>
-          </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">empty</span><span class="tag action">react</span></div>
-            <h3>Нет активного объекта или комнат</h3>
-            <p class="small">Помочь начать, но не делать landing-page внутри продукта.</p>
-          </section>
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">support</span><span class="tag action">react</span></div>
-            <h3>Тап по персонажу или support-card</h3>
-            <p class="small">Раскрыть или свернуть короткое объяснение подсказки.</p>
-          </section>
+          <div class="trigger-list">
+            <span class="trigger-chip">ProjectList active</span>
+            <span class="trigger-chip">ProjectDetail next step</span>
+            <span class="trigger-chip">attention delay</span>
+            <span class="trigger-chip">support tap</span>
+          </div>
         </div>
       </article>
 
-      <article class="group-card">
-        <div class="group-head">
+      <article class="emotion-card measure">
+        <div class="card-head">
           <span class="tag changed">02 room input</span>
-          <h2>Замер и дельты</h2>
-          <p>Триггеры вокруг ввода комнаты, шаблона и пересчёта.</p>
+          <h2>Рулетка и лазер: замеры</h2>
+          <p>Рулетка наготове всегда. Для плитки на полу/стенах появляется лазерная линия.</p>
         </div>
-        <div class="trigger-list">
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">RoomEditor</span><span class="tag action">react</span></div>
-            <h3>Комната создана из шаблона</h3>
-            <p class="small">Объяснить, что база уже заполнена и править надо только отличия.</p>
+        <div class="scene">
+          <div class="ground"></div>
+          <div class="mascot-wrap">
+            <div class="tape"></div>
+            <div class="laser"></div>
+            <div class="arm left"></div>
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="emotion-body">
+          <section class="emotion-row">
+            <h3>Emotion intent: точность и готовность</h3>
+            <p class="small">Фокус на поле: рулетка вытянута к полю. Плитка на полу/стенах: лазер коротко подсвечивает линию.</p>
           </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">fields</span><span class="tag action">react</span></div>
-            <h3>Фокус на длине, ширине или высоте</h3>
-            <p class="small">Связать поддержку с конкретным полем, а не со всем экраном.</p>
+          <section class="emotion-row">
+            <h3>Вариации</h3>
+            <p class="small">Valid input: рулетка щёлкает назад. Validation block: лазер краснеет и персонаж останавливает ввод, без паники.</p>
           </section>
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">fields</span><span class="tag action">react</span></div>
-            <h3>Размер стал валидным</h3>
-            <p class="small">Подтвердить принятие ввода без отдельного toast.</p>
-          </section>
-          <section class="trigger block">
-            <div class="trigger-meta"><span class="route">validation</span><span class="tag danger">react</span></div>
-            <h3>Размер или проём физически невозможен</h3>
-            <p class="small">Показать блокер спокойно и направить к исправлению.</p>
-          </section>
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">work-card</span><span class="tag changed">react</span></div>
-            <h3>Wet, work-card, tile или розетки изменены</h3>
-            <p class="small">Подтвердить пользовательскую дельту к шаблону.</p>
-          </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">compute</span><span class="tag action">react</span></div>
-            <h3>Нажато «Сохранить и пересчитать»</h3>
-            <p class="small">Коротко показать, что расчёт/worker живой.</p>
-          </section>
+          <div class="trigger-list">
+            <span class="trigger-chip">template room</span>
+            <span class="trigger-chip">dimension focus</span>
+            <span class="trigger-chip">valid dimension</span>
+            <span class="trigger-chip">invalid opening</span>
+            <span class="trigger-chip">work delta</span>
+            <span class="trigger-chip">compute</span>
+          </div>
         </div>
       </article>
 
-      <article class="group-card">
-        <div class="group-head">
+      <article class="emotion-card canvas">
+        <div class="card-head">
           <span class="tag action">03 canvas</span>
-          <h2>Сетка и ручные правки</h2>
-          <p>Триггеры, где персонаж объясняет editable grid.</p>
+          <h2>Чертёж: сетка и правки</h2>
+          <p>Персонаж работает с чертежами: показывает инструмент, слой правки и stale-состояние.</p>
         </div>
-        <div class="trigger-list">
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">LayoutCanvas</span><span class="tag action">react</span></div>
-            <h3>Открыт canvas с подсказкой</h3>
-            <p class="small">Объяснить, что плитку можно тапнуть и поправить.</p>
+        <div class="scene">
+          <div class="ground"></div>
+          <div class="mascot-wrap">
+            <div class="blueprint"></div>
+            <div class="arm right"></div>
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="emotion-body">
+          <section class="emotion-row">
+            <h3>Emotion intent: рабочая внимательность</h3>
+            <p class="small">Он не «радуется сетке», а держит чертёж и указывает на правку или инструмент.</p>
           </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">toolbar</span><span class="tag action">react</span></div>
-            <h3>Выбран tool: cut, suppress или note</h3>
-            <p class="small">Связать поддержку с режимом инструмента.</p>
+          <section class="emotion-row">
+            <h3>Вариации</h3>
+            <p class="small">Tool selected: карандаш/палец к toolbar. Override saved: маленькая отметка на чертеже. Stale: чертёж наклонён и подсвечен жёлтым.</p>
           </section>
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">override</span><span class="tag changed">react</span></div>
-            <h3>Добавлен cut, suppress или note</h3>
-            <p class="small">Подтвердить, что CutOverride сохранён как данные.</p>
-          </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">undo</span><span class="tag action">maybe</span></div>
-            <h3>Undo/redo ручной правки</h3>
-            <p class="small">Реакция нужна только если меняется статус support-card.</p>
-          </section>
-          <section class="trigger warn">
-            <div class="trigger-meta"><span class="route">stale</span><span class="tag check">react</span></div>
-            <h3>Overrides стали stale после изменения размеров или плитки</h3>
-            <p class="small">Попросить проверить сетку заново.</p>
-          </section>
+          <div class="trigger-list">
+            <span class="trigger-chip">canvas hint</span>
+            <span class="trigger-chip">tool selected</span>
+            <span class="trigger-chip">override saved</span>
+            <span class="trigger-chip">undo maybe</span>
+            <span class="trigger-chip">stale overrides</span>
+          </div>
         </div>
       </article>
 
-      <article class="group-card">
-        <div class="group-head">
+      <article class="emotion-card purchase">
+        <div class="card-head">
           <span class="tag check">04 purchase</span>
-          <h2>Закупка и freeze</h2>
-          <p>Триггеры, где надо объяснить диапазон, цены и снимок.</p>
+          <h2>Shopping cart: закупки</h2>
+          <p>Корзина помогает отличить «поехали покупать» от расчётной неопределённости.</p>
         </div>
-        <div class="trigger-list">
-          <section class="trigger warn">
-            <div class="trigger-meta"><span class="route">PurchaseList</span><span class="tag check">react</span></div>
-            <h3>Открыт лист с wide-range строкой</h3>
-            <p class="small">Объяснить широкий диапазон без fake precision.</p>
+        <div class="scene">
+          <div class="ground"></div>
+          <div class="mascot-wrap">
+            <div class="cart"></div>
+            <div class="arm left"></div>
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="emotion-body">
+          <section class="emotion-row">
+            <h3>Emotion intent: практичный шопинг</h3>
+            <p class="small">Wide range: корзина стоит, персонаж проверяет список. Freeze: корзина трогается, но без праздничного эффекта.</p>
           </section>
-          <section class="trigger warn">
-            <div class="trigger-meta"><span class="route">row expand</span><span class="tag check">react</span></div>
-            <h3>Раскрыто «почему широко»</h3>
-            <p class="small">Помочь прочитать причину диапазона: шов, ровность, впитываемость.</p>
+          <section class="emotion-row">
+            <h3>Вариации</h3>
+            <p class="small">Price stale: ценник на корзине жёлтый. Snapshot created: корзина с чек-листом, этап зафиксирован.</p>
           </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">catalog</span><span class="tag check">react</span></div>
-            <h3>Цена или SKU устарели / нет сети</h3>
-            <p class="small">Отделить закупочный риск от ошибки расчёта.</p>
-          </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">freeze</span><span class="tag action">react</span></div>
-            <h3>Нажато «Взять этап в магазин»</h3>
-            <p class="small">Показать, что создаётся immutable PurchaseSnapshot.</p>
-          </section>
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">snapshot</span><span class="tag action">react</span></div>
-            <h3>PurchaseSnapshot создан</h3>
-            <p class="small">Подтвердить: этап зафиксирован, дальше покупаем по снимку.</p>
-          </section>
+          <div class="trigger-list">
+            <span class="trigger-chip">wide range row</span>
+            <span class="trigger-chip">why wide</span>
+            <span class="trigger-chip">stale price</span>
+            <span class="trigger-chip">freeze pressed</span>
+            <span class="trigger-chip">snapshot created</span>
+          </div>
         </div>
       </article>
 
-      <article class="group-card">
-        <div class="group-head">
+      <article class="emotion-card facts">
+        <div class="card-head">
           <span class="tag action">05 fact</span>
-          <h2>Факты и нормы</h2>
-          <p>Триггеры вокруг фактической покупки и будущего уточнения норм.</p>
+          <h2>Энциклопедия: факты и нормы</h2>
+          <p>Персонаж не «учится магически», а сверяет факт со справочником условий.</p>
         </div>
-        <div class="trigger-list">
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">FactEntry</span><span class="tag action">react</span></div>
-            <h3>Открыт ввод факта из frozen list</h3>
-            <p class="small">Объяснить связь факта с замороженной оценкой.</p>
-          </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">fact fields</span><span class="tag changed">react</span></div>
-            <h3>Изменены quantity, price, source или confidence</h3>
-            <p class="small">Подтвердить, что это факт, а не правка расчёта.</p>
-          </section>
-          <section class="trigger warn">
-            <div class="trigger-meta"><span class="route">rough</span><span class="tag check">react</span></div>
-            <h3>Выбрано rough / «по оценке»</h3>
-            <p class="small">Подсказать: для истории, будущие нормы не уточняет.</p>
-          </section>
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">receipt</span><span class="tag action">react</span></div>
-            <h3>Надёжный чек связан со строкой</h3>
-            <p class="small">Подсказать, что будущие расчёты можно сузить.</p>
-          </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">save</span><span class="tag action">react</span></div>
-            <h3>Нажато «Сохранить факт»</h3>
-            <p class="small">Короткое сохранение, затем статус локально/synced.</p>
-          </section>
+        <div class="scene">
+          <div class="ground"></div>
+          <div class="mascot-wrap">
+            <div class="book"></div>
+            <div class="arm right"></div>
+            <div class="mascot">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
         </div>
-      </article>
-
-      <article class="group-card">
-        <div class="group-head">
-          <span class="tag">06 system</span>
-          <h2>Офлайн, sync, ошибки</h2>
-          <p>Системные события, которые должны звучать спокойно.</p>
-        </div>
-        <div class="trigger-list">
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">offline</span><span class="tag action">react</span></div>
-            <h3>Данные сохранены локально без сети</h3>
-            <p class="small">Успокоить: действие принято и попадёт в sync.</p>
+        <div class="emotion-body">
+          <section class="emotion-row">
+            <h3>Emotion intent: аккуратное знание</h3>
+            <p class="small">Энциклопедия открыта только когда факт связан с frozen list или влияет на будущие нормы.</p>
           </section>
-          <section class="trigger primary">
-            <div class="trigger-meta"><span class="route">sync</span><span class="tag action">react</span></div>
-            <h3>Сеть вернулась и очередь ушла</h3>
-            <p class="small">Тихо подтвердить, без отдельного победного экрана.</p>
+          <section class="emotion-row">
+            <h3>Вариации</h3>
+            <p class="small">Rough: книга закрыта с жёлтой закладкой. Reliable receipt: книга открыта, закладка переходит в «учтём».</p>
           </section>
-          <section class="trigger block">
-            <div class="trigger-meta"><span class="route">error</span><span class="tag danger">react</span></div>
-            <h3>Sync или compute не завершился</h3>
-            <p class="small">Объяснить retry/локальное состояние без красной паники.</p>
-          </section>
-          <section class="trigger warn">
-            <div class="trigger-meta"><span class="route">conflict</span><span class="tag check">defer</span></div>
-            <h3>Multi-device conflict</h3>
-            <p class="small">В пилоте single-device, поэтому пока не проектируем эмоцию.</p>
-          </section>
+          <div class="trigger-list">
+            <span class="trigger-chip">fact from frozen</span>
+            <span class="trigger-chip">fact fields changed</span>
+            <span class="trigger-chip">rough</span>
+            <span class="trigger-chip">receipt linked</span>
+            <span class="trigger-chip">save fact</span>
+          </div>
         </div>
       </article>
 
-      <article class="group-card">
-        <div class="group-head">
-          <span class="tag danger">07 no reaction</span>
-          <h2>Где персонаж молчит</h2>
-          <p>Анти-триггеры важны, чтобы не получить навязчивого помощника.</p>
+      <article class="emotion-card offline">
+        <div class="card-head">
+          <span class="tag">06 offline</span>
+          <h2>Связист без усов: offline</h2>
+          <p>Другой образ: без усов, с антенной/маяком. Он отвечает за спокойствие, локальную очередь и retry.</p>
         </div>
-        <div class="trigger-list">
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">scroll</span><span class="tag">silent</span></div>
-            <h3>Обычный скролл или scroll-back</h3>
-            <p class="small">Не повторять entrance/attention-анимацию.</p>
+        <div class="scene">
+          <div class="ground"></div>
+          <div class="mascot-wrap">
+            <div class="offline-mark"></div>
+            <div class="arm right"></div>
+            <div class="mascot offline">
+              <div class="helmet"></div>
+              <div class="eyes"><span class="eye"></span><span class="eye"></span></div>
+              <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true">
+                <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+              </svg>
+              <div class="mouth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="emotion-body">
+          <section class="emotion-row">
+            <h3>Emotion intent: спокойная автономность</h3>
+            <p class="small">Не «ошибка связи», а локальный режим. Без усов, более нейтральное лицо, антенна на каске.</p>
           </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">tap</span><span class="tag">silent</span></div>
-            <h3>Каждый tap по списку или карточке</h3>
-            <p class="small">Реагировать только если поменялся support-контекст.</p>
+          <section class="emotion-row">
+            <h3>Вариации</h3>
+            <p class="small">Offline saved: маяк светит мягко. Sync done: сигнал возвращается. Error: не красная паника, а retry-поза.</p>
           </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">numeric</span><span class="tag">silent</span></div>
-            <h3>Каждая цифра в numeric input</h3>
-            <p class="small">Ждать валидного значения или ошибки, не дергаться на ввод.</p>
-          </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">prices</span><span class="tag">silent</span></div>
-            <h3>Просмотр цены и материалов</h3>
-            <p class="small">Персонаж не должен мешать сравнению строк.</p>
-          </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">cta</span><span class="tag">silent</span></div>
-            <h3>CTA уже понятен и пользователь действует</h3>
-            <p class="small">Не подсказывать поверх активного workflow.</p>
-          </section>
-          <section class="trigger">
-            <div class="trigger-meta"><span class="route">dismiss</span><span class="tag">silent</span></div>
-            <h3>Подсказку уже свернули вручную</h3>
-            <p class="small">Запомнить mute для этой сессии экрана.</p>
-          </section>
+          <div class="trigger-list">
+            <span class="trigger-chip">local saved</span>
+            <span class="trigger-chip">sync done</span>
+            <span class="trigger-chip">compute failed</span>
+            <span class="trigger-chip">sync failed</span>
+            <span class="trigger-chip">conflict deferred</span>
+          </div>
         </div>
       </article>
     </section>
 
-    <section class="next-layer" aria-label="следующий слой">
+    <section class="no-react" aria-label="анти-триггеры и контракт">
       <div class="rule-card">
-        <h2>Следующий шаг: эмоции поверх trigger inventory</h2>
+        <h2>Где персонаж молчит</h2>
         <ul>
-          <li>Сначала вычёркиваем лишние триггеры и объединяем похожие.</li>
-          <li>Потом каждому оставшемуся trigger family даём emotion intent: спокойствие, внимание, подтверждение, сомнение, фокус, успех.</li>
-          <li>Только после этого рисуем разные позы и motion, чтобы они не были одинаковыми.</li>
+          <li>Обычный скролл и возвращение к уже виденной подсказке.</li>
+          <li>Каждый tap по списку, карточке или цифре в numeric input.</li>
+          <li>Просмотр цены и материалов, если support-контекст не изменился.</li>
+          <li>CTA уже понятен и пользователь активно действует.</li>
+          <li>Пользователь вручную свернул подсказку в этой сессии экрана.</li>
         </ul>
       </div>
       <div class="rule-card">
-        <h2>Техническое правило</h2>
+        <h2>Контракт следующего слоя</h2>
         <ul>
-          <li>Экран отправляет trigger action, не «эмоцию» напрямую.</li>
-          <li>SupportCard решает, показывать ли персонажа, молчать или сменить текст.</li>
-          <li>Один support-card не повторяет attention-анимацию чаще одного раза за сессию экрана.</li>
+          <li>Экран отправляет trigger action; SupportCard выбирает роль/предмет/эмоцию.</li>
+          <li>Motion короткий: 120-650 ms, без layout shift, без звуков и без конфетти.</li>
+          <li>Если включён reduced motion, остаётся статичная роль и меняется только текст/бейдж.</li>
         </ul>
       </div>
     </section>
