@@ -40,7 +40,7 @@
     }
 
     .board {
-      width: min(100%, 1480px);
+      width: min(100%, 2220px);
       margin: 0 auto;
       padding: 28px 18px 40px;
     }
@@ -336,6 +336,12 @@
       background: var(--surface);
     }
 
+    .helper-card.compact {
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 9px;
+      padding: 10px;
+    }
+
     .helper-copy {
       display: grid;
       gap: 6px;
@@ -345,6 +351,19 @@
     .helper-copy h2 {
       font-size: 1rem;
       line-height: 1.12;
+    }
+
+    .helper-card.compact .helper-copy {
+      gap: 4px;
+    }
+
+    .helper-card.compact h3 {
+      font-size: 0.82rem;
+      line-height: 1.14;
+    }
+
+    .helper-card.compact .small {
+      font-size: 0.68rem;
     }
 
     .helper-copy .badge {
@@ -415,6 +434,44 @@
       stroke-width: 3;
       stroke-linecap: round;
       stroke-linejoin: round;
+    }
+
+    .mascot.mini {
+      width: 44px;
+      height: 44px;
+    }
+
+    .mascot.mini::before {
+      left: 6px;
+      right: 6px;
+      top: -7px;
+      height: 19px;
+      border-radius: 16px 16px 7px 7px;
+    }
+
+    .mascot.mini::after {
+      left: 18px;
+      top: 33px;
+      width: 7px;
+      height: 4px;
+    }
+
+    .mascot.mini .eyes {
+      left: 12px;
+      top: 18px;
+      width: 20px;
+    }
+
+    .mascot.mini .eyes span {
+      width: 4px;
+      height: 4px;
+    }
+
+    .mascot.mini .mustache {
+      left: 6px;
+      top: 24px;
+      width: 32px;
+      height: 14px;
     }
 
     @keyframes mascot-bob {
@@ -775,6 +832,20 @@
           </div>
           <div class="content">
             <div class="scroll">
+              <section class="section helper-card compact">
+                <div class="mascot mini" aria-hidden="true">
+                  <div class="eyes"><span></span><span></span></div>
+                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
+                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  </svg>
+                </div>
+                <div class="helper-copy">
+                  <h3>Сегодня плитка в Дом Монте</h3>
+                  <p class="small">Лист готов, можно открыть этап закупки.</p>
+                </div>
+              </section>
+
               <section class="project-card primary">
                 <div class="section-header">
                   <div>
@@ -930,6 +1001,20 @@
                 <div class="field"><span class="small">Мокрая зона</span><strong>Да</strong></div>
               </div>
 
+              <section class="section helper-card compact">
+                <div class="mascot mini" aria-hidden="true">
+                  <div class="eyes"><span></span><span></span></div>
+                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
+                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  </svg>
+                </div>
+                <div class="helper-copy">
+                  <h3>Офлайн не страшно</h3>
+                  <p class="small">Сохраню размеры и правки локально до сети.</p>
+                </div>
+              </section>
+
               <section class="section">
                 <div class="section-header">
                   <h3>Проёмы</h3>
@@ -1001,7 +1086,19 @@
                 <span class="segment">Начало</span>
                 <span class="segment">Материал</span>
               </div>
-              <p class="small">Тап по плитке: подрезать, скрыть или добавить заметку. Правки сохраняются как данные.</p>
+              <section class="section helper-card compact">
+                <div class="mascot mini" aria-hidden="true">
+                  <div class="eyes"><span></span><span></span></div>
+                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
+                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  </svg>
+                </div>
+                <div class="helper-copy">
+                  <h3>Тапни плитку для правки</h3>
+                  <p class="small">Подрез, скрытие и заметки сохраняются как данные.</p>
+                </div>
+              </section>
             </div>
             <div class="canvas" role="img" aria-label="макет сетки плитки">
               <div class="datum"></div>
@@ -1040,6 +1137,20 @@
               <span class="tab">Краска</span>
             </div>
             <div class="scroll">
+              <section class="section helper-card compact">
+                <div class="mascot mini" aria-hidden="true">
+                  <div class="eyes"><span></span><span></span></div>
+                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
+                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  </svg>
+                </div>
+                <div class="helper-copy">
+                  <h3>Клей пока в широком диапазоне</h3>
+                  <p class="small">Покупай 2 мешка; шов уточним перед затиркой.</p>
+                </div>
+              </section>
+
               <section class="list-row">
                 <div class="section-header">
                   <div>
@@ -1130,12 +1241,21 @@
                 <div class="field"><span class="small">Надёжность</span><strong>Точно</strong></div>
               </div>
 
-              <section class="section">
-                <div class="section-header">
-                  <h3>Уточнение норм</h3>
-                  <span class="badge ok">учтём</span>
+              <section class="section helper-card compact">
+                <div class="mascot mini" aria-hidden="true">
+                  <div class="eyes"><span></span><span></span></div>
+                  <svg class="mustache" viewBox="0 0 44 18" aria-hidden="true" focusable="false">
+                    <path d="M21.8 9 C17.6 12.2 10.8 12.9 7.4 9.4 C5.8 7.6 7.7 5.3 10.9 6.7" />
+                    <path d="M22.2 9 C26.4 12.2 33.2 12.9 36.6 9.4 C38.2 7.6 36.3 5.3 33.1 6.7" />
+                  </svg>
                 </div>
-                <p class="small">Чек можно учесть в будущих расчётах клея для похожих условий.</p>
+                <div class="helper-copy">
+                  <div class="section-header">
+                    <h3>Уточнение норм</h3>
+                    <span class="badge ok">учтём</span>
+                  </div>
+                  <p class="small">Чек улучшит будущие расчёты клея для похожих условий.</p>
+                </div>
               </section>
 
               <div class="entry-pad" aria-hidden="true">
