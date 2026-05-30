@@ -12,5 +12,17 @@ export { floorPlanSvg } from './geometry/floor-plan.ts';
 export { naiveTileGrid } from './geometry/tile-layout.ts';
 export type { TileLayout } from './geometry/tile-layout.ts';
 export { SAMPLE_CATALOG } from './catalog/sample-catalog.ts';
+export { CATALOG, SEED, projectCatalog, currentPriceFor } from './catalog/project-seed.ts';
+export type {
+  CatalogSeed,
+  CatalogStore,
+  CatalogMaterial,
+  CatalogSku,
+  CatalogPrice,
+  CatalogCoverage,
+  MaterialCategory,
+  MaterialVariability,
+  Currency,
+} from './catalog/seed-types.ts';
 export { electricPointsFor, ELECTRIC_TEMPLATES } from './electric/point-templates.ts';
 export type { ElectricPoints } from './electric/point-templates.ts';
