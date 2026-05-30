@@ -3,16 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Amigo · 01 Выбор объектов</title>
+<title>Amigo · 01 Выбор объектов — планшет</title>
 <style>
 :root{--ink:#1b1813;--helmet:#f7b500;--helmet-d:#d49400;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-.stage{display:flex;flex-direction:column;align-items:center;gap:10px}
-.cap{font-size:12px;letter-spacing:.04em;color:#8a8174;text-transform:uppercase}
-.cap b{color:var(--green-d);font-weight:600}
 .scene{position:relative;width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
-.scene svg{width:300px;height:auto;display:block;overflow:visible}
+.scene svg{width:340px;height:auto;display:block;overflow:visible}
 
 .ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
 .ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
@@ -22,11 +19,12 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
 .helmet-sh{fill:var(--helmet-d);stroke:none}
 .paper-fill{fill:var(--surface)}
 
-/* prop */
+/* ── prop: realistic tablet ── */
+.skin{fill:var(--paper);stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
 .tablet-shell{fill:var(--surface);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
 .tablet-screen{fill:var(--paper);stroke:var(--ink);stroke-width:3}
 .tablet-cam{fill:var(--surface);stroke:var(--ink);stroke-width:2.2}
-.tablet-home{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;opacity:.55}
+.tablet-home{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;opacity:.5}
 .row-icon{fill:var(--surface);stroke:var(--ink);stroke-width:2.8;stroke-linejoin:round}
 .row-line{fill:none;stroke:var(--ink);stroke-width:3.2;stroke-linecap:round;opacity:.5}
 .row-line-2{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;opacity:.32}
@@ -35,38 +33,26 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
 .tap-ring{fill:none;stroke:var(--green);stroke-width:4}
 
 /* ── ALL animation gated under .play (calm/static otherwise) ── */
-.play .tablet-rig{animation:tab-rock 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:150px 203px}
-.play .tap-arm{animation:tap-poke 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:62px 218px}
-.play .tap-ring{animation:tap-ring 3.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
-.play .row-hi,.play .row-hi-fill{animation:row-flash 3.6s ease-in-out infinite}
-.play .swipeStack{animation:swipe 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:150px 203px}
+.play .tap-arm{animation:tap-poke 3.4s ease-in-out infinite;transform-box:view-box;transform-origin:240px 200px}
+.play .tap-ring{animation:tap-ring 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.play .row-hi,.play .row-hi-fill{animation:row-flash 3.4s ease-in-out infinite}
+.play .rig{animation:breathe 3.4s ease-in-out infinite;transform-box:view-box;transform-origin:150px 220px}
 
-@keyframes tab-rock{0%,100%{transform:rotate(-1.4deg)}40%{transform:rotate(1.6deg)}70%{transform:rotate(.4deg)}}
-@keyframes tap-poke{0%,30%,100%{transform:translate(0,0)}45%,55%{transform:translate(7px,-6px) rotate(-2deg)}}
-@keyframes tap-ring{0%,42%,100%{opacity:0;transform:scale(.35)}50%{opacity:.9;transform:scale(1)}72%{opacity:0;transform:scale(1.5)}}
-@keyframes row-flash{0%,40%,100%{opacity:0}52%{opacity:1}80%{opacity:0}}
-@keyframes swipe{0%,12%{transform:translateY(8px);opacity:.0}24%,100%{transform:translateY(0);opacity:1}}
+@keyframes tap-poke{0%,28%,100%{transform:translate(0,0)}44%,56%{transform:translate(5px,-5px)}}
+@keyframes tap-ring{0%,40%,100%{opacity:0;transform:scale(.35)}50%{opacity:.9;transform:scale(1)}72%{opacity:0;transform:scale(1.5)}}
+@keyframes row-flash{0%,38%,100%{opacity:0}52%{opacity:1}82%{opacity:0}}
+@keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(1.5px)}}
 
 @media (prefers-reduced-motion: reduce){ .play *{animation:none!important} .play .row-hi,.play .row-hi-fill{opacity:1} }
 </style>
 </head>
 <body>
-<div class="stage">
-  
+
   <div class="scene play">
-    <svg viewBox="-24 30 330 280" role="img" aria-label="Amigo выбирает объект на планшете">
+    <svg viewBox="-20 20 360 320" role="img" aria-label="Amigo выбирает объект на планшете">
 
-      <!-- ░░ BACK ARM: holding hand from right shoulder cups the tablet's right edge ░░ -->
-      <path class="ln paper-fill" d="M174 224 q33 -3 45 18 q9 18 -4 32"/>
-      <!-- palm cupping the lower-right corner, thumb resting on the front face -->
-      <path class="ln paper-fill" d="M215 274 q9 -11 1 -24 q-8 -13 -27 -12"/>
-      <!-- 3 fingertips peeking over the right edge -->
-      <path class="ln-thin" d="M201 250 q12 0 13 11"/>
-      <path class="ln-thin" d="M196 257 q12 0 12 11"/>
-      <path class="ln-thin" d="M191 264 q12 0 11 11"/>
-
-      <!-- ░░░░░ AMIGO BUST — fixed geometry, verbatim ░░░░░ -->
-      <g class="amigo">
+      <!-- ░░░░░ AMIGO BUST — fixed geometry, verbatim (shifted up & slightly left to free room for the tablet) ░░░░░ -->
+      <g class="amigo" transform="translate(-6 -14)">
         <!-- shoulders -->
         <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
         <path class="ln-thin" d="M95 214 q20 14 40 0"/>
@@ -86,62 +72,80 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
           <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
           <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
           <g class="stache">
-            <path class="mustache stacheL" d="M115 154 C 110 159, 102 161, 96 160 C 90 159, 86 156, 86 151 C 86 147, 89 145, 91 148 C 90 152, 94 155, 100 154 C 106 153, 111 151, 115 149 Z"/>
-            <path class="mustache stacheR" d="M115 154 C 120 159, 128 161, 134 160 C 140 159, 144 156, 144 151 C 144 147, 141 145, 139 148 C 140 152, 136 155, 130 154 C 124 153, 119 151, 115 149 Z"/>
+            <path class="mustache" d="M115 151 C 108 153 100 154 93 154 C 88 154 84 152 84 148 C 83 144 86 140 90 142 C 93 143 93 147 91 150 C 90 156 95 161 102 162 C 108 163 112 162 115 160 Z"/>
+            <path class="mustache" d="M115 151 C 122 153 130 154 137 154 C 142 154 146 152 146 148 C 147 144 144 140 140 142 C 137 143 137 147 139 150 C 140 156 135 161 128 162 C 122 163 118 162 115 160 Z"/>
           </g>
-          <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
+          <path class="ln-thin mouth" d="M106 176 q9 4 18 0"/>
         </g>
       </g>
 
-      <!-- ░░ TABLET RIG (front of bust, mid-chest) ░░ -->
-      <g class="tablet-rig">
-        <!-- realistic portrait tablet, tilted slightly; uniform ~7px bezel all round -->
-        <g transform="rotate(-7 150 204)">
-          <!-- outer shell -->
-          <rect class="tablet-shell" x="100" y="152" width="100" height="104" rx="13"/>
-          <!-- front-facing camera dot, centred on the TOP bezel -->
-          <circle class="tablet-cam" cx="150" cy="159.5" r="2"/>
-          <!-- screen, inset uniformly inside the bezel -->
-          <rect class="tablet-screen" x="108" y="166" width="84" height="74" rx="4"/>
-          <!-- home indicator: thin bar centred on the BOTTOM bezel -->
-          <line class="tablet-home" x1="142" y1="248" x2="158" y2="248"/>
+      <!-- ░░ HOLDING ARM (Amigo's right, viewer-left): forearm rises from left shoulder; ░░
+           ░░ the hand cups the LOWER-LEFT corner of the tablet, fingers wrap the bottom ░░ -->
+      <!-- forearm: from left shoulder up toward the tablet's bottom-left corner -->
+      <path class="ln paper-fill" d="M58 232 q-14 8 -14 26 q0 16 16 23"/>
 
-          <!-- clean list: 3 rows, each = square icon + 2 text lines (swipe stack slides up) -->
-          <g class="swipeStack">
-            <!-- row 1 -->
-            <rect class="row-icon" x="114" y="173" width="14" height="14" rx="3"/>
-            <line class="row-line"   x1="135" y1="178" x2="184" y2="178"/>
-            <line class="row-line-2" x1="135" y1="184" x2="170" y2="184"/>
+      <!-- ░░ TABLET RIG — held in front of the chest, tilted for natural reading ░░ -->
+      <g class="rig">
+        <g transform="rotate(-9 150 222)">
+          <!-- outer shell: portrait tablet with uniform bezel -->
+          <rect class="tablet-shell" x="92" y="166" width="116" height="120" rx="14"/>
+          <!-- front camera dot, centred on top bezel -->
+          <circle class="tablet-cam" cx="150" cy="174" r="2"/>
+          <!-- screen inset uniformly inside bezel -->
+          <rect class="tablet-screen" x="101" y="181" width="98" height="86" rx="4"/>
+          <!-- home indicator on bottom bezel -->
+          <line class="tablet-home" x1="141" y1="277" x2="159" y2="277"/>
 
-            <!-- row 2 (the one being tapped / highlighted) -->
-            <rect class="row-hi-fill" x="111" y="195" width="78" height="20" rx="4"/>
-            <rect class="row-hi"      x="111" y="195" width="78" height="20" rx="4"/>
-            <rect class="row-icon"    x="114" y="198" width="14" height="14" rx="3"/>
-            <line class="row-line"   x1="135" y1="203" x2="184" y2="203"/>
-            <line class="row-line-2" x1="135" y1="209" x2="166" y2="209"/>
+          <!-- clean list: 3 rows = square icon + 2 text lines -->
+          <!-- row 1 -->
+          <rect class="row-icon" x="108" y="189" width="15" height="15" rx="3"/>
+          <line class="row-line"   x1="131" y1="194" x2="190" y2="194"/>
+          <line class="row-line-2" x1="131" y1="200.5" x2="174" y2="200.5"/>
 
-            <!-- row 3 -->
-            <rect class="row-icon" x="114" y="223" width="14" height="14" rx="3"/>
-            <line class="row-line"   x1="135" y1="228" x2="180" y2="228"/>
-            <line class="row-line-2" x1="135" y1="234" x2="162" y2="234"/>
-          </g>
+          <!-- row 2 (the one being tapped / highlighted) -->
+          <rect class="row-hi-fill" x="104" y="213" width="92" height="22" rx="4"/>
+          <rect class="row-hi"      x="104" y="213" width="92" height="22" rx="4"/>
+          <rect class="row-icon"    x="108" y="216" width="15" height="15" rx="3"/>
+          <line class="row-line"   x1="131" y1="221" x2="190" y2="221"/>
+          <line class="row-line-2" x1="131" y1="227.5" x2="170" y2="227.5"/>
+
+          <!-- row 3 -->
+          <rect class="row-icon" x="108" y="244" width="15" height="15" rx="3"/>
+          <line class="row-line"   x1="131" y1="249" x2="186" y2="249"/>
+          <line class="row-line-2" x1="131" y1="255.5" x2="166" y2="255.5"/>
         </g>
+
+        <!-- ░░ HOLDING HAND — grips the LEFT EDGE / lower-left corner of the tablet ░░
+             palm behind the edge, thumb on the front face, fingers curl over the edge -->
+        <!-- palm: rounded heel of the hand cupping under the bottom-left corner -->
+        <path class="skin" d="M70 296 q-16 -3 -20 -19 q-4 -16 9 -25 q9 -6 19 -3"/>
+        <!-- THUMB laid up the FRONT face along the screen's left margin -->
+        <path class="skin" d="M84 247 q-9 5 -10 17 q-1 9 5 16"/>
+        <!-- four FINGERS curling over the left edge onto the front, snug fingertips -->
+        <path class="ln-thin" d="M90 252 q9 2 8 10"/>
+        <path class="ln-thin" d="M87 261 q9 2 8 10"/>
+        <path class="ln-thin" d="M84 270 q9 2 8 10"/>
+        <path class="ln-thin" d="M80 279 q9 2 8 10"/>
       </g>
 
-      <!-- ░░ FRONT ARM: tapping hand from left shoulder, index finger lands on row 2 ░░ -->
+      <!-- ░░ TAPPING ARM (Amigo's left, viewer-right): forearm from right shoulder; ░░
+           ░░ closed fist with a single extended index finger pressing row 2 of the screen ░░ -->
       <g class="tap-arm">
-        <!-- forearm from left shoulder reaching up to screen -->
-        <path class="ln paper-fill" d="M60 218 q-12 14 0 30 q10 14 30 11"/>
-        <!-- hand: knuckles + extended index finger pointing up at the highlighted row -->
-        <path class="ln-thin paper-fill" d="M86 252 q11 8 23 4 q7 -2 9 -9"/>
-        <path class="ln" d="M118 247 l14 -38"/>
-        <!-- tap ripple ring at fingertip on row 2 -->
-        <circle class="tap-ring" cx="133" cy="205" r="9"/>
+        <!-- forearm sweeping in from the right shoulder up toward the screen -->
+        <path class="ln paper-fill" d="M236 258 q22 -7 21 -28 q-1 -15 -16 -21"/>
+        <!-- hand: closed fist (back-of-hand curl) nestled just right of the tablet's edge -->
+        <path class="skin" d="M222 199 q14 -7 23 3 q8 9 3 21 q-5 12 -19 10 q-9 -2 -11 -11"/>
+        <!-- curled-knuckle hints on the back of the fist -->
+        <path class="ln-thin" d="M238 200 q7 3 7 11"/>
+        <path class="ln-thin" d="M245 207 q5 4 3 11"/>
+        <!-- extended index finger reaching LEFT, fingertip pressing onto row 2 of the screen -->
+        <path class="ln" d="M223 207 l-32 13"/>
+        <!-- tap ripple ring at the fingertip, centred on the highlighted row 2 -->
+        <circle class="tap-ring" cx="188" cy="221" r="9"/>
       </g>
 
     </svg>
   </div>
-</div>
 
 <script>addEventListener("message",function(e){var s=document.querySelector(".scene");if(s)s.classList.toggle("play",e.data!=="calm");});</script>
 </body>

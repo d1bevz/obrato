@@ -2,14 +2,15 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Amigo · 04 Закупки</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amigo · 04 Закупки — тележка</title>
 <style>
 :root{--ink:#1b1813;--helmet:#f7b500;--helmet-d:#d49400;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
-body{margin:0;background:var(--paper);display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:system-ui,sans-serif}
-.wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
-.cap{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8a8270;font-weight:600}
-.scene{width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
-.scene svg{width:320px;height:auto;display:block;overflow:visible}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.title{color:#6b6456;font-size:13px;letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase}
+.scene{position:relative;width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.scene svg{width:336px;height:auto;display:block;overflow:visible}
 .ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
 .ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
 .fill-ink{fill:var(--ink);stroke:none}
@@ -19,192 +20,210 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
 .paper-fill{fill:var(--surface)}
 
 /* ===== prop styling ===== */
-.cart{fill:none;stroke:var(--ink);stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
-.cart-wire{fill:none;stroke:var(--ink);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
-.cart-fill{fill:var(--surface);stroke:var(--ink);stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
-.cart-pane{fill:var(--surface);stroke:none}
-.seat{fill:var(--paper);stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
-.fork{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
-.wheel{fill:var(--surface);stroke:var(--ink);stroke-width:4.2}
+.cart{fill:none;stroke:var(--ink);stroke-width:4.6;stroke-linecap:round;stroke-linejoin:round}
+.cart-wire{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.cart-pane{fill:var(--paper);stroke:none;opacity:.55}
+.bar{fill:var(--surface);stroke:var(--ink);stroke-width:6.4;stroke-linecap:round}
+.seat{fill:var(--paper);stroke:var(--ink);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.fork{fill:none;stroke:var(--ink);stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round}
+.wheel{fill:var(--surface);stroke:var(--ink);stroke-width:4.4}
 .wheel-hub{fill:var(--ink);stroke:none}
 .box{fill:var(--surface);stroke:var(--ink);stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round}
-.box-line{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
-.box-label{fill:var(--paper);stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.box-line{fill:none;stroke:var(--ink);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.box-label{fill:var(--paper);stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .box-accent{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .arm{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.hand-fill{fill:var(--surface);stroke:var(--ink);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.ground{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;opacity:.35}
 
-/* ===== STATIC by default — all motion gated under .play ===== */
+/* ===== STATIC by default — every motion gated behind .play (no .play = calm) ===== */
 
-/* whole rig rolls forward with a gentle bob */
-.play .rig{ animation: roll 2.6s ease-in-out infinite; transform-box: fill-box; }
+/* whole rig (Amigo + cart) leans forward & rolls with a gentle bob */
+.play .rig{ animation: roll 2.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center bottom; }
 @keyframes roll{
-  0%   { transform: translate(0,0) rotate(0deg); }
-  25%  { transform: translate(0,-3px) rotate(-.4deg); }
-  50%  { transform: translate(0,0) rotate(0deg); }
-  75%  { transform: translate(0,-3px) rotate(.4deg); }
-  100% { transform: translate(0,0) rotate(0deg); }
+  0%   { transform: translateX(0) translateY(0) rotate(0deg); }
+  25%  { transform: translateX(2px) translateY(-2.5px) rotate(-.4deg); }
+  50%  { transform: translateX(0) translateY(0) rotate(0deg); }
+  75%  { transform: translateX(2px) translateY(-2.5px) rotate(.4deg); }
+  100% { transform: translateX(0) translateY(0) rotate(0deg); }
 }
 
-/* wheels spin */
-.play .wheelSpin{ animation: spin 1.1s linear infinite; transform-box: fill-box; transform-origin: center; }
+/* wheels spin while rolling */
+.play .wheelSpin{ animation: spin 1.05s linear infinite; }
 @keyframes spin{ from{ transform: rotate(0deg);} to{ transform: rotate(360deg);} }
 
-/* the falling product: drops in, settles with a tiny squash, pauses, then loops */
-.play .drop{ animation: drop 2.6s ease-in infinite; transform-box: fill-box; transform-origin: center bottom; }
-@keyframes drop{
-  0%   { transform: translateY(-120px) rotate(-12deg); opacity:0; }
-  18%  { transform: translateY(-120px) rotate(-12deg); opacity:0; }
-  20%  { opacity:1; }
-  46%  { transform: translateY(0) rotate(0deg); opacity:1; }       /* lands */
-  52%  { transform: translateY(0) scale(1.06,.9) rotate(0deg); }   /* squash */
-  60%  { transform: translateY(0) scale(1,1) rotate(0deg); }       /* settle */
-  100% { transform: translateY(0) rotate(0deg); opacity:1; }
+/* the tile box jostles a little inside the basket as it rolls */
+.play .cargo{ animation: jostle 2.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center bottom; }
+@keyframes jostle{
+  0%   { transform: translateY(0) rotate(0deg); }
+  25%  { transform: translateY(-3px) rotate(-1.4deg); }
+  50%  { transform: translateY(0) rotate(0deg); }
+  75%  { transform: translateY(-3px) rotate(1.4deg); }
+  100% { transform: translateY(0) rotate(0deg); }
 }
 
-/* little landing puff lines */
-.play .puff{ animation: puff 2.6s ease-out infinite; transform-box: fill-box; transform-origin: center; opacity:0; }
-@keyframes puff{
-  0%,46%{ opacity:0; transform: scale(.4); }
-  52%   { opacity:.8; transform: scale(1); }
-  66%   { opacity:0; transform: scale(1.25); }
-  100%  { opacity:0; }
-}
+/* occasional blink */
+.play .eyeL,.play .eyeR{ animation: blink 5.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes blink{ 0%,92%,100%{ transform: scaleY(1);} 95.5%{ transform: scaleY(.08);} }
 
 @media (prefers-reduced-motion: reduce){ .play *{animation:none!important} }
 </style>
 </head>
 <body>
-<div class="wrap">
-  
-  <div class="scene play">
-    <svg viewBox="-20 0 340 310" role="img" aria-label="Amigo катит тележку, в корзину падает коробка">
+<div class="title">04 · Закупки — тележка</div>
+<div class="scene play">
+  <svg viewBox="14 34 360 312" role="img" aria-label="Amigo обеими руками толкает магазинную тележку с коробкой плитки">
 
-      <!-- ===================== SHOPPING CART (Amigo grips the handle bar) =====================
-           Real supermarket trolley silhouette:
-           - long handle bar at the back-top (Amigo's fist wraps it at ~196,168)
-           - trapezoidal WIRE basket: wider at the open top, narrower at the bottom,
-             with a clear grid of vertical + horizontal bars (see-through, not a solid wall)
-           - fold-down child seat flap hinged off the handle side
-           - bottom frame + two visible wheels on swivel forks (back pair implied)
-      -->
-      <g class="rig">
+    <!-- everything that travels lives in .rig so it rolls/leans as one unit -->
+    <g class="rig">
 
-        <!-- pale pane behind the wires so the basket reads as one volume but stays see-through -->
-        <path class="cart-pane" d="M200 198 L312 198 L296 270 L226 270 Z"/>
+      <!-- ground contact shadow line under the wheels -->
+      <path class="ground" d="M70 320 q150 8 280 0"/>
 
-        <!-- ===== handle bar: horizontal grip the fist wraps, then frame sweeping to basket ===== -->
-        <!-- the grip bar Amigo holds -->
-        <path class="cart" d="M192 168 l26 0"/>
-        <!-- bar end caps -->
-        <path class="cart-wire" d="M192 162 l0 12 M218 162 l0 12"/>
-        <!-- frame tubes from the handle bar down to the rear corner of the basket -->
-        <path class="cart" d="M218 168 q22 1 27 16 l5 14"/>
-        <path class="cart" d="M199 174 q1 12 1 24"/>
-
-        <!-- ===== basket: trapezoid rim, wider at the open top ===== -->
-        <!-- top rim (the open mouth of the basket) -->
-        <path class="cart" d="M200 198 L312 198"/>
-        <!-- rear wall edge -->
-        <path class="cart" d="M200 198 L226 270"/>
-        <!-- front wall edge -->
-        <path class="cart" d="M312 198 L296 270"/>
-        <!-- bottom of basket -->
-        <path class="cart" d="M226 270 L296 270"/>
-
-        <!-- WIRE GRID — vertical bars (splay outward following the slanted walls) -->
-        <path class="cart-wire" d="M222 198 l-3 72"/>
-        <path class="cart-wire" d="M244 198 l-1 72"/>
-        <path class="cart-wire" d="M266 198 l0 72"/>
-        <path class="cart-wire" d="M288 198 l1 72"/>
-        <!-- WIRE GRID — horizontal bars (3 rails, narrowing toward the base) -->
-        <path class="cart-wire" d="M205 222 l102 0"/>
-        <path class="cart-wire" d="M210 246 l92 0"/>
-
-        <!-- fold-down child seat flap, hinged near the handle, tilted into the basket mouth -->
-        <path class="seat" d="M204 200 l30 -8 l4 14 l-30 8 Z"/>
-        <path class="cart-wire" d="M210 199 l28 -8 M214 211 l27 -8"/>
-
-        <!-- ===== bottom frame + swivel-fork wheels ===== -->
-        <!-- under-basket frame rail -->
-        <path class="cart" d="M222 272 l78 0"/>
-        <!-- front swivel fork -->
-        <g>
-          <path class="fork" d="M236 272 l-2 8 q-1 4 4 5"/>
-          <path class="fork" d="M232 280 l8 0"/>
-          <g class="wheelSpin" style="transform-origin:236px 290px">
-            <circle class="wheel" cx="236" cy="290" r="11"/>
-            <circle class="wheel-hub" cx="236" cy="290" r="3"/>
-            <path class="ln-thin" d="M236 281 l0 18 M227 290 l18 0"/>
+      <!-- ===================== AMIGO BUST (verbatim geometry) =====================
+           Scaled to 0.82 and nudged down-left, with a slight forward (clockwise) lean
+           so he reads as PUSHING. Inner paths untouched. -->
+      <g transform="translate(8,40) scale(.82) rotate(4 115 240)">
+        <g class="amigo">
+          <!-- shoulders -->
+          <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
+          <path class="ln-thin" d="M95 214 q20 14 40 0"/>
+          <path class="ln-thin" d="M115 222 q0 19 0 38"/>
+          <!-- head -->
+          <g class="head">
+            <path class="ln paper-fill" d="M71 134 q-9 1 -8 12 q1 9 9 7"/>
+            <path class="ln paper-fill" d="M159 134 q9 1 8 12 q-1 9 -9 7"/>
+            <path class="ln paper-fill" d="M71 120 q-3 26 4 38 q11 18 40 18 q29 0 40 -18 q7 -12 4 -38 q-44 -10 -88 0 Z"/>
+            <path class="helmet" d="M60 106 q1 -54 55 -54 q54 0 55 54 q-27 -10 -55 -10 q-28 0 -55 10 Z"/>
+            <path class="helmet-sh" d="M60 106 q27 -10 55 -10 q28 0 55 10 q-3 7 -11 6 q-44 -9 -88 0 q-8 1 -11 -6 Z"/>
+            <path class="ln" d="M115 53 q0 26 0 43" opacity=".5"/>
+            <path class="ln" d="M50 106 q65 -19 130 0"/>
+            <path class="ln-thin browL" d="M83 117 q9 -5 18 -1"/>
+            <path class="ln-thin browR" d="M129 116 q9 -4 18 1"/>
+            <ellipse class="eyeL fill-ink" cx="92" cy="130" rx="4.4" ry="5.4"/>
+            <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
+            <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
+            <g class="stache">
+              <path class="mustache" d="M115 151 C 108 153 100 154 93 154 C 88 154 84 152 84 148 C 83 144 86 140 90 142 C 93 143 93 147 91 150 C 90 156 95 161 102 162 C 108 163 112 162 115 160 Z"/>
+              <path class="mustache" d="M115 151 C 122 153 130 154 137 154 C 142 154 146 152 146 148 C 147 144 144 140 140 142 C 137 143 137 147 139 150 C 140 156 135 161 128 162 C 122 163 118 162 115 160 Z"/>
+            </g>
+            <path class="ln-thin mouth" d="M106 176 q9 4 18 0"/>
           </g>
-        </g>
-        <!-- rear swivel fork -->
-        <g>
-          <path class="fork" d="M290 272 l2 8 q1 4 -4 5"/>
-          <path class="fork" d="M286 280 l8 0"/>
-          <g class="wheelSpin" style="transform-origin:290px 290px">
-            <circle class="wheel" cx="290" cy="290" r="11"/>
-            <circle class="wheel-hub" cx="290" cy="290" r="3"/>
-            <path class="ln-thin" d="M290 281 l0 18 M281 290 l18 0"/>
-          </g>
-        </g>
-
-        <!-- landing puff lines above the basket mouth -->
-        <g class="puff" style="transform-origin:262px 196px">
-          <path class="ln-thin" d="M242 190 l-8 -6 M262 186 l0 -9 M282 190 l8 -6"/>
-        </g>
-
-        <!-- ===================== FALLING PRODUCT (box of tile, with label) ===================== -->
-        <g class="drop" style="transform-origin:262px 212px">
-          <rect class="box" x="236" y="184" width="52" height="40" rx="3"/>
-          <!-- packing tape cross -->
-          <path class="box-line" d="M262 184 l0 40"/>
-          <path class="box-line" d="M236 204 l52 0"/>
-          <!-- product label panel + green brand stripe -->
-          <rect class="box-label" x="241" y="189" width="20" height="11" rx="1.5"/>
-          <path class="box-accent" d="M244 194 l14 0"/>
-        </g>
-
-      </g>
-
-      <!-- ===================== AMIGO BUST (verbatim geometry) ===================== -->
-      <g class="amigo">
-        <!-- shoulders -->
-        <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
-        <path class="ln-thin" d="M95 214 q20 14 40 0"/>
-        <path class="ln-thin" d="M115 222 q0 19 0 38"/>
-        <!-- head -->
-        <g class="head">
-          <path class="ln paper-fill" d="M71 134 q-9 1 -8 12 q1 9 9 7"/>
-          <path class="ln paper-fill" d="M159 134 q9 1 8 12 q-1 9 -9 7"/>
-          <path class="ln paper-fill" d="M71 120 q-3 26 4 38 q11 18 40 18 q29 0 40 -18 q7 -12 4 -38 q-44 -10 -88 0 Z"/>
-          <path class="helmet" d="M60 106 q1 -54 55 -54 q54 0 55 54 q-27 -10 -55 -10 q-28 0 -55 10 Z"/>
-          <path class="helmet-sh" d="M60 106 q27 -10 55 -10 q28 0 55 10 q-3 7 -11 6 q-44 -9 -88 0 q-8 1 -11 -6 Z"/>
-          <path class="ln" d="M115 53 q0 26 0 43" opacity=".5"/>
-          <path class="ln" d="M50 106 q65 -19 130 0"/>
-          <path class="ln-thin browL" d="M83 117 q9 -5 18 -1"/>
-          <path class="ln-thin browR" d="M129 116 q9 -4 18 1"/>
-          <ellipse class="eyeL fill-ink" cx="92" cy="130" rx="4.4" ry="5.4"/>
-          <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
-          <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
-          <g class="stache">
-            <path class="mustache stacheL" d="M115 154 C 110 159, 102 161, 96 160 C 90 159, 86 156, 86 151 C 86 147, 89 145, 91 148 C 90 152, 94 155, 100 154 C 106 153, 111 151, 115 149 Z"/>
-            <path class="mustache stacheR" d="M115 154 C 120 159, 128 161, 134 160 C 140 159, 144 156, 144 151 C 144 147, 141 145, 139 148 C 140 152, 136 155, 130 154 C 124 153, 119 151, 115 149 Z"/>
-          </g>
-          <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
         </g>
       </g>
 
-      <!-- ===================== ARM + HAND on the handle ===================== -->
-      <!-- arm from right shoulder reaching out to the handle grip at (196,168) -->
-      <path class="arm" d="M170 232 q22 -2 38 -30 q4 -8 -8 -6"/>
-      <!-- hand / fist wrapping the handle -->
+      <!-- shoulder/scale reference for arms: with the bust transform above,
+           the right shoulder lands near (150,225); the bar he pushes is at x≈196..236, y≈206. -->
+
+      <!-- ===================== SHOPPING CART =====================
+           Real supermarket trolley, FULLY in frame to the right of the body:
+           - horizontal HANDLE bar at the back-top (both fists wrap it)
+           - trapezoidal WIRE basket (wider open top, narrower base), see-through grid
+           - fold-down child-seat flap hinged off the handle side
+           - bottom frame + two visible swivel-fork wheels -->
+
+      <!-- pale pane behind the wires so the basket reads as one volume but stays see-through -->
+      <path class="cart-pane" d="M236 214 L342 214 L326 286 L258 286 Z"/>
+
+      <!-- frame tubes: from the handle bar down to the basket corners -->
+      <path class="cart" d="M236 206 q24 0 30 16 l3 14"/>
+      <path class="cart" d="M212 214 q1 11 1 22"/>
+
+      <!-- basket: trapezoid rim, wider at the open top -->
+      <path class="cart" d="M236 214 L342 214"/>   <!-- top rim (open mouth) -->
+      <path class="cart" d="M236 214 L258 286"/>   <!-- rear wall edge -->
+      <path class="cart" d="M342 214 L326 286"/>   <!-- front wall edge -->
+      <path class="cart" d="M258 286 L326 286"/>   <!-- bottom of basket -->
+
+      <!-- WIRE GRID — verticals splay outward following the slanted walls -->
+      <path class="cart-wire" d="M257 214 l-3 72"/>
+      <path class="cart-wire" d="M278 214 l-1 72"/>
+      <path class="cart-wire" d="M299 214 l0 72"/>
+      <path class="cart-wire" d="M320 214 l1 72"/>
+      <!-- WIRE GRID — horizontals, narrowing toward the base -->
+      <path class="cart-wire" d="M241 238 l96 0"/>
+      <path class="cart-wire" d="M247 262 l84 0"/>
+
+      <!-- fold-down child-seat flap, hinged near the handle, tilted into the basket mouth -->
+      <path class="seat" d="M240 216 l28 -8 l4 13 l-28 8 Z"/>
+      <path class="cart-wire" d="M245 215 l27 -8 M249 227 l26 -8"/>
+
+      <!-- bottom frame rail + two swivel-fork wheels -->
+      <path class="cart" d="M254 288 l76 0"/>
+      <!-- front swivel fork + wheel -->
+      <g>
+        <path class="fork" d="M268 288 l-2 8 q-1 4 4 5"/>
+        <path class="fork" d="M264 296 l8 0"/>
+        <g class="wheelSpin" style="transform-origin:268px 306px">
+          <circle class="wheel" cx="268" cy="306" r="11"/>
+          <circle class="wheel-hub" cx="268" cy="306" r="3"/>
+          <path class="ln-thin" d="M268 297 l0 18 M259 306 l18 0"/>
+        </g>
+      </g>
+      <!-- rear swivel fork + wheel -->
+      <g>
+        <path class="fork" d="M320 288 l2 8 q1 4 -4 5"/>
+        <path class="fork" d="M316 296 l8 0"/>
+        <g class="wheelSpin" style="transform-origin:320px 306px">
+          <circle class="wheel" cx="320" cy="306" r="11"/>
+          <circle class="wheel-hub" cx="320" cy="306" r="3"/>
+          <path class="ln-thin" d="M320 297 l0 18 M311 306 l18 0"/>
+        </g>
+      </g>
+
+      <!-- ===================== CARGO — box of tile with label, seated in the basket ===================== -->
+      <g class="cargo" style="transform-origin:286px 226px">
+        <rect class="box" x="262" y="186" width="50" height="40" rx="3"/>
+        <!-- packing-tape cross -->
+        <path class="box-line" d="M287 186 l0 40"/>
+        <path class="box-line" d="M262 206 l50 0"/>
+        <!-- product label panel + one modest green brand stripe -->
+        <rect class="box-label" x="267" y="191" width="20" height="11" rx="1.5"/>
+        <path class="box-accent" d="M270 196.5 l14 0"/>
+      </g>
+
+      <!-- ===================== HANDLE BAR + BOTH HANDS =====================
+           Bar drawn first; then for EACH hand: palm mass behind, fingers curling
+           OVER the bar, thumb — so each fist visibly WRAPS the bar. -->
+
+      <!-- arms reaching from the shoulders out to the bar -->
+      <path class="arm" d="M150 232 q26 -6 44 -22"/>
+      <path class="arm" d="M158 244 q30 -4 56 -32"/>
+
+      <!-- the horizontal grip bar both hands hold -->
+      <path class="bar" d="M186 210 l52 0"/>
+      <!-- bar end caps -->
+      <path class="cart-wire" d="M186 203 l0 14 M238 203 l0 14"/>
+
+      <!-- LEFT fist (near hand) wrapping the bar, centred at x≈197 -->
       <g class="hand">
-        <path class="cart-fill" d="M188 158 q14 -3 18 8 q3 11 -9 15 q-13 4 -19 -6 q-4 -13 10 -17 Z"/>
-        <path class="ln-thin" d="M188 167 l16 -1 M189 175 l15 -2"/>
+        <!-- palm + back-of-hand mass cupping under the bar -->
+        <path class="hand-fill" d="M186 213 q-9 1 -9 -8 q0 -9 9 -10 q11 -1 18 2 q5 3 4 9 q-2 7 -12 8 q-9 0 -18 -1 Z"/>
+        <!-- three fingers curling OVER the front of the bar -->
+        <path class="hand-fill" d="M189 203 q4 -5 9 -3 q4 2 3 9"/>
+        <path class="hand-fill" d="M198 202 q4 -5 9 -3 q4 2 3 9"/>
+        <path class="hand-fill" d="M207 203 q4 -5 9 -3 q3 2 2 9"/>
+        <!-- thumb hooking the near underside -->
+        <path class="hand-fill" d="M185 218 q-8 1 -9 -5 q-1 -6 7 -7"/>
+        <!-- knuckle creases for grip read -->
+        <path class="ln-thin" d="M200 206 q1 4 0 7" opacity=".55"/>
+        <path class="ln-thin" d="M209 206 q1 4 0 7" opacity=".55"/>
       </g>
 
-    </svg>
-  </div>
+      <!-- RIGHT fist (far hand) wrapping the bar, centred at x≈226 -->
+      <g class="hand">
+        <path class="hand-fill" d="M215 213 q-9 1 -9 -8 q0 -9 9 -10 q11 -1 18 2 q5 3 4 9 q-2 7 -12 8 q-9 0 -18 -1 Z"/>
+        <path class="hand-fill" d="M218 203 q4 -5 9 -3 q4 2 3 9"/>
+        <path class="hand-fill" d="M227 202 q4 -5 9 -3 q4 2 3 9"/>
+        <path class="hand-fill" d="M236 203 q4 -5 8 -3 q3 2 2 9"/>
+        <path class="hand-fill" d="M214 218 q-8 1 -9 -5 q-1 -6 7 -7"/>
+        <path class="ln-thin" d="M229 206 q1 4 0 7" opacity=".55"/>
+        <path class="ln-thin" d="M238 206 q1 4 0 7" opacity=".55"/>
+      </g>
+
+    </g><!-- /.rig -->
+
+  </svg>
 </div>
 
 <script>addEventListener("message",function(e){var s=document.querySelector(".scene");if(s)s.classList.toggle("play",e.data!=="calm");});</script>

@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amigo · 05 Факты и нормы</title>
+<title>Amigo · 05 Факты и нормы — справочник</title>
 <style>
 :root{--ink:#1b1813;--helmet:#f7b500;--helmet-d:#d49400;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
-body{margin:0;background:var(--paper);display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-.wrap{display:flex;flex-direction:column;align-items:center;gap:0}
-.title{font-size:13px;letter-spacing:.04em;color:#8a8170;margin-bottom:10px;text-transform:uppercase;font-weight:600}
-.scene{width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
-.scene svg{width:300px;height:auto;display:block;overflow:visible}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.title{color:#6b6456;font-size:13px;letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase;font-weight:600}
+.scene{position:relative;width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.scene svg{width:330px;height:auto;display:block;overflow:visible}
 .ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
 .ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
 .fill-ink{fill:var(--ink);stroke:none}
@@ -19,231 +19,267 @@ body{margin:0;background:var(--paper);display:flex;align-items:center;justify-co
 .helmet-sh{fill:var(--helmet-d);stroke:none}
 .paper-fill{fill:var(--surface)}
 
-/* prop: book — text-lines, pages, cover */
-.txt{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;opacity:.5}
-.cover{fill:var(--surface);stroke:var(--ink);stroke-width:4.4;stroke-linejoin:round}
-.cover-edge{fill:var(--paper);stroke:var(--ink);stroke-width:4.4;stroke-linejoin:round}
-.page{fill:var(--surface);stroke:var(--ink);stroke-width:3.6;stroke-linejoin:round}
-.page-block{fill:var(--paper);stroke:var(--ink);stroke-width:3.4;stroke-linejoin:round}
-.page-line{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;opacity:.35}
+/* ===== prop: thick open reference tome ===== */
+.cover{fill:var(--paper);stroke:var(--ink);stroke-width:4.6;stroke-linejoin:round}
+.spine-block{fill:var(--paper);stroke:var(--ink);stroke-width:4.2;stroke-linejoin:round}
+.page-block{fill:var(--surface);stroke:var(--ink);stroke-width:3.8;stroke-linejoin:round}
+.page-striation{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;opacity:.32}
+.page{fill:var(--surface);stroke:var(--ink);stroke-width:3.8;stroke-linejoin:round}
 .spine{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round}
-.table{fill:none;stroke:var(--ink);stroke-width:1.9;stroke-linejoin:round;opacity:.62}
-.table-accent{fill:none;stroke:var(--green);stroke-width:2.2;stroke-linecap:round}
-.approx{fill:none;stroke:var(--green-d);stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round}
+.spine-soft{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;opacity:.34}
+.txt{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;opacity:.5}
+.table-frame{fill:none;stroke:var(--ink);stroke-width:1.9;stroke-linejoin:round;opacity:.62}
+.table-accent{fill:none;stroke:var(--green);stroke-width:3.4;stroke-linecap:round}
+
+/* ===== hands (solid mitten masses that truly grip the book) ===== */
+.hand-fill{fill:var(--surface);stroke:var(--ink);stroke-width:3.6;stroke-linecap:round;stroke-linejoin:round}
+.knuck{fill:none;stroke:var(--ink);stroke-width:2.1;stroke-linecap:round;opacity:.66}
+
+/* ===== «≈» approximate sign ===== */
+.approx{fill:none;stroke:var(--green-d);stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
 .approx-ring{fill:none;stroke:var(--green);stroke-width:3.2;opacity:0}
 
-/* ===== ALL animation gated under .play (calm static mode without it) ===== */
-.play .approx-grp{animation:approxPulse 2.2s ease-in-out infinite;transform-origin:208px 182px}
-.play .approx-ring{animation:approxRing 2.2s ease-in-out infinite;transform-origin:208px 182px}
-.play .finger{animation:fingerSlide 3.4s ease-in-out infinite;transform-origin:center}
-.play .page-flip{animation:pageFlip 3.4s ease-in-out infinite;transform-origin:115px 232px}
-.play .browL{animation:browLift 3.4s ease-in-out infinite;transform-origin:92px 117px}
-.play .eyeL,.play .eyeR{animation:gazeDown 3.4s ease-in-out infinite}
+/* ===== STATIC (calm) defaults — everything readable with NO motion ===== */
 
+/* ===== ANIMATION — ONLY under .play (remove .play => static calm) ===== */
+.play .book-rig{animation:bookBreathe 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:115px 250px}
+.play .trace{animation:traceSlide 4s ease-in-out infinite;transform-box:view-box;transform-origin:160px 250px}
+.play .approx-grp{animation:approxPulse 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.play .approx-ring{animation:approxRing 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.play .browL{animation:browLift 4s ease-in-out infinite;transform-box:view-box;transform-origin:92px 117px}
+.play .eyeL,.play .eyeR{animation:gazeBlink 4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+
+@keyframes bookBreathe{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(1.4px) rotate(-.3deg)}
+}
+@keyframes traceSlide{
+  0%,10%{transform:translate(0,0)}
+  46%{transform:translate(20px,2.2px)}
+  56%{transform:translate(20px,3.4px)}
+  90%,100%{transform:translate(0,0)}
+}
 @keyframes approxPulse{
-  0%,100%{transform:scale(1);opacity:.85}
-  50%{transform:scale(1.18);opacity:1}
+  0%,100%{transform:scale(1);opacity:.9}
+  50%{transform:scale(1.16);opacity:1}
 }
 @keyframes approxRing{
-  0%,100%{transform:scale(.85);opacity:0}
+  0%,100%{transform:scale(.8);opacity:0}
   45%{opacity:.5}
-  100%{transform:scale(1.5);opacity:0}
-}
-@keyframes fingerSlide{
-  0%,8%{transform:translate(0,0)}
-  40%{transform:translate(34px,0)}
-  50%{transform:translate(34px,4px)}
-  82%,100%{transform:translate(0,0)}
-}
-@keyframes pageFlip{
-  0%,60%{transform:scaleX(1);opacity:.95}
-  72%{transform:scaleX(.1);opacity:.7}
-  84%{transform:scaleX(1);opacity:.95}
-  100%{transform:scaleX(1);opacity:.95}
+  100%{transform:scale(1.42);opacity:0}
 }
 @keyframes browLift{
-  0%,30%{transform:translateY(0)}
+  0%,28%{transform:translateY(0)}
   50%,70%{transform:translateY(-3px)}
   100%{transform:translateY(0)}
 }
-@keyframes gazeDown{
-  0%,100%{transform:translateY(2px)}
-  50%{transform:translateY(2.5px)}
+@keyframes gazeBlink{
+  0%,90%,100%{transform:translateY(2px) scaleY(1)}
+  50%{transform:translateY(2.6px) scaleY(1)}
+  94.5%{transform:translateY(2.4px) scaleY(.1)}
 }
 
 @media (prefers-reduced-motion: reduce){ .play *{animation:none!important} }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="title">05 · Факты и нормы — справочник</div>
-  <div class="scene play">
-    <svg viewBox="-8 34 262 252" role="img" aria-label="Amigo сверяется по справочнику норм">
+<div class="title">05 · Факты и нормы — справочник</div>
+<div class="scene play">
+  <svg viewBox="-2 26 250 300" role="img" aria-label="Amigo держит обеими руками толстый справочник норм и сверяется по нему">
 
-      <!-- ===================== BUST (verbatim) ===================== -->
-      <g class="amigo">
-        <!-- shoulders -->
-        <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
-        <path class="ln-thin" d="M95 214 q20 14 40 0"/>
-        <path class="ln-thin" d="M115 222 q0 19 0 38"/>
-        <!-- head -->
-        <g class="head">
-          <path class="ln paper-fill" d="M71 134 q-9 1 -8 12 q1 9 9 7"/>
-          <path class="ln paper-fill" d="M159 134 q9 1 8 12 q-1 9 -9 7"/>
-          <path class="ln paper-fill" d="M71 120 q-3 26 4 38 q11 18 40 18 q29 0 40 -18 q7 -12 4 -38 q-44 -10 -88 0 Z"/>
-          <path class="helmet" d="M60 106 q1 -54 55 -54 q54 0 55 54 q-27 -10 -55 -10 q-28 0 -55 10 Z"/>
-          <path class="helmet-sh" d="M60 106 q27 -10 55 -10 q28 0 55 10 q-3 7 -11 6 q-44 -9 -88 0 q-8 1 -11 -6 Z"/>
-          <path class="ln" d="M115 53 q0 26 0 43" opacity=".5"/>
-          <path class="ln" d="M50 106 q65 -19 130 0"/>
-          <path class="ln-thin browL" d="M83 117 q9 -5 18 -1"/>
-          <path class="ln-thin browR" d="M129 116 q9 -4 18 1"/>
-          <ellipse class="eyeL fill-ink" cx="92" cy="130" rx="4.4" ry="5.4"/>
-          <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
-          <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
-          <g class="stache">
-            <path class="mustache stacheL" d="M115 154 C 110 159, 102 161, 96 160 C 90 159, 86 156, 86 151 C 86 147, 89 145, 91 148 C 90 152, 94 155, 100 154 C 106 153, 111 151, 115 149 Z"/>
-            <path class="mustache stacheR" d="M115 154 C 120 159, 128 161, 134 160 C 140 159, 144 156, 144 151 C 144 147, 141 145, 139 148 C 140 152, 136 155, 130 154 C 124 153, 119 151, 115 149 Z"/>
-          </g>
-          <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
+    <!-- ===================== AMIGO BUST — fixed geometry verbatim ===================== -->
+    <g class="amigo">
+      <!-- shoulders -->
+      <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
+      <path class="ln-thin" d="M95 214 q20 14 40 0"/>
+      <path class="ln-thin" d="M115 222 q0 19 0 38"/>
+      <!-- head -->
+      <g class="head">
+        <path class="ln paper-fill" d="M71 134 q-9 1 -8 12 q1 9 9 7"/>
+        <path class="ln paper-fill" d="M159 134 q9 1 8 12 q-1 9 -9 7"/>
+        <path class="ln paper-fill" d="M71 120 q-3 26 4 38 q11 18 40 18 q29 0 40 -18 q7 -12 4 -38 q-44 -10 -88 0 Z"/>
+        <path class="helmet" d="M60 106 q1 -54 55 -54 q54 0 55 54 q-27 -10 -55 -10 q-28 0 -55 10 Z"/>
+        <path class="helmet-sh" d="M60 106 q27 -10 55 -10 q28 0 55 10 q-3 7 -11 6 q-44 -9 -88 0 q-8 1 -11 -6 Z"/>
+        <path class="ln" d="M115 53 q0 26 0 43" opacity=".5"/>
+        <path class="ln" d="M50 106 q65 -19 130 0"/>
+        <path class="ln-thin browL" d="M83 117 q9 -5 18 -1"/>
+        <path class="ln-thin browR" d="M129 116 q9 -4 18 1"/>
+        <ellipse class="eyeL fill-ink" cx="92" cy="130" rx="4.4" ry="5.4"/>
+        <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
+        <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
+        <g class="stache">
+          <path class="mustache" d="M115 151 C 108 153 100 154 93 154 C 88 154 84 152 84 148 C 83 144 86 140 90 142 C 93 143 93 147 91 150 C 90 156 95 161 102 162 C 108 163 112 162 115 160 Z"/>
+          <path class="mustache" d="M115 151 C 122 153 130 154 137 154 C 142 154 146 152 146 148 C 147 144 144 140 140 142 C 137 143 137 147 139 150 C 140 156 135 161 128 162 C 122 163 118 162 115 160 Z"/>
         </g>
+        <path class="ln-thin mouth" d="M106 176 q9 4 18 0"/>
       </g>
-      <!-- ===================== /BUST ===================== -->
+    </g>
+    <!-- ===================== /BUST ===================== -->
 
-      <!-- ===================== PROP: thick open reference tome, held in both hands ===================== -->
-      <!-- Forearms from the shoulders coming forward to the wrists at the book's lower corners -->
-      <path class="ln paper-fill" d="M74 232 q-30 6 -38 30 q-3 9 4 16"/>
-      <path class="ln paper-fill" d="M156 232 q30 6 38 30 q3 9 -4 16"/>
+    <!-- ===================== FOREARMS — from each shoulder down-in to the wrists under the book =====================
+         Drawn FIRST so the hands (later) overlap their ends and read as one limb.
+         Left forearm runs from the left shoulder to the left wrist (~70,266);
+         right forearm from the right shoulder to the right wrist (~160,266). -->
+    <path class="ln paper-fill" d="M72 222 q-26 6 -30 28 q-2 12 6 20"/>
+    <path class="ln paper-fill" d="M158 222 q26 6 30 28 q2 12 -6 20"/>
 
-      <!-- ===== BOOK ===== centered on spine x=115; open like a butterfly ===== -->
-      <g class="book">
+    <!-- ===================== BOOK RIG — thick open tome held at reading height, below the face ===================== -->
+    <g class="book-rig">
 
-        <!-- COVER: slightly overhangs the page-block on outer edges + bottom -->
-        <path class="cover" d="M115 222
-          q-30 -16 -62 -7
-          q-6 1 -6 8
-          l0 38
-          q0 6 6 8
-          q33 -10 62 5
-          q29 -15 62 -5
-          q6 -2 6 -8
-          l0 -38
-          q0 -7 -6 -8
-          q-32 -9 -62 7 Z"/>
+      <!-- ===== COVER — overhangs the page-block on the outer edges + bottom (visible binding) ===== -->
+      <path class="cover" d="M115 228
+        q-30 -15 -61 -6
+        q-7 1 -7 9
+        l0 28
+        q0 7 7 9
+        q31 -9 61 5
+        q30 -14 61 -5
+        q7 -2 7 -9
+        l0 -28
+        q0 -8 -7 -9
+        q-31 -9 -61 6 Z"/>
 
-        <!-- LEFT page-block thickness (stacked pages, side volume) -->
-        <path class="page-block" d="M114 270
-          q-29 -15 -60 -5
-          q-4 1 -4 5
-          q31 -10 60 4
-          q2 -5 4 -9 Z"/>
-        <!-- RIGHT page-block thickness -->
-        <path class="page-block" d="M116 270
-          q29 -15 60 -5
-          q4 1 4 5
-          q-31 -10 -60 4
-          q-2 -5 -4 -9 Z"/>
-        <!-- thin striations on the side page-blocks (visible sheet stack) -->
-        <path class="page-line" d="M55 262 q30 -9 59 3"/>
-        <path class="page-line" d="M55 266 q30 -9 59 3"/>
-        <path class="page-line" d="M175 262 q-30 -9 -59 3"/>
-        <path class="page-line" d="M175 266 q-30 -9 -59 3"/>
+      <!-- ===== PAGE-BLOCK THICKNESS — the stacked sheets give the tome its VOLUME ===== -->
+      <!-- left fore-edge block -->
+      <path class="page-block" d="M114 266
+        q-29 -14 -58 -5
+        q-4 1 -4 6
+        l0 4
+        q0 4 4 5
+        q29 -9 58 4
+        q1 -7 0 -14 Z"/>
+      <!-- right fore-edge block -->
+      <path class="page-block" d="M116 266
+        q29 -14 58 -5
+        q4 1 4 6
+        l0 4
+        q0 4 -4 5
+        q-29 -9 -58 4
+        q-1 -7 0 -14 Z"/>
+      <!-- thin striations = individual sheets in the stacks -->
+      <path class="page-striation" d="M55 262 q29 -9 58 3"/>
+      <path class="page-striation" d="M55 266 q29 -9 58 3"/>
+      <path class="page-striation" d="M55 270 q29 -9 58 3"/>
+      <path class="page-striation" d="M175 262 q-29 -9 -58 3"/>
+      <path class="page-striation" d="M175 266 q-29 -9 -58 3"/>
+      <path class="page-striation" d="M175 270 q-29 -9 -58 3"/>
 
-        <!-- LEFT open page (curved sheet, sits above its block) -->
-        <path class="page" d="M115 232
-          q-28 -16 -58 -6
-          q-3 1 -3 5
-          l0 28
-          q0 4 3 5
-          q30 -10 58 4 Z"/>
-        <!-- RIGHT open page -->
-        <path class="page" d="M115 232
-          q28 -16 58 -6
-          q3 1 3 5
-          l0 28
-          q0 4 -3 5
-          q-30 -10 -58 4 Z"/>
+      <!-- ===== OPEN PAGES — two leaves curving up from the central spine ===== -->
+      <!-- left page -->
+      <path class="page" d="M115 234
+        q-27 -15 -55 -6
+        q-3 1 -3 5
+        l0 24
+        q0 4 3 5
+        q28 -9 55 4 Z"/>
+      <!-- right page -->
+      <path class="page" d="M115 234
+        q27 -15 55 -6
+        q3 1 3 5
+        l0 24
+        q0 4 -3 5
+        q-28 -9 -55 4 Z"/>
 
-        <!-- LEFT page text lines (follow the page curve) -->
-        <line class="txt" x1="64" y1="240" x2="105" y2="231"/>
-        <line class="txt" x1="64" y1="247" x2="105" y2="238"/>
-        <line class="txt" x1="64" y1="254" x2="98"  y2="247"/>
-        <line class="txt" x1="64" y1="261" x2="105" y2="251"/>
+      <!-- LEFT page: body text lines following the page curve -->
+      <line class="txt" x1="66" y1="241" x2="104" y2="233"/>
+      <line class="txt" x1="66" y1="247" x2="104" y2="240"/>
+      <line class="txt" x1="66" y1="253" x2="99"  y2="247"/>
+      <line class="txt" x1="66" y1="259" x2="104" y2="253"/>
+      <line class="txt" x1="66" y1="265" x2="97"  y2="260"/>
 
-        <!-- RIGHT page: small schematic TABLE/GRID, sits on the OUTER half (clear of spine + flip) -->
-        <g class="table">
-          <!-- table frame -->
-          <path d="M137 234 l28 5 l0 16 l-28 -5 Z"/>
-          <!-- vertical divider -->
-          <path d="M151 236.5 l0 16"/>
-          <!-- horizontal rows -->
-          <path d="M138 239.5 l27 5"/>
-          <path d="M137.5 245 l28 5"/>
-        </g>
-        <!-- green accent: one highlighted row-bar in the table -->
-        <line class="table-accent" x1="139" y1="247.5" x2="149.5" y2="249.4" stroke-width="3.4"/>
-        <!-- a few text lines below the table -->
-        <line class="txt" x1="129" y1="259" x2="163" y2="265"/>
-        <line class="txt" x1="129" y1="264" x2="155" y2="269"/>
+      <!-- RIGHT page: small schematic norm-TABLE on the outer half + a couple of lines -->
+      <g class="table-frame">
+        <path d="M132 240 l30 5 l0 17 l-30 -5 Z"/>
+        <path d="M147 242.5 l0 17"/>
+        <path d="M133 245.5 l29 5"/>
+        <path d="M132.5 251 l30 5"/>
+      </g>
+      <!-- ONE modest green accent: a highlighted norm row in the table -->
+      <line class="table-accent" x1="134" y1="253.4" x2="145.5" y2="255.4"/>
+      <line class="txt" x1="166" y1="246" x2="170" y2="247"/>
+      <line class="txt" x1="125" y1="266" x2="160" y2="272"/>
+      <line class="txt" x1="125" y1="271" x2="152" y2="276"/>
 
-        <!-- CENTER SPINE: clear groove down the middle of the open tome -->
-        <path class="spine" d="M115 228 q0 22 0 44"/>
-        <path class="page-line" d="M111 230 q-2 21 0 42"/>
-        <path class="page-line" d="M119 230 q2 21 0 42"/>
+      <!-- ===== CENTRE SPINE GROOVE ===== -->
+      <path class="spine" d="M115 230 q0 21 0 42"/>
+      <path class="spine-soft" d="M111 232 q-2 20 0 40"/>
+      <path class="spine-soft" d="M119 232 q2 20 0 40"/>
 
-        <!-- flipping page (a single right leaf lifting from the spine, inner half only) -->
-        <g class="page-flip">
-          <path class="page" d="M115 232 q19 -11 34 -4 q2 1 2 4 l0 26 q0 3 -2 3 q-17 -7 -34 4 Z" stroke-width="2.8"/>
-          <line class="txt" x1="123" y1="237" x2="146" y2="242"/>
-          <line class="txt" x1="123" y1="244" x2="146" y2="249"/>
-          <line class="txt" x1="123" y1="251" x2="141" y2="255"/>
-        </g>
+      <!-- =================================================================
+           HANDS — solid mitten masses that genuinely GRIP the lower corners.
+           Each palm cups UNDER the cover corner (book edge tucks behind it),
+           the THUMB pad presses on the FRONT of the cover, and knuckle creases
+           sell the curl. Drawn AFTER the book so they overlap it = "held".
+           ================================================================= -->
 
-        <!-- ===== HANDS cupping the lower corners of the open tome (tablet-scene convention) ===== -->
-        <!-- LEFT hand: palm cups the lower-left cover corner, thumb on the front face, fingertips over the edge -->
-        <g class="hand-l">
-          <!-- palm cupping the corner (open arc, not a closed loop) -->
-          <path class="ln paper-fill" d="M58 260 q-16 -1 -22 11 q-6 12 8 17"/>
-          <!-- thumb resting on the front of the cover -->
-          <path class="ln paper-fill" d="M58 260 q-9 5 -8 14"/>
-          <!-- 3 fingertips peeking over the bottom edge -->
-          <path class="ln-thin" d="M46 274 q-1 9 -9 10"/>
-          <path class="ln-thin" d="M53 273 q-1 9 -9 11"/>
-          <path class="ln-thin" d="M60 272 q-1 9 -8 11"/>
-        </g>
-
-        <!-- RIGHT hand: palm cups the lower-right cover corner, thumb on front, fingertips over the edge -->
-        <g class="hand-r">
-          <path class="ln paper-fill" d="M172 260 q16 -1 22 11 q6 12 -8 17"/>
-          <path class="ln paper-fill" d="M172 260 q9 5 8 14"/>
-          <path class="ln-thin" d="M184 274 q1 9 9 10"/>
-          <path class="ln-thin" d="M177 273 q1 9 9 11"/>
-          <path class="ln-thin" d="M170 272 q1 9 8 11"/>
-        </g>
-
-        <!-- tracing finger (free index) reaching up ONTO the left page, resting on a text line -->
-        <g class="finger">
-          <!-- slim index finger rising from lower-left, fingertip on the page at ~(74,248) -->
-          <path class="ln paper-fill" d="M64 278 q2 -16 9 -24 q4 -4 7 -1 q3 3 -1 7 q-5 6 -6 18 Z"/>
-          <!-- fingernail tip touching the line -->
-          <path class="ln-thin" d="M73 251 q4 -3 7 -1" stroke-width="2.6" opacity=".6"/>
-        </g>
+      <!-- LEFT HAND — Amigo's right; grips the lower-LEFT cover corner.
+           Heel/palm tucks BEHIND the corner (cover edge passes in front of it);
+           the THUMB lies up the FRONT face of the cover; four FINGERS curl OVER
+           the bottom edge onto the front. Proven tablet-grip read. -->
+      <g class="hand-l">
+        <!-- (a) palm heel — rounded mass cupping under the lower-left corner -->
+        <path class="hand-fill" d="M55 252
+          q-17 -1 -22 14
+          q-4 14 9 21
+          q12 6 22 -3
+          q7 -7 4 -17
+          q-3 -10 -13 -15 Z"/>
+        <!-- (b) THUMB laid up the FRONT of the cover along the left margin -->
+        <path class="hand-fill" d="M64 244 q-10 3 -13 13 q-2 8 3 15"/>
+        <!-- (c) four FINGERS curling over the bottom edge onto the front (overlap = grip) -->
+        <path class="ln-thin" d="M58 258 q-9 3 -8 13"/>
+        <path class="ln-thin" d="M52 261 q-9 3 -8 13"/>
+        <path class="ln-thin" d="M46 265 q-8 3 -8 12"/>
+        <path class="ln-thin" d="M41 270 q-7 3 -7 11"/>
       </g>
 
-      <!-- ===================== «≈» approximate sign — floats upper-right, clear of head ===================== -->
-      <g transform="translate(208,182)">
-        <circle class="approx-ring" cx="0" cy="0" r="22"/>
-        <g class="approx-grp">
-          <path class="approx" d="M-12 -5 q6 -7 12 0 q6 7 12 0"/>
-          <path class="approx" d="M-12 6 q6 -7 12 0 q6 7 12 0"/>
+      <!-- RIGHT HAND — Amigo's left; grips the lower-RIGHT cover corner -->
+      <g class="hand-r">
+        <path class="hand-fill" d="M175 252
+          q17 -1 22 14
+          q4 14 -9 21
+          q-12 6 -22 -3
+          q-7 -7 -4 -17
+          q3 -10 13 -15 Z"/>
+        <path class="hand-fill" d="M166 244 q10 3 13 13 q2 8 -3 15"/>
+        <path class="ln-thin" d="M172 258 q9 3 8 13"/>
+        <path class="ln-thin" d="M178 261 q9 3 8 13"/>
+        <path class="ln-thin" d="M184 265 q8 3 8 12"/>
+        <path class="ln-thin" d="M189 270 q7 3 7 11"/>
+
+        <!-- (e) RIGHT INDEX FINGER extends from this hand to TRACE a line on the page.
+             It rises from the thumb-web and lays its pad on a left-page text line. -->
+        <g class="trace">
+          <!-- the extended index: tapered finger from the hand up onto the page -->
+          <path class="hand-fill" d="M167 247
+            q-9 -6 -17 -16
+            q-3 -4 0 -7
+            q3 -3 7 0
+            q6 7 16 13
+            q4 3 2 8
+            q-2 4 -8 2 Z" stroke-width="3.4"/>
+          <!-- fingertip pad resting on the text line it is following -->
+          <path class="knuck" d="M150 230 q3 -3 7 -1" stroke-width="2.4"/>
         </g>
       </g>
-      <!-- thought dots leading from book up to the «≈» sign -->
-      <circle class="fill-ink" cx="180" cy="232" r="2"   opacity=".3"/>
-      <circle class="fill-ink" cx="190" cy="218" r="2.4" opacity=".38"/>
-      <circle class="fill-ink" cx="198" cy="202" r="2.8" opacity=".45"/>
 
-    </svg>
-  </div>
+    </g><!-- /book-rig -->
+
+    <!-- ===================== «≈» approximate sign — floats upper-right, clear of head ===================== -->
+    <!-- thought-dots ladder leading from the book up to the sign -->
+    <circle class="fill-ink" cx="184" cy="222" r="2"   opacity=".28"/>
+    <circle class="fill-ink" cx="196" cy="206" r="2.4" opacity=".36"/>
+    <circle class="fill-ink" cx="206" cy="188" r="2.8" opacity=".44"/>
+
+    <g transform="translate(212,168)">
+      <circle class="approx-ring" cx="0" cy="0" r="22"/>
+      <g class="approx-grp">
+        <path class="approx" d="M-13 -5 q6.5 -8 13 0 q6.5 8 13 0"/>
+        <path class="approx" d="M-13 6 q6.5 -8 13 0 q6.5 8 13 0"/>
+      </g>
+    </g>
+
+  </svg>
 </div>
 
 <script>addEventListener("message",function(e){var s=document.querySelector(".scene");if(s)s.classList.toggle("play",e.data!=="calm");});</script>

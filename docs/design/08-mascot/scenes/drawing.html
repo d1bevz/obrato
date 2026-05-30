@@ -6,10 +6,11 @@
 <title>Amigo · 03 Сетка и правки — чертёж</title>
 <style>
 :root{--ink:#1b1813;--helmet:#f7b500;--helmet-d:#d49400;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--amber:#d98324}
-body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,Segoe UI,Roboto,sans-serif}
-.cap{color:#6b6457;font-size:12px;letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase}
-.scene{width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
-.scene svg{width:300px;height:auto;display:block;overflow:visible}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.title{color:#6b6456;font-size:13px;letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase}
+.scene{position:relative;width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.scene svg{width:330px;height:auto;display:block;overflow:visible}
 .ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
 .ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
 .fill-ink{fill:var(--ink);stroke:none}
@@ -18,46 +19,75 @@ body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-i
 .helmet-sh{fill:var(--helmet-d);stroke:none}
 .paper-fill{fill:var(--surface)}
 
-/* prop styling */
-.grid-line{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round}
+/* ===== blueprint sheet ===== */
 .sheet{fill:var(--paper);stroke:var(--ink);stroke-width:4;stroke-linejoin:round}
-.cut-cell{fill:none;stroke:var(--green);stroke-width:4;stroke-linejoin:round}
-.check{fill:none;stroke:var(--green);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
-.dim-line{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.dim-arrow{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.dim-ext{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;opacity:.7}
-/* realistic hexagonal pencil */
+.grid-line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.78}
+.dim-line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+.dim-ext{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;opacity:.6}
+.dim-arrow{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cut-cell{fill:none;stroke:var(--green);stroke-width:3.4;stroke-linejoin:round}
+.mark{fill:none;stroke:var(--green);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== realistic hexagonal pencil ===== */
 .pencil-body{fill:var(--surface);stroke:var(--ink);stroke-width:3.4;stroke-linejoin:round}
-.pencil-facet{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.55}
+.pencil-facet{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;opacity:.5}
 .pencil-cone{fill:var(--paper);stroke:var(--ink);stroke-width:3.2;stroke-linejoin:round}
-.pencil-lead{fill:var(--ink);stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
-.pencil-ferrule{fill:var(--paper);stroke:var(--ink);stroke-width:3.2;stroke-linejoin:round}
-.pencil-ferrule-band{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.6}
-.pencil-eraser{fill:var(--surface);stroke:var(--ink);stroke-width:3.2;stroke-linejoin:round}
+.pencil-lead{fill:var(--ink);stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.pencil-ferrule{fill:var(--paper);stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+.pencil-ferrule-band{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;opacity:.6}
+.pencil-eraser{fill:var(--surface);stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
 
-/* ALL animation nested under .play -> removing .play = static calm mode */
-.play .sheet-grp{animation:sheetNudge 3.4s ease-in-out infinite; transform-box:view-box; transform-origin:124px 236px}
-.play .hand-grp{animation:handMark 3.4s ease-in-out infinite; transform-box:view-box; transform-origin:228px 200px}
-.play .check{animation:checkDraw 3.4s ease-in-out infinite; transform-box:fill-box; transform-origin:left bottom}
-.play .cut-cell{animation:cutGlow 3.4s ease-in-out infinite}
-.play .eyeL,.play .eyeR{animation:blink 5.4s ease-in-out infinite; transform-box:fill-box; transform-origin:center}
+/* ===== hands ===== */
+.hand-fill{fill:var(--surface);stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.knuck{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;opacity:.7}
 
-@keyframes sheetNudge{0%,40%{transform:translate(0,0) rotate(0)}55%{transform:translate(-3px,1px) rotate(-.8deg)}70%,100%{transform:translate(0,0) rotate(0)}}
-@keyframes handMark{0%,12%{transform:translate(0,0) rotate(0)}24%{transform:translate(-4px,6px) rotate(2deg)}30%{transform:translate(-4px,6px) rotate(2deg)}42%{transform:translate(0,0) rotate(0)}100%{transform:translate(0,0) rotate(0)}}
-@keyframes checkDraw{0%,22%{opacity:0;transform:scale(.5)}30%{opacity:1;transform:scale(1.12)}40%{opacity:1;transform:scale(1)}82%{opacity:1;transform:scale(1)}92%,100%{opacity:0;transform:scale(1)}}
-@keyframes cutGlow{0%,40%{opacity:0}50%{opacity:1}82%{opacity:1}92%,100%{opacity:0}}
+/* ===== STATIC (calm) defaults ===== */
+.mark{opacity:0}
+.cut-cell{opacity:.9}
+
+/* ===== ANIMATION — ONLY under .play (remove .play => static calm) ===== */
+.scene.play .write-arm{animation:writeStroke 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:150px 250px}
+.scene.play .mark{animation:markDraw 3.6s ease-in-out infinite}
+.scene.play .cut-cell{animation:cellGlow 3.6s ease-in-out infinite}
+.scene.play .sheet-grp{animation:sheetSettle 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:130px 245px}
+.scene.play .eyeL,.scene.play .eyeR{animation:blink 5.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+
+/* the writing hand+pencil makes a tiny pressing/stroking motion at the cell */
+@keyframes writeStroke{
+  0%,8%   {transform:translate(0,0) rotate(0deg)}
+  20%     {transform:translate(-3px,3px) rotate(1.4deg)}
+  30%     {transform:translate(-1px,1px) rotate(.6deg)}
+  42%     {transform:translate(-3px,3px) rotate(1.4deg)}
+  56%,100%{transform:translate(0,0) rotate(0deg)}
+}
+@keyframes markDraw{
+  0%,16%  {opacity:0}
+  34%     {opacity:1}
+  84%     {opacity:1}
+  94%,100%{opacity:0}
+}
+@keyframes cellGlow{
+  0%,12%  {opacity:.35}
+  30%     {opacity:1}
+  84%     {opacity:1}
+  96%,100%{opacity:.35}
+}
+@keyframes sheetSettle{
+  0%,100% {transform:translate(0,0) rotate(0deg)}
+  24%     {transform:translate(.6px,-.6px) rotate(-.4deg)}
+}
 @keyframes blink{0%,92%,100%{transform:scaleY(1)}95.5%{transform:scaleY(.08)}}
 
 @media (prefers-reduced-motion: reduce){ .play *{animation:none!important} }
 </style>
 </head>
 <body>
-
+<div class="title">03 · Сетка и правки — чертёж</div>
 <div class="scene play">
-  <svg viewBox="-20 0 300 280" role="img" aria-label="Amigo помечает карандашом подрез на плиточной сетке">
+  <svg viewBox="2 26 320 308" role="img" aria-label="Amigo склонился над чертежом и ставит карандашом метку на ячейке плиточной сетки">
 
-    <!-- ===== AMIGO BUST — fixed geometry, reused verbatim ===== -->
-    <g class="amigo">
+    <!-- ===== AMIGO BUST — fixed geometry verbatim, scaled .92 + nudged so it leans over the sheet ===== -->
+    <g class="amigo" transform="translate(14,-6) scale(.92)">
       <!-- shoulders -->
       <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
       <path class="ln-thin" d="M95 214 q20 14 40 0"/>
@@ -77,86 +107,128 @@ body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-i
         <ellipse class="eyeR fill-ink" cx="138" cy="130" rx="4.4" ry="5.4"/>
         <path class="ln-thin" d="M115 134 q3 9 0 16 q-3 3 -7 2"/>
         <g class="stache">
-          <path class="mustache stacheL" d="M115 154 C 110 159, 102 161, 96 160 C 90 159, 86 156, 86 151 C 86 147, 89 145, 91 148 C 90 152, 94 155, 100 154 C 106 153, 111 151, 115 149 Z"/>
-          <path class="mustache stacheR" d="M115 154 C 120 159, 128 161, 134 160 C 140 159, 144 156, 144 151 C 144 147, 141 145, 139 148 C 140 152, 136 155, 130 154 C 124 153, 119 151, 115 149 Z"/>
+          <path class="mustache" d="M115 151 C 108 153 100 154 93 154 C 88 154 84 152 84 148 C 83 144 86 140 90 142 C 93 143 93 147 91 150 C 90 156 95 161 102 162 C 108 163 112 162 115 160 Z"/>
+          <path class="mustache" d="M115 151 C 122 153 130 154 137 154 C 142 154 146 152 146 148 C 147 144 144 140 140 142 C 137 143 137 147 139 150 C 140 156 135 161 128 162 C 122 163 118 162 115 160 Z"/>
         </g>
-        <path class="ln-thin mouth" d="M105 175 q10 4 20 0"/>
+        <path class="ln-thin mouth" d="M106 176 q9 4 18 0"/>
       </g>
     </g>
 
-    <!-- ===== TABLET (held in front) + GRID + HANDS + PENCIL ===== -->
+    <!-- ===== DESK GROUP: sheet + both hands + pencil, scaled & nudged to fit with margins =====
+         The whole apparatus is built large for clarity, then shrunk .9 about its
+         centre (150,252) [= translate(15,25.2) scale(.9)] and nudged a touch left/up
+         so nothing crowds the right/bottom frame. -->
+    <g class="desk" transform="translate(11,21.2) scale(.9)">
 
-    <!-- the drawing tablet (nudges slightly during a mark) -->
+    <!-- ===== BLUEPRINT SHEET (in front of Amigo, clearly below the face) ===== -->
     <g class="sheet-grp">
-      <!-- tablet body: inner drawing area x44..204, y202..270 -->
-      <rect class="sheet" x="38" y="196" width="172" height="82" rx="7"/>
+      <!-- sheet body: clean rounded-rectangle blueprint -->
+      <rect class="sheet" x="44" y="204" width="214" height="92" rx="5"/>
 
-      <!-- tile grid 4 cols x 2 rows; cells 40w x 34h; inset to x44..204 / y202..270 -->
+      <!-- ===== TILE GRID — 4 cols x 3 rows, cells 50w x 28h, inset x52..252 / y212..296 ===== -->
       <!-- vertical lines -->
-      <line class="grid-line" x1="84"  y1="202" x2="84"  y2="270"/>
-      <line class="grid-line" x1="124" y1="202" x2="124" y2="270"/>
-      <line class="grid-line" x1="164" y1="202" x2="164" y2="270"/>
-      <!-- horizontal mid line -->
-      <line class="grid-line" x1="44" y1="236" x2="204" y2="236"/>
+      <line class="grid-line" x1="102" y1="212" x2="102" y2="294"/>
+      <line class="grid-line" x1="152" y1="212" x2="152" y2="294"/>
+      <line class="grid-line" x1="202" y1="212" x2="202" y2="294"/>
+      <!-- horizontal lines -->
+      <line class="grid-line" x1="52" y1="240" x2="252" y2="240"/>
+      <line class="grid-line" x1="52" y1="268" x2="252" y2="268"/>
 
-      <!-- dimension line (horizontal) across the top, spanning the two middle cells: blueprint read -->
-      <line class="dim-ext" x1="84"  y1="203" x2="84"  y2="213"/>
-      <line class="dim-ext" x1="164" y1="203" x2="164" y2="213"/>
-      <line class="dim-line" x1="87" y1="210" x2="161" y2="210"/>
-      <!-- arrowheads at both ends -->
-      <path class="dim-arrow" d="M92 207 L85 210 L92 213"/>
-      <path class="dim-arrow" d="M156 207 L163 210 L156 213"/>
+      <!-- ===== DIMENSION LINE (top), spanning two middle columns, with arrowheads ===== -->
+      <line class="dim-ext" x1="102" y1="214" x2="102" y2="226"/>
+      <line class="dim-ext" x1="202" y1="214" x2="202" y2="226"/>
+      <line class="dim-line" x1="105" y1="222" x2="199" y2="222"/>
+      <path class="dim-arrow" d="M110 218 L103 222 L110 226"/>
+      <path class="dim-arrow" d="M194 218 L201 222 L194 226"/>
 
-      <!-- dimension line (vertical) on the left edge, spanning full height -->
-      <line class="dim-ext" x1="44" y1="204" x2="55" y2="204"/>
-      <line class="dim-ext" x1="44" y1="268" x2="55" y2="268"/>
-      <line class="dim-line" x1="51" y1="207" x2="51" y2="265"/>
-      <path class="dim-arrow" d="M48 212 L51 205 L54 212"/>
-      <path class="dim-arrow" d="M48 260 L51 267 L54 260"/>
+      <!-- ===== DIMENSION LINE (left edge, vertical), full height, with arrowheads ===== -->
+      <line class="dim-ext" x1="54" y1="214" x2="66" y2="214"/>
+      <line class="dim-ext" x1="54" y1="292" x2="66" y2="292"/>
+      <line class="dim-line" x1="61" y1="218" x2="61" y2="288"/>
+      <path class="dim-arrow" d="M57 224 L61 217 L65 224"/>
+      <path class="dim-arrow" d="M57 282 L61 289 L65 282"/>
 
-      <!-- corner "cut" cell highlight: top-right cell (x164..204, y202..236) -->
-      <rect class="cut-cell" x="165" y="201" width="40" height="35" rx="3"/>
-      <!-- check mark inside that cell -->
-      <path class="check" d="M173 218 l7 9 l13 -16"/>
+      <!-- ===== TARGET CELL being corrected: bottom-mid cell x152..202 / y268..294 ===== -->
+      <rect class="cut-cell" x="152" y="268" width="50" height="26" rx="2.5"/>
+      <!-- the green correction mark the pencil is drawing in that cell -->
+      <path class="mark" d="M161 283 l7 6 l16 -14"/>
     </g>
 
-    <!-- LEFT hand: fingers curling over the tablet bottom-left edge (holding it) -->
+    <!-- ===== LEFT HAND — steadies the sheet, fingers splayed over the left edge =====
+         Wrist enters from lower-left; four fingers press the top face, thumb tucks under. -->
     <g class="lhand">
-      <path class="ln-thin paper-fill" d="M52 270 q-4 -16 10 -19 q9 -2 16 3 q6 4 5 12 q-1 9 -11 12 q-14 4 -20 -8 Z"/>
-      <!-- knuckle creases over the edge -->
-      <path class="ln-thin" d="M63 254 q1 6 -1 12"/>
-      <path class="ln-thin" d="M73 256 q1 6 -2 12"/>
+      <!-- back of hand / palm cushion resting on the sheet edge -->
+      <path class="hand-fill" d="M30 300 q-8 -10 0 -22 q6 -9 18 -8 q8 1 13 6 l6 7 q5 7 -1 14 q-7 8 -19 9 q-9 1 -17 -6 Z"/>
+      <!-- four fingers reaching onto the sheet (overlap the surface => holding it) -->
+      <path class="hand-fill" d="M60 266 q11 -3 13 5 q1 7 -7 9"/>
+      <path class="hand-fill" d="M62 276 q11 -2 12 6 q0 7 -8 8"/>
+      <path class="hand-fill" d="M62 287 q10 -1 11 6 q0 6 -8 7"/>
+      <!-- thumb pressing up the near edge -->
+      <path class="hand-fill" d="M40 274 q-6 -8 2 -13 q9 -4 14 4"/>
+      <!-- knuckle creases for grip read -->
+      <path class="knuck" d="M68 271 q1 4 -2 8"/>
+      <path class="knuck" d="M68 282 q1 4 -2 7"/>
     </g>
 
-    <!-- right arm + hand + pencil marking the cut cell -->
-    <g class="hand-grp">
-      <!-- pencil: realistic hexagon. lead (down-left) -> wood cone -> hex barrel -> ferrule -> eraser (up-right) -->
+    <!-- ===== RIGHT ARM + PENCIL — real writing grip =====
+         The pencil is built along its axis (graphite tip down-left in the target cell
+         ~(166,286), eraser up-right ~(257,226)). The hand is ONE solid mass over the
+         barrel with the thumb pad pressing the near side and curled-finger creases
+         over the back; the barrel passes UNDER the hand and the ferrule+eraser emerge
+         above the knuckles. The whole unit animates as one (write-arm) so the grip
+         stays locked to the pencil during the writing stroke. -->
+    <g class="write-arm">
+
+      <!-- forearm: a short stub emerging from the wrist (heel of the hand) up toward
+           Amigo's right shoulder; kept tucked behind the hand, not into the margin. -->
+      <path class="ln" d="M243 272 q14 -3 20 -16"/>
+
+      <!-- ===== PENCIL (hexagonal, sharpened) ===== built tip→eraser along axis ~ -36deg -->
       <g class="pencil">
-        <!-- hex barrel: wood-cone base (C) up to ferrule start (F) -->
-        <path class="pencil-body" d="M205.8 220.0 L240.0 195.7 L231.7 183.9 L197.4 208.2 Z"/>
-        <!-- two facet lines for hexagon read along the barrel -->
-        <line class="pencil-facet" x1="203.1" y1="216.3" x2="237.4" y2="192.0"/>
-        <line class="pencil-facet" x1="200.0" y1="211.9" x2="234.3" y2="187.6"/>
-        <!-- wooden sharpened cone: from barrel base (C1,C2) to tip (T) -->
-        <path class="pencil-cone" d="M205.8 220.0 L197.4 208.2 L182.0 228.0 Z"/>
-        <!-- dark graphite lead point at the very tip, touching the cell -->
-        <path class="pencil-lead" d="M182.0 228.0 L189.9 225.3 L187.1 221.4 Z"/>
-        <!-- metal ferrule (band that holds eraser) -->
-        <path class="pencil-ferrule" d="M240.0 195.7 L231.7 183.9 L239.8 178.1 L248.2 189.9 Z"/>
-        <!-- two crimp bands across the ferrule -->
-        <line class="pencil-ferrule-band" x1="238.5" y1="193.6" x2="234.2" y2="187.5"/>
-        <line class="pencil-ferrule-band" x1="241.8" y1="191.2" x2="237.5" y2="185.1"/>
-        <!-- eraser cap (rounded end) -->
-        <path class="pencil-eraser" d="M248.2 189.9 L239.8 178.1 Q243 174 247.5 175.4 Q252.5 177 254.5 182.6 Q256 187 253 189 Z"/>
+        <!-- hex barrel: from wood-cone base up to ferrule -->
+        <path class="pencil-body" d="M188.2 278.4 L243.0 238.6 L235.4 228.2 L180.6 268.0 Z"/>
+        <!-- facet lines along the barrel for hexagon read -->
+        <line class="pencil-facet" x1="185.7" y1="275.0" x2="240.5" y2="235.2"/>
+        <line class="pencil-facet" x1="183.1" y1="271.5" x2="237.9" y2="231.7"/>
+        <!-- sharpened wooden cone from barrel base to tip -->
+        <path class="pencil-cone" d="M188.2 278.4 L180.6 268.0 L166.0 286.0 Z"/>
+        <!-- dark graphite point touching the cell -->
+        <path class="pencil-lead" d="M166.0 286.0 L174.4 282.6 L171.2 278.2 Z"/>
+        <!-- metal ferrule -->
+        <path class="pencil-ferrule" d="M243.0 238.6 L235.4 228.2 L243.6 222.2 L251.2 232.6 Z"/>
+        <line class="pencil-ferrule-band" x1="241.5" y1="236.6" x2="237.4" y2="231.0"/>
+        <line class="pencil-ferrule-band" x1="244.4" y1="234.5" x2="240.3" y2="228.9"/>
+        <!-- rounded eraser cap -->
+        <path class="pencil-eraser" d="M251.2 232.6 L243.6 222.2 Q246.6 218.4 250.8 219.8 Q255.4 221.4 257.2 226.6 Q258.6 230.7 255.8 232.6 Z"/>
       </g>
-      <!-- hand / fist wrapping the pencil shaft (over the body, near the grip) -->
-      <path class="ln-thin paper-fill" d="M205 222 q-9 -6 -5 -16 q4 -10 15 -8 q12 2 14 14 q2 12 -10 16 q-9 3 -14 -6 Z"/>
-      <!-- two finger creases over the shaft for grip read -->
-      <path class="ln-thin" d="M214 200 q4 7 1 16"/>
-      <path class="ln-thin" d="M223 204 q3 6 0 14"/>
-      <!-- short forearm stub emerging up-right toward the shoulder -->
-      <path class="ln" d="M226 210 q14 -4 22 -16"/>
+
+      <!-- ===== PENCIL GRIP HAND — ONE clean mitten-mass holding the barrel =====
+           Drawn AFTER the pencil so the hand overlaps it and reads as "held".
+           The barrel passes UNDER the hand: it enters at the thumb/index web (~210,258)
+           and emerges as the ferrule+eraser above-right of the knuckles. Finger
+           separations are CREASE lines on the mass (not separate lobes) -> no noise. -->
+
+      <!-- (a) the single hand silhouette: a solid mass over the barrel (x208..250,
+              y240..282). Knuckle ridge upper-left; back of hand to the right;
+              heel/wrist at the lower-right meeting the forearm. The barrel slips
+              UNDER it; the ferrule+eraser emerge at the top-left of the mass.
+              Path order: index knuckle -> across knuckles -> far side -> wrist/heel
+              -> under palm -> near edge -> back to index knuckle. -->
+      <path class="hand-fill" d="M213 244 q9 -6 19 -2 q12 5 16 17 q4 12 -5 20 q-9 8 -21 4 q-12 -4 -13 -16 q0 -10 9 -14 Z"/>
+
+      <!-- (b) thumb: a tapered pad pressing the NEAR (lower-left) side of the barrel,
+              set off from the hand by the thumb-web notch. -->
+      <path class="hand-fill" d="M204 266 q-11 -1 -13 -10 q-1 -9 7 -12 q8 -2 12 5 q3 6 0 11 q-2 5 -6 6 Z"/>
+
+      <!-- (c) finger-separation creases across the knuckle ridge (index|middle|ring) -->
+      <path class="knuck" d="M222 244 q3 7 0 14"/>
+      <path class="knuck" d="M231 247 q3 7 0 14"/>
+      <path class="knuck" d="M240 252 q2 6 0 12"/>
+      <!-- (d) thumb crease -->
+      <path class="knuck" d="M200 261 q4 3 5 9"/>
     </g>
+
+    </g><!-- /desk -->
 
   </svg>
 </div>
