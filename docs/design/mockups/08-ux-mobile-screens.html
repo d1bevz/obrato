@@ -136,6 +136,31 @@
       text-transform: uppercase;
     }
 
+    .journey-note {
+      width: min(100%, 390px);
+      min-height: 76px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--action);
+      border-radius: 8px;
+      background: var(--surface);
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.35;
+    }
+
+    .journey-note strong {
+      color: var(--ink);
+      font-weight: 820;
+    }
+
+    .journey-note span {
+      display: block;
+      margin-top: 4px;
+      color: var(--steel);
+      font-weight: 720;
+    }
+
     .phone {
       width: min(100%, 390px);
       aspect-ratio: 390 / 844;
@@ -610,7 +635,7 @@
     <header class="board-header">
       <div>
         <h1>Obrato: UX-макеты</h1>
-        <p class="board-subtitle">Мобильные экраны для пилота Давида: шаблон комнаты, четыре работы, редактируемый чертёж, закупочный лист по этапам и факт покупки офлайн.</p>
+        <p class="board-subtitle">Мобильные экраны для пилота Давида, разложенные по CJM: от выбора объекта до факта закупки. Подпись над каждым экраном показывает рабочий момент, который он закрывает.</p>
       </div>
       <div class="legend" aria-label="легенда состояний">
         <span class="ok">готово</span>
@@ -622,7 +647,8 @@
 
     <section class="screens" aria-label="Мобильные экраны Obrato">
       <article class="screen-block">
-        <div class="screen-title"><span>01 Объекты</span><span>/projects</span></div>
+        <div class="screen-title"><span>01 CJM: вернуться к объекту</span><span>/projects</span></div>
+        <p class="journey-note"><strong>Момент:</strong> Давид приехал на объект и открывает телефон между задачами.<span>Задача экрана: найти активный объект и увидеть следующий шаг.</span></p>
         <div class="phone">
           <div class="statusbar"><span>09:41</span><span>Офлайн · 3 правки</span></div>
           <div class="appbar">
@@ -689,7 +715,8 @@
       </article>
 
       <article class="screen-block">
-        <div class="screen-title"><span>02 Объект</span><span>/projects/:id</span></div>
+        <div class="screen-title"><span>02 CJM: понять готовность</span><span>/projects/:id</span></div>
+        <p class="journey-note"><strong>Момент:</strong> нужно быстро понять, какие комнаты готовы, а где расчёт широкий.<span>Задача экрана: выбрать комнату, лист или чертёж без отдельного мастера.</span></p>
         <div class="phone">
           <div class="statusbar"><span>09:42</span><span>Онлайн · синхр.</span></div>
           <div class="appbar">
@@ -763,7 +790,8 @@
       </article>
 
       <article class="screen-block">
-        <div class="screen-title"><span>03 Комната</span><span>ввод Q4</span></div>
+        <div class="screen-title"><span>03 CJM: замерить комнату</span><span>ввод Q4</span></div>
+        <p class="journey-note"><strong>Момент:</strong> Давид стоит в комнате с рулеткой, часто офлайн и в спешке.<span>Задача экрана: шаблон -> правка размеров, wet, проёмов и 4 работ.</span></p>
         <div class="phone">
           <div class="statusbar"><span>09:45</span><span>Офлайн · локально</span></div>
           <div class="appbar">
@@ -835,7 +863,8 @@
       </article>
 
       <article class="screen-block">
-        <div class="screen-title"><span>04 Чертёж</span><span>правка сетки</span></div>
+        <div class="screen-title"><span>04 CJM: проверить раскладку</span><span>правка сетки</span></div>
+        <p class="journey-note"><strong>Момент:</strong> перед закупкой или укладкой нужно доверять плиточной сетке.<span>Задача экрана: показать grid и сохранить ручные правки как CutOverride.</span></p>
         <div class="phone">
           <div class="statusbar"><span>09:48</span><span>Офлайн · 2 правки</span></div>
           <div class="appbar">
@@ -873,7 +902,8 @@
       </article>
 
       <article class="screen-block">
-        <div class="screen-title"><span>05 Закупки</span><span>заморозка этапа</span></div>
+        <div class="screen-title"><span>05 CJM: собрать закупку</span><span>заморозка этапа</span></div>
+        <p class="journey-note"><strong>Момент:</strong> Давид едет в магазин и должен купить по этапу, а не по живому расчёту.<span>Задача экрана: показать диапазоны, упаковки, цену и freeze-снимок.</span></p>
         <div class="phone">
           <div class="statusbar"><span>10:03</span><span>Онлайн · цены старые</span></div>
           <div class="appbar">
@@ -950,7 +980,8 @@
       </article>
 
       <article class="screen-block">
-        <div class="screen-title"><span>06 Факт закупки</span><span>факт</span></div>
+        <div class="screen-title"><span>06 CJM: записать факт</span><span>факт</span></div>
+        <p class="journey-note"><strong>Момент:</strong> появился чек или фактическая покупка, часто ещё без сети.<span>Задача экрана: связать факт с frozen list и решить, годится ли он для калибровки.</span></p>
         <div class="phone">
           <div class="statusbar"><span>11:16</span><span>Офлайн · в очереди</span></div>
           <div class="appbar">
