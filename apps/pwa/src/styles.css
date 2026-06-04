@@ -11,6 +11,10 @@
   --warn: #b7791f;
   --radius: 14px;
   --shadow: 0 1px 3px rgba(27, 24, 19, 0.08), 0 4px 14px rgba(27, 24, 19, 0.06);
+  /* Amigo (гл.08 §10.6): каска — цвет ТОЛЬКО маскота, не UI-сигнал */
+  --helmet: #f7b500;
+  --helmet-d: #d49400;
+  --surface: #ffffff;
 }
 
 * {
@@ -401,13 +405,18 @@ main {
   margin-top: 5px;
   font-size: 12px;
   color: var(--muted);
+}
+
+/* название SKU — одной строкой с ellipsis; мета (магазин · уп · цена) —
+   своей строкой с переносом, чтобы «куда идти» не съедалось (#3a) */
+.psku-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .psku-pack {
-  white-space: nowrap;
+  margin-top: 1px;
 }
 
 /* --- S3 · RoomEditor (P2): формы --- */
@@ -769,12 +778,191 @@ main {
   text-align: center;
 }
 
+/* --- Amigo (гл.08 §10): палитра SVG-символов из 08-mascot --- */
+/* классы матчат ОРИГИНАЛЫ в <defs> (Amigo.tsx) — use-клоны наследуют
+   computed-стиль; var() резолвятся из :root-токенов */
+.ln {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ln-thin {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.fill-ink {
+  fill: var(--ink);
+  stroke: none;
+}
+
+.mustache {
+  fill: var(--ink);
+  stroke: none;
+}
+
+.hl {
+  fill: var(--surface);
+}
+
+.helmet {
+  fill: var(--helmet);
+  stroke: var(--ink);
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
+
+.helmet-sh {
+  fill: var(--helmet-d);
+  stroke: none;
+}
+
+.paper-fill {
+  fill: var(--paper);
+}
+
+/* компактная марка (V5, scoped-классы — каска без обводки) */
+.mk-fill {
+  fill: var(--helmet);
+  stroke: none;
+}
+
+.mk-ridge {
+  fill: none;
+  stroke: var(--helmet-d);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.mk-eye {
+  fill: var(--ink);
+  stroke: none;
+}
+
+/* бейдж сети с маркой Amigo (§10.2: «компактная марка в OfflineBadge») */
+.offline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* плашка-реплика (из 08-mockups .amigo-tip) — периферийная, без модалок */
+.amigo-tip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--green);
+  border-radius: 11px;
+  padding: 8px 11px;
+}
+
+.amigo-tip.unc {
+  border-left-color: var(--warn);
+}
+
+.amigo-tip.hint {
+  border-left-color: var(--wet);
+}
+
+.amigo-tip .bub {
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.amigo-head {
+  width: 46px;
+  height: auto;
+  flex: none;
+  display: block;
+}
+
+/* герой пустого S1 — онбординг «начни с первого объекта» */
+.amigo-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 26px 16px 22px;
+  text-align: center;
+}
+
+.amigo-hero h2 {
+  margin: 8px 0 0;
+  font-size: 18px;
+}
+
+.amigo-hero .sub {
+  color: var(--muted);
+  font-size: 13px;
+  max-width: 34ch;
+}
+
+/* --- S5: ссылки на товар и альтернативные SKU (#3a/#3b) --- */
+.psku-link {
+  color: var(--green-d);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.alts {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.alts summary {
+  cursor: pointer;
+  color: var(--wet);
+  width: fit-content;
+}
+
+.alts-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0 0 0 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.alts-list a {
+  color: var(--green-d);
+}
+
+.alts-meta {
+  color: var(--muted);
+}
+
+.alts-note {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
 .print-only {
   display: none;
 }
 
 /* --- Печать (P3): лист → PDF браузером --- */
 @media print {
+  /* бумажный лист — рабочий документ: без маскота и раскрывашек */
+  .amigo-tip,
+  .alts {
+    display: none !important;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .topbar,
   .cta,
   .screen-only,

@@ -7,25 +7,32 @@ import { CATALOG } from '../catalog/catalog';
 import { getDb, type ProjectDoc, type SnapshotDoc } from './db';
 import { uuidv7 } from './uuid';
 
-/** Названия использованных SKU by value — снапшот переживает ре-курацию. */
-function freezeSkuTitles(
-  response: ComputeProjectResponse,
-): Record<string, string> {
+/** Названия SKU и имена магазинов by value — снапшот переживает ре-курацию
+ * (магазин — тоже факт листа «куда идти», находка ревью обкатки v1). */
+function freezeSkuMeta(response: ComputeProjectResponse): {
+  titles: Record<string, string>;
+  stores: Record<string, string>;
+} {
   const titles: Record<string, string> = {};
+  const stores: Record<string, string> = {};
   for (const g of response.purchase.byStage) {
     for (const item of g.items) {
       if (!item.skuId || titles[item.skuId]) continue;
       const sku = CATALOG.get(item.materialKey)?.defaultSku;
-      if (sku && sku.id === item.skuId) titles[item.skuId] = sku.title;
+      if (sku && sku.id === item.skuId) {
+        titles[item.skuId] = sku.title;
+        stores[item.skuId] = sku.storeName;
+      }
     }
   }
-  return titles;
+  return { titles, stores };
 }
 
 export async function createSnapshot(
   project: ProjectDoc,
   response: ComputeProjectResponse,
 ): Promise<SnapshotDoc> {
+  const { titles, stores } = freezeSkuMeta(response);
   const doc: SnapshotDoc = {
     id: uuidv7(),
     orgId: project.orgId,
@@ -33,7 +40,8 @@ export async function createSnapshot(
     projectTitle: project.title,
     scope: 'full_project',
     frozenList: response.purchase,
-    skuTitles: freezeSkuTitles(response),
+    skuTitles: titles,
+    skuStores: stores,
     normSetLabel: response.normSetLabel,
     engineVersion: response.engineVersion,
     catalogVersion: response.purchase.catalogVersion,

@@ -30,7 +30,8 @@ interface SeedSku {
   pack_size: number;
   pack_unit: string;
   coverage_per_pack: number | null;
-  url: string | null;
+  /** У 5 SKU seed-v2 ключ отсутствует вовсе — тип честно опционален. */
+  url?: string | null;
   active: boolean;
 }
 
@@ -136,7 +137,7 @@ function toMaterialView(m: SeedMaterial): MaterialView {
       packSize: sku.pack_size,
       packUnit: sku.pack_unit,
       coveragePerPack: sku.coverage_per_pack,
-      url: sku.url,
+      url: sku.url ?? null,
     },
     price: price && {
       amountMinorUnits: price.amount_minor_units,
@@ -153,6 +154,101 @@ function toMaterialView(m: SeedMaterial): MaterialView {
 export const CATALOG: ReadonlyMap<MaterialKey, MaterialView> = new Map(
   materials.filter((m) => m.active).map((m) => [m.key as MaterialKey, toMaterialView(m)]),
 );
+
+// --- Альтернативные SKU и ссылки (#3a/#3b обкатки v1) ---
+
+/** Товарная ли страница: часть url в seed — bare-homepage и категорийные
+ * плейсхолдеры own-brand/дискаунтеров «без конкретной страницы» (гл.10 §10) —
+ * выдавать их за товар нельзя (находка ревью обкатки). Эвристика подогнана
+ * под curated-набор seed-v2 (141 SKU, руками — D10); новые SKU ре-курируются
+ * руками же, тогда и проверить. */
+function isProductUrl(url: string | null | undefined): boolean {
+  if (!url) return false;
+  try {
+    const path = new URL(url).pathname;
+    if (path === '' || path === '/') return false; // главная магазина
+    // категории seed-v2: /produtos/marcas/<brand>/, /collection/<line>/,
+    // /pt/ceramica/ — страницы списков, не товара
+    if (/\/marcas\//.test(path)) return false;
+    if (/\/collection\//.test(path)) return false;
+    if (/\/ceramica\/?$/.test(path)) return false;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export interface SkuAlternative {
+  id: string;
+  title: string;
+  brand: string | null;
+  storeName: string;
+  packSize: number;
+  packUnit: string;
+  url: string | null;
+  /** false — url ведёт на главную/категорию магазина, не на товар. */
+  isProduct: boolean;
+  /** Цена за упаковку, центы EUR; null — цены в seed нет. */
+  priceMinorUnits: number | null;
+  /** Цена за base_unit (для сортировки «дешевле/дороже»); null без цены. */
+  unitPriceMinor: number | null;
+}
+
+/** material key → активные SKU всех магазинов, дешёвые по base_unit первыми.
+ * Read-only пул для сравнения/навигации (гл.10 §«сравнение цен — суть
+ * multi-store», «SKU-picker для app-UI»): выбор тут НЕ влияет на расчёт —
+ * CATALOG_INPUT остаётся default-only; персистентная подмена SKU в листе =
+ * PurchaseLineSelection, отложена (гл.05 §10, гл.08 S5 «не на пилоте»). */
+const ALTERNATIVES: ReadonlyMap<string, SkuAlternative[]> = new Map(
+  materials
+    .filter((m) => m.active)
+    .map((m) => [
+      m.key,
+      skus
+        .filter((s) => s.material_id === m.id && s.active)
+        .map((s): SkuAlternative => {
+          const price = currentPrice(s.id);
+          const coverage = packCoverage(s, m.base_unit);
+          return {
+            id: s.id,
+            title: s.title,
+            brand: s.brand,
+            storeName: storeById.get(s.store_id)?.name ?? '—',
+            packSize: s.pack_size,
+            packUnit: s.pack_unit,
+            url: s.url ?? null,
+            isProduct: isProductUrl(s.url),
+            priceMinorUnits: price?.amount_minor_units ?? null,
+            unitPriceMinor:
+              price && coverage ? price.amount_minor_units / coverage : null,
+          };
+        })
+        .sort(
+          (a, b) =>
+            (a.unitPriceMinor ?? Infinity) - (b.unitPriceMinor ?? Infinity),
+        ),
+    ]),
+);
+
+export function skusFor(key: MaterialKey): SkuAlternative[] {
+  return ALTERNATIVES.get(key) ?? [];
+}
+
+/** Навигационная ссылка SKU по id — и для замороженных снапшотов: ссылка
+ * не «ценность» листа (та frozen by value), а способ открыть товар сейчас.
+ * null — SKU выпал из бандла после ре-курации. isProduct=false — url ведёт
+ * на главную/категорию, не на страницу товара. */
+export function skuLink(
+  skuId: string,
+): { url: string | null; storeName: string; isProduct: boolean } | null {
+  const s = skuById.get(skuId);
+  if (!s) return null;
+  return {
+    url: s.url ?? null,
+    storeName: storeById.get(s.store_id)?.name ?? '—',
+    isProduct: isProductUrl(s.url),
+  };
+}
 
 export const CATALOG_VERSION: string = seed.catalog_version as string;
 

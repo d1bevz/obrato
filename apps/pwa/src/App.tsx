@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import { AmigoDefs } from './components/Amigo';
 import { OfflineBadge } from './components/OfflineBadge';
 import { ProjectList } from './components/ProjectList';
 import { ProjectDetail } from './components/ProjectDetail';
@@ -147,7 +148,10 @@ const RoomEditScreen = withProject((project, roomId) => (
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      {/* Символы Amigo — один раз на документ; экраны берут <use href> */}
+      <AmigoDefs />
+      <Routes>
       <Route path="/" element={<ListScreen />} />
       <Route path="/project/:projectId" element={<DetailScreen />} />
       <Route path="/project/:projectId/purchase" element={<PurchaseScreen />} />
@@ -168,6 +172,7 @@ export default function App() {
         path="/project/:projectId/snapshot/:snapshotId/actuals"
         element={<ActualsScreen />}
       />
-    </Routes>
+      </Routes>
+    </>
   );
 }

@@ -44,6 +44,10 @@ export interface SnapshotDoc {
   /** Названия SKU by value на момент freeze — рендер снапшота не зависит
    * от живого каталога (самодостаточность frozen_list, гл.05 §5). */
   skuTitles: Record<string, string>;
+  /** Имена магазинов by value (находка ревью обкатки v1: «куда идти» — тоже
+   * факт листа, живой каталог после ре-курации может его исказить).
+   * Optional: у снапшотов, замороженных до этого поля, магазина просто нет. */
+  skuStores?: Record<string, string>;
   normSetLabel: string;
   engineVersion: string;
   catalogVersion: string;

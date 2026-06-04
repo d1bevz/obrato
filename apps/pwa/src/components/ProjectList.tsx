@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AmigoBust } from './Amigo';
 import type { ProjectDoc } from '../store/db';
 import { createProject } from '../store/projectStore';
 import type { Project } from '../types';
@@ -7,6 +8,7 @@ import { projectAreaM2 } from '../types';
 
 // S1 · ProjectList (гл.08 §6): вход, список объектов, выбор за один тап.
 // P2: «+ Объект» создаёт проект в IndexedDB и ведёт в S2.
+// Пустая база → онбординг с Amigo (§10.2 S1: «начни с первого объекта»).
 
 const STATUS_LABEL: Record<Project['status'], string> = {
   planning: 'планирование',
@@ -51,6 +53,16 @@ export function ProjectList({
         )}
         {error && <div className="card error">Не сохранилось: {error}</div>}
         {!ready && !storeError && <div className="card center">Загружаю…</div>}
+        {ready && !storeError && projects.length === 0 && (
+          <div className="card amigo-hero">
+            <AmigoBust />
+            <h2>Какой объект сегодня?</h2>
+            <div className="sub">
+              Начни с первого: комнаты по шаблону, размеры с рулетки — лист
+              закупок соберу сам.
+            </div>
+          </div>
+        )}
         {projects.map((p) => (
           <div
             key={p.id}

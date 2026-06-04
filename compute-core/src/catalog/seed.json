@@ -380,6 +380,7 @@
       "pack_size": 0.8,
       "pack_unit": "m2",
       "coverage_per_pack": null,
+      "url": null,
       "active": true
     },
     {
@@ -571,6 +572,7 @@
       "pack_size": 5,
       "pack_unit": "kg",
       "coverage_per_pack": null,
+      "url": null,
       "active": true
     },
     {
@@ -683,6 +685,7 @@
       "pack_size": 15,
       "pack_unit": "l",
       "coverage_per_pack": null,
+      "url": null,
       "active": true
     },
     {
@@ -707,6 +710,7 @@
       "pack_size": 15,
       "pack_unit": "l",
       "coverage_per_pack": null,
+      "url": null,
       "active": true
     },
     {
@@ -782,6 +786,7 @@
       "pack_size": 1,
       "pack_unit": "l",
       "coverage_per_pack": null,
+      "url": null,
       "active": true
     },
     {
