@@ -1,0 +1,10 @@
+# Obrato PWA — статик с авто-HTTPS (Let's Encrypt через sslip.io).
+# Домен obrato.* появится после brand-homework (гл.11 §11.5) — заменить тут.
+72.61.103.206.sslip.io {
+	root * /srv
+	encode gzip
+	try_files {path} /index.html
+	file_server
+	header /sw.js Cache-Control "no-cache"
+	header /index.html Cache-Control "no-cache"
+}

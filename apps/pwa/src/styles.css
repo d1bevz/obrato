@@ -1,0 +1,260 @@
+/* Дизайн-токены — из мокапов гл.08 (08-mockups, green-палитра). */
+:root {
+  --green: #1f9d57;
+  --green-d: #14723d;
+  --ink: #1b1813;
+  --paper: #f3efe6;
+  --card: #ffffff;
+  --muted: #7a7468;
+  --line: #e3ddd0;
+  --wet: #2381c4;
+  --warn: #b7791f;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(27, 24, 19, 0.08), 0 4px 14px rgba(27, 24, 19, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  max-width: 560px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Шапка (сквозной слой, гл.08 §1) --- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+  background: var(--green);
+  color: #fff;
+}
+
+.topbar .brand {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.3px;
+}
+
+.topbar .back {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  padding: 4px 8px 4px 0;
+  cursor: pointer;
+}
+
+.topbar .spacer {
+  flex: 1;
+}
+
+.offline-badge {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.offline-badge.offline {
+  background: var(--warn);
+}
+
+main {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* --- Карточки --- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+}
+
+.card.tappable {
+  cursor: pointer;
+  transition: transform 0.06s ease;
+}
+
+.card.tappable:active {
+  transform: scale(0.985);
+}
+
+.card h2 {
+  margin: 0 0 4px;
+  font-size: 17px;
+}
+
+.card .sub {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.row .grow {
+  flex: 1;
+  min-width: 0;
+}
+
+/* --- Бейджи --- */
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.badge.wet {
+  background: #e8f3fb;
+  border-color: #bcdcf1;
+  color: var(--wet);
+}
+
+.badge.status {
+  background: #e9f6ef;
+  border-color: #c4e6d3;
+  color: var(--green-d);
+}
+
+.badge.muted {
+  color: var(--muted);
+}
+
+/* --- Метрики --- */
+.metric {
+  text-align: right;
+}
+
+.metric .num {
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.metric .lbl {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.dims {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.type-icon {
+  font-size: 26px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+/* --- Итоговая полоса и CTA --- */
+.summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 4px 4px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.summary b {
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.cta {
+  position: sticky;
+  bottom: 0;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: linear-gradient(transparent, var(--paper) 35%);
+}
+
+.btn {
+  width: 100%;
+  border: none;
+  border-radius: var(--radius);
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: var(--green);
+  color: #fff;
+}
+
+.btn.primary:active {
+  background: var(--green-d);
+}
+
+.btn:disabled {
+  background: var(--line);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.hint {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* --- Подвал-роадмап (P0) --- */
+.roadmap {
+  margin-top: auto;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  padding: 8px 0 2px;
+}
