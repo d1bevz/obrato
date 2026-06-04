@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Project, Room } from '../types';
+import type { ProjectDoc } from '../store/db';
+import { deleteProject, updateProject } from '../store/projectStore';
+import type { Room } from '../types';
 import {
   FLOOR_FINISH_LABEL,
   ROOM_TYPE_ICON,
@@ -9,7 +12,8 @@ import {
 } from '../types';
 
 // S2 · ProjectDetail (гл.08 §6): хаб объекта — комнаты, статус, итог.
-// P1: CTA «Список закупок» ведёт на S5 (расчёт ядром на устройстве).
+// P2: тап по комнате → S3-редактор; «+ Комната»; название/адрес правятся
+// инлайн; CTA «Список закупок» → S5.
 
 function workBadges(r: Room): string[] {
   const out: string[] = [];
@@ -29,9 +33,21 @@ function workBadges(r: Room): string[] {
   return out;
 }
 
-function RoomCard({ room }: { room: Room }) {
+function RoomCard({ room, onOpen }: { room: Room; onOpen: () => void }) {
   return (
-    <div className="card">
+    <div
+      className="card tappable"
+      role="button"
+      tabIndex={0}
+      onClick={onOpen}
+      onKeyDown={(e) => {
+        // нативная кнопка активируется и Enter, и Space (a11y)
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
+    >
       <div className="row">
         <div className="type-icon" aria-hidden>
           {ROOM_TYPE_ICON[room.type]}
@@ -67,35 +83,108 @@ function RoomCard({ room }: { room: Room }) {
   );
 }
 
-export function ProjectDetail({ project }: { project: Project }) {
+export function ProjectDetail({ project }: { project: ProjectDoc }) {
   const navigate = useNavigate();
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [title, setTitle] = useState(project.title);
+
+  const [opError, setOpError] = useState<string | null>(null);
+
+  const commitTitle = async () => {
+    setEditingTitle(false);
+    const t = title.trim();
+    try {
+      if (t && t !== project.title) {
+        await updateProject(project.id, { title: t });
+      } else {
+        setTitle(project.title);
+      }
+    } catch (e) {
+      setTitle(project.title);
+      setOpError(e instanceof Error ? e.message : String(e));
+    }
+  };
+
+  const removeProject = async () => {
+    if (!window.confirm(`Удалить объект «${project.title}» целиком?`)) return;
+    try {
+      await deleteProject(project.id);
+      navigate('/');
+    } catch (e) {
+      setOpError(e instanceof Error ? e.message : String(e));
+    }
+  };
+
   return (
     <>
       <main>
+        {opError && <div className="card error">Не сохранилось: {opError}</div>}
         <div className="summary">
-          <span>
-            {project.rooms.length} комнат ·{' '}
-            {project.rooms.filter((r) => r.wet).length} мокрая зона
-          </span>
+          {editingTitle ? (
+            <input
+              className="title-input"
+              value={title}
+              autoFocus
+              onChange={(e) => setTitle(e.target.value)}
+              onBlur={commitTitle}
+              onKeyDown={(e) => e.key === 'Enter' && commitTitle()}
+            />
+          ) : (
+            <button
+              type="button"
+              className="title-edit"
+              onClick={() => setEditingTitle(true)}
+              title="Переименовать"
+            >
+              {project.title} ✎
+            </button>
+          )}
           <span>
             итого <b>{projectAreaM2(project).toFixed(1)} м²</b>
           </span>
         </div>
-        {project.rooms.map((r) => (
-          <RoomCard key={r.id} room={r} />
-        ))}
-      </main>
-      <div className="cta">
-        <button
-          className="btn primary"
-          onClick={() => navigate(`/project/${project.id}/purchase`)}
-        >
-          Список закупок
-        </button>
-        <div className="hint">
-          расчёт на устройстве — нормы гл.07, диапазоны + цены-«ориентир»
+        <div className="summary">
+          <span>
+            {project.rooms.length} комнат ·{' '}
+            {project.rooms.filter((r) => r.wet).length} мокрых
+          </span>
         </div>
-      </div>
+        {project.rooms.map((r) => (
+          <RoomCard
+            key={r.id}
+            room={r}
+            onOpen={() => navigate(`/project/${project.id}/room/${r.id}`)}
+          />
+        ))}
+        <button
+          type="button"
+          className="btn outline"
+          onClick={() => navigate(`/project/${project.id}/room/new`)}
+        >
+          + Комната
+        </button>
+        {project.rooms.length === 0 && (
+          <div className="roadmap">
+            добавь первую комнату: тип → размеры → состав работ
+          </div>
+        )}
+        <button type="button" className="btn danger-link" onClick={removeProject}>
+          Удалить объект
+        </button>
+      </main>
+      {project.rooms.length > 0 && (
+        <div className="cta">
+          <button
+            className="btn primary"
+            onClick={() => navigate(`/project/${project.id}/purchase`)}
+          >
+            Список закупок
+          </button>
+          <div className="hint">
+            расчёт на устройстве — нормы гл.07, диапазоны + цены-«ориентир»
+          </div>
+        </div>
+      )}
     </>
   );
 }
