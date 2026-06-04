@@ -1,21 +1,26 @@
-import { useMemo } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type {
-  Confidence,
-  MaterialEstimate,
-  MaterialKey,
+  MoneyRange,
+  PurchaseItem,
+  PurchaseListView,
+  QtyConfidence,
+  SkuRejection,
   StageKey,
   UnitKey,
 } from 'compute-wasm';
-import { CATALOG, CATALOG_VERSION } from '../catalog/catalog';
+import { CATALOG } from '../catalog/catalog';
 import { useEstimates } from '../compute/useEstimates';
-import type { Project } from '../types';
+import type { ProjectDoc } from '../store/db';
+import { createSnapshot } from '../store/snapshots';
 
-// S5 · PurchaseList, итерация P1 (гл.13): материалы с ДИАПАЗОНАМИ + цены-
-// «ориентир» из каталога. UX-правила честности — гл.08 §4: headline =
-// central, диапазон рядом, не спрятан; деньги всегда «ориентир»;
-// unvalidated подсвечен. Упаковки/суммы по фасовкам — P3 (packaging в ядре).
+// S5 · PurchaseList, P3 (гл.13): лист «в магазин» — выход ЯДРА (Грань A,
+// гл.05 §5): упаковки (ceil, «бери до» — гл.08 §4 п.5), integer money,
+// группировка по этапам. UX честности — гл.08 §4: headline = expected,
+// диапазон рядом; деньги всегда «ориентир»; в строках листа —
+// QuantityEstimate.confidence (точность ЧИСЛА), не NormValue.confidence.
 
-const STAGE_LABEL: Record<StageKey, string> = {
+export const STAGE_LABEL: Record<StageKey, string> = {
   demolition: 'Демонтаж',
   'rough-plumbing-electric': 'Черновая сантехника и электрика',
   screed: 'Стяжка и выравнивание пола',
@@ -34,129 +39,106 @@ const UNIT_LABEL: Record<UnitKey, string> = {
   pcs: 'шт',
 };
 
-// Уровень НОРМЫ (NormValue.confidence) — гл.08 §4: на P1 в листе показываем
-// его честно; с P3 строки листа перейдут на QuantityEstimate.confidence.
-const CONFIDENCE_LABEL: Record<Confidence, string> = {
-  high: 'высокая',
-  medium: 'средняя',
-  low: 'низкая',
-  unvalidated: 'не проверено',
+const QTY_CONFIDENCE_LABEL: Record<QtyConfidence, string> = {
+  exact: 'точно',
+  estimated: 'оценка',
+  wide: 'широкий диапазон',
 };
-
-const CONFIDENCE_ORDER: Confidence[] = ['unvalidated', 'low', 'medium', 'high'];
-
-function minConfidence(a: Confidence, b: Confidence): Confidence {
-  return CONFIDENCE_ORDER.indexOf(a) <= CONFIDENCE_ORDER.indexOf(b) ? a : b;
-}
-
-interface PurchaseRow {
-  materialKey: MaterialKey;
-  unit: UnitKey;
-  lo: number;
-  central: number;
-  hi: number;
-  confidence: Confidence;
-  /** Уникальные комнаты (краска даёт 2 оценки на комнату: стены + потолок). */
-  rooms: Set<string>;
-}
-
-interface StageGroup {
-  stage: StageKey;
-  rows: PurchaseRow[];
-}
-
-/** Свод оценок: этап → материал → сумма диапазонов по комнатам.
- * Границы суммируются почленно (lo+lo, hi+hi) — консервативно;
- * confidence свода = худшее звено. */
-function groupByStage(estimates: MaterialEstimate[]): StageGroup[] {
-  const stages = new Map<StageKey, Map<MaterialKey, PurchaseRow>>();
-  for (const e of estimates) {
-    let mats = stages.get(e.stage);
-    if (!mats) {
-      mats = new Map();
-      stages.set(e.stage, mats);
-    }
-    const row = mats.get(e.materialKey);
-    if (!row) {
-      mats.set(e.materialKey, {
-        materialKey: e.materialKey,
-        unit: e.unit,
-        lo: e.quantity.lo,
-        central: e.quantity.central,
-        hi: e.quantity.hi,
-        confidence: e.quantity.confidence,
-        rooms: new Set([e.roomId]),
-      });
-    } else {
-      row.lo += e.quantity.lo;
-      row.central += e.quantity.central;
-      row.hi += e.quantity.hi;
-      row.confidence = minConfidence(row.confidence, e.quantity.confidence);
-      row.rooms.add(e.roomId);
-    }
-  }
-  return [...stages.entries()].map(([stage, mats]) => ({
-    stage,
-    rows: [...mats.values()],
-  }));
-}
 
 function fmtQty(v: number): string {
   return v < 10 ? v.toFixed(1) : Math.round(v).toString();
 }
 
+/** Деньги — точно в центах: строки на глаз сходятся с subtotal/total
+ * (по-строчное округление до целых евро ломало сверку — находка ревью P3). */
 function fmtEur(minor: number): string {
-  return `${Math.round(minor / 100)} €`;
+  return `${(minor / 100).toFixed(2)} €`;
 }
 
-function Row({ row }: { row: PurchaseRow }) {
-  const mat = CATALOG.get(row.materialKey);
-  const unit = UNIT_LABEL[row.unit];
-  const unitPrice = mat?.unitPriceMinor ?? null;
+function Money({ m, mark = true }: { m: MoneyRange; mark?: boolean }) {
+  return (
+    <span className="price">
+      ≈ {fmtEur(m.expectedMinorUnits)}
+      <span className="price-range">
+        {' '}
+        ({fmtEur(m.lowMinorUnits)}–{fmtEur(m.highMinorUnits)})
+      </span>
+      {mark && m.isEstimate && <span className="price-mark"> · ориентир</span>}
+    </span>
+  );
+}
+
+function Row({
+  item,
+  skuTitles,
+}: {
+  item: PurchaseItem;
+  /** Названия SKU, замороженные при снапшоте; live-лист резолвит из CATALOG. */
+  skuTitles?: Record<string, string>;
+}) {
+  const mat = CATALOG.get(item.materialKey);
+  const unit = UNIT_LABEL[item.unit];
+  const q = item.quantity;
+  // Название SKU: frozen-заголовок → live-каталог ТОЛЬКО если это тот же SKU
+  // (после ре-курации default мог смениться — чужой title не показываем).
+  const skuTitle =
+    (item.skuId && skuTitles?.[item.skuId]) ||
+    (item.skuId && mat?.defaultSku?.id === item.skuId
+      ? mat.defaultSku.title
+      : null);
   return (
     <div className="prow">
       <div className="prow-head">
         <div className="grow">
-          <div className="pname">{mat?.nameRu ?? row.materialKey}</div>
+          <div className="pname">{mat?.nameRu ?? item.materialKey}</div>
           {mat?.namePt && <div className="ppt">{mat.namePt}</div>}
         </div>
         <div className="pqty">
-          <span className="central">
-            {fmtQty(row.central)} {unit}
-          </span>
-          <span className="range">
-            {fmtQty(row.lo)}–{fmtQty(row.hi)} {unit}
-          </span>
+          {item.packs ? (
+            <>
+              <span className="central">{item.packs.expected} уп.</span>
+              <span className="range">
+                {fmtQty(q.expected)} {unit} ({fmtQty(q.low)}–{fmtQty(q.high)})
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="central">
+                {fmtQty(q.expected)} {unit}
+              </span>
+              <span className="range">
+                {fmtQty(q.low)}–{fmtQty(q.high)} {unit}
+              </span>
+            </>
+          )}
         </div>
       </div>
       <div className="prow-meta">
-        <span className={`badge conf conf-${row.confidence}`}>
-          {CONFIDENCE_LABEL[row.confidence]}
+        <span className={`badge conf q-${q.confidence}`}>
+          {QTY_CONFIDENCE_LABEL[q.confidence]}
         </span>
-        {row.rooms.size > 1 && (
-          <span className="badge muted">{row.rooms.size} комн.</span>
+        {item.packs && item.packs.high > item.packs.expected && (
+          <span className="badge buyupto">бери до {item.packs.high} уп.</span>
+        )}
+        {item.roomCount > 1 && (
+          <span className="badge muted">{item.roomCount} комн.</span>
         )}
         <span className="spacer" />
-        {unitPrice != null ? (
-          <span className="price">
-            ≈ {fmtEur(row.central * unitPrice)}
-            <span className="price-range">
-              {' '}
-              ({fmtEur(row.lo * unitPrice)}–{fmtEur(row.hi * unitPrice)})
-            </span>
-            <span className="price-mark"> · ориентир</span>
-          </span>
+        {item.lineTotal ? (
+          <Money m={item.lineTotal} mark={false} />
         ) : (
           <span className="price muted">цена уточняется</span>
         )}
       </div>
-      {mat?.defaultSku && (
+      {item.skuId && (
+        // Упаковка и цена — ИЗ item (frozen by value, гл.05 §5): снапшот
+        // самодостаточен, дрейф живого каталога его не трогает.
         <div className="psku">
-          {mat.defaultSku.title}
+          {skuTitle ?? `SKU ${item.skuId}`}
           <span className="psku-pack">
-            {' '}
-            · уп. {mat.defaultSku.packSize} {unit}
-            {mat.price ? ` · ${(mat.price.amountMinorUnits / 100).toFixed(2)} €/уп` : ''}
+            {item.packSize != null && ` · уп. ${item.packSize} ${unit}`}
+            {item.priceMinorUnits != null &&
+              ` · ${(item.priceMinorUnits / 100).toFixed(2)} €/уп`}
           </span>
         </div>
       )}
@@ -164,12 +146,65 @@ function Row({ row }: { row: PurchaseRow }) {
   );
 }
 
-export function PurchaseList({ project }: { project: Project }) {
-  const { data, error, loading } = useEstimates(project);
-  const groups = useMemo(
-    () => (data ? groupByStage(data.estimates) : []),
-    [data],
+/** Тело листа — общее для живого расчёта (S5) и снапшота (read-only). */
+export function PurchaseListBody({
+  list,
+  rejections = [],
+  skuTitles,
+}: {
+  list: PurchaseListView;
+  rejections?: SkuRejection[];
+  skuTitles?: Record<string, string>;
+}) {
+  if (list.byStage.length === 0) {
+    return (
+      <div className="card center">
+        Лист пуст — в комнатах не отмечено работ, дающих материалы каталога.
+      </div>
+    );
+  }
+  return (
+    <>
+      {rejections.length > 0 && (
+        <div className="card error">
+          Каталог: позиции отвергнуты ядром (unit-инвариант):{' '}
+          {rejections
+            .map((r) => `${CATALOG.get(r.materialKey)?.nameRu ?? r.materialKey} (${r.reason})`)
+            .join('; ')}
+        </div>
+      )}
+      {list.byStage.map((g) => (
+        <section key={g.stage} className="stage">
+          <h3 className="stage-title">{STAGE_LABEL[g.stage]}</h3>
+          <div className="card stack">
+            {g.items.map((item) => (
+              <Row
+                key={`${g.stage}:${item.materialKey}`}
+                item={item}
+                skuTitles={skuTitles}
+              />
+            ))}
+            <div className="prow subtotal">
+              <span className="muted">итого этап</span>
+              <span className="spacer" />
+              <Money m={g.subtotal} mark={false} />
+            </div>
+          </div>
+        </section>
+      ))}
+      <div className="summary">
+        <span>итого по материалам каталога</span>
+        <Money m={list.total} />
+      </div>
+    </>
   );
+}
+
+export function PurchaseList({ project }: { project: ProjectDoc }) {
+  const navigate = useNavigate();
+  const { data, error, loading } = useEstimates(project);
+  const [freezing, setFreezing] = useState(false);
+  const [freezeError, setFreezeError] = useState<string | null>(null);
 
   if (loading) {
     return (
@@ -189,53 +224,65 @@ export function PurchaseList({ project }: { project: Project }) {
   }
   if (!data) return null;
 
-  const total = groups
-    .flatMap((g) => g.rows)
-    .reduce(
-      (acc, r) => {
-        const up = CATALOG.get(r.materialKey)?.unitPriceMinor;
-        if (up == null) return acc;
-        return {
-          lo: acc.lo + r.lo * up,
-          central: acc.central + r.central * up,
-          hi: acc.hi + r.hi * up,
-        };
-      },
-      { lo: 0, central: 0, hi: 0 },
-    );
+  const empty = data.purchase.byStage.length === 0;
+
+  const freeze = async () => {
+    if (freezing) return;
+    setFreezing(true);
+    try {
+      const snap = await createSnapshot(project, data);
+      navigate(`/project/${project.id}/snapshot/${snap.id}`);
+    } catch (e) {
+      setFreezeError(e instanceof Error ? e.message : String(e));
+      setFreezing(false);
+    }
+  };
 
   return (
-    <main>
-      <div className="notice">
-        Seed-нормы ещё не калиброваны объектами — диапазоны честно широкие и
-        сужаются после первых сверок закупок (P4).
-      </div>
-      {groups.map((g) => (
-        <section key={g.stage} className="stage">
-          <h3 className="stage-title">{STAGE_LABEL[g.stage]}</h3>
-          <div className="card stack">
-            {g.rows.map((r) => (
-              <Row key={r.materialKey} row={r} />
-            ))}
+    <>
+      <main>
+        <div className="notice screen-only">
+          Seed-нормы ещё не калиброваны объектами — диапазоны честно широкие;
+          упаковки округлены вверх, «бери до» — защита от потерянного дня.
+        </div>
+        {/* Шапка печатной версии (видна только в print) */}
+        <div className="print-header print-only">
+          <b>Obrato · лист закупок</b> — {project.title}
+          <br />
+          {new Date().toLocaleDateString('ru')} · нормы {data.normSetLabel} ·
+          каталог {data.purchase.catalogVersion} · цены — ориентир
+        </div>
+        <PurchaseListBody list={data.purchase} rejections={data.rejections} />
+        {freezeError && (
+          <div className="card error">Снапшот не сохранился: {freezeError}</div>
+        )}
+        {!empty && (
+          <button
+            type="button"
+            className="btn outline screen-only"
+            onClick={() => window.print()}
+          >
+            🖨 Печать / PDF
+          </button>
+        )}
+        <div className="roadmap">
+          нормы {data.normSetLabel} · {data.engineVersion} · каталог{' '}
+          {data.purchase.catalogVersion}
+          <br />
+          ламинат/винил закупаются вне каталога; электрика — точки без
+          материалов
+        </div>
+      </main>
+      {!empty && (
+        <div className="cta screen-only">
+          <button className="btn primary" disabled={freezing} onClick={freeze}>
+            {freezing ? 'Замораживаю…' : '❄ Взять в магазин (снапшот)'}
+          </button>
+          <div className="hint">
+            лист зафиксируется как есть — факт закупки сверится с ним (P4)
           </div>
-        </section>
-      ))}
-      <div className="summary">
-        <span>итого по материалам каталога</span>
-        <span>
-          ≈ <b>{fmtEur(total.central)}</b>{' '}
-          <span className="muted">
-            ({fmtEur(total.lo)}–{fmtEur(total.hi)}) · ориентир
-          </span>
-        </span>
-      </div>
-      <div className="roadmap">
-        нормы {data.normSetLabel} · {data.engineVersion} · каталог{' '}
-        {CATALOG_VERSION}
-        <br />
-        упаковки и суммы «в магазин» — P3; ламинат/винил закупаются вне
-        каталога
-      </div>
-    </main>
+        </div>
+      )}
+    </>
   );
 }

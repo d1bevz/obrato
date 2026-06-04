@@ -1,10 +1,10 @@
 // Каталог: bundled read-only снапшот seed.json (141 SKU, D10 — ре-курация
 // руками перед объектом). Источник: compute-core/src/catalog/seed.json
-// (курация 2026-05-30, Leroy Merlin PT + локальные). Здесь — только проекция
-// «материал → default SKU + текущая цена» для S5; полный SkuView уйдёт через
-// Границу A на P3 (packaging в ядре).
+// (курация 2026-05-30, Leroy Merlin PT + локальные). Проекции:
+// MaterialView (имена/цены для UI) и CatalogInput (SkuView'ы Границы A —
+// app резолвит default SKU и текущую цену ДО вызова ядра, гл.09 §2).
 
-import type { MaterialKey } from 'compute-wasm';
+import type { CatalogInput, MaterialKey, UnitKey } from 'compute-wasm';
 import seed from './seed.json';
 
 // --- Типы строк seed.json (зеркало схемы каталога, гл.10 §2) ---
@@ -155,3 +155,28 @@ export const CATALOG: ReadonlyMap<MaterialKey, MaterialView> = new Map(
 );
 
 export const CATALOG_VERSION: string = seed.catalog_version as string;
+
+/** Каталог-вью Границы A: default SKU + текущая цена на материал.
+ * Считается один раз — каталог бандлится и не меняется в рантайме. */
+export const CATALOG_INPUT: CatalogInput = {
+  catalogVersion: CATALOG_VERSION,
+  skus: materials
+    .filter((m) => m.active)
+    .flatMap((m) => {
+      const sku = skuById.get(m.default_sku_id);
+      if (!sku) return [];
+      const price = currentPrice(sku.id);
+      return [
+        {
+          materialKey: m.key as MaterialKey,
+          skuId: sku.id,
+          packSize: sku.pack_size,
+          packUnit: sku.pack_unit as UnitKey,
+          ...(sku.coverage_per_pack != null
+            ? { coveragePerPack: sku.coverage_per_pack }
+            : {}),
+          ...(price ? { priceMinorUnits: price.amount_minor_units } : {}),
+        },
+      ];
+    }),
+};

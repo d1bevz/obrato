@@ -4,17 +4,21 @@
 // ловим и отдаём status:'panic' наружу, приложение не падает (клиент после
 // паники пересоздаёт worker: инстанс WASM считается отравленным).
 
-import init, { estimatesForProject } from 'compute-wasm';
+import init, { computeProject } from 'compute-wasm';
 import type { ComputeRequest, ComputeResponse } from './protocol';
 
 const ready = init();
 
 self.onmessage = async (e: MessageEvent<ComputeRequest>) => {
-  const { requestId, project } = e.data;
+  const { requestId, project, catalog } = e.data;
   let msg: ComputeResponse;
   try {
     await ready;
-    msg = { requestId, status: 'ok', response: estimatesForProject(project) };
+    msg = {
+      requestId,
+      status: 'ok',
+      response: computeProject(project, catalog),
+    };
   } catch (err) {
     msg = {
       requestId,

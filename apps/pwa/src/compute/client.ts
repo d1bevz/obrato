@@ -5,10 +5,11 @@
 // только чистые данные, а не вся app-сущность под прикрытием serde.
 
 import type {
-  EstimateResponse,
+  ComputeProjectResponse,
   ProjectInput,
   Room as RoomInput,
 } from 'compute-wasm';
+import { CATALOG_INPUT } from '../catalog/catalog';
 import type { Project, Room } from '../types';
 import type { ComputeRequest, ComputeResponse } from './protocol';
 
@@ -23,7 +24,7 @@ export class ComputeFailure extends Error {
 }
 
 type Pending = {
-  resolve: (r: EstimateResponse) => void;
+  resolve: (r: ComputeProjectResponse) => void;
   reject: (e: ComputeFailure) => void;
 };
 
@@ -116,12 +117,18 @@ export function projectToInput(p: Project): ProjectInput {
   };
 }
 
-/** Проект → оценки с диапазонами. Эфемерно, recomputable. */
-export function computeEstimates(project: Project): Promise<EstimateResponse> {
+/** Проект → оценки + лист закупок. Эфемерно, recomputable (Грань A). */
+export function computeEstimates(
+  project: Project,
+): Promise<ComputeProjectResponse> {
   const requestId = nextRequestId++;
-  return new Promise<EstimateResponse>((resolve, reject) => {
+  return new Promise<ComputeProjectResponse>((resolve, reject) => {
     pending.set(requestId, { resolve, reject });
-    const req: ComputeRequest = { requestId, project: projectToInput(project) };
+    const req: ComputeRequest = {
+      requestId,
+      project: projectToInput(project),
+      catalog: CATALOG_INPUT,
+    };
     ensureWorker().postMessage(req);
   });
 }

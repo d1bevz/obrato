@@ -2,13 +2,18 @@
 // барьера поток↔поток — requestId для supersede, status для обработки сбоя
 // ядра. Доменные типы едут из Rust (crates/compute-wasm, tsify).
 
-import type { EstimateResponse, ProjectInput } from 'compute-wasm';
+import type {
+  CatalogInput,
+  ComputeProjectResponse,
+  ProjectInput,
+} from 'compute-wasm';
 
 export interface ComputeRequest {
   requestId: number;
   project: ProjectInput;
+  catalog: CatalogInput;
 }
 
 export type ComputeResponse =
-  | { requestId: number; status: 'ok'; response: EstimateResponse }
+  | { requestId: number; status: 'ok'; response: ComputeProjectResponse }
   | { requestId: number; status: 'error' | 'panic'; message: string };

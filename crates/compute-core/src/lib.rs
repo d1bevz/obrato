@@ -18,6 +18,7 @@ pub mod geometry;
 pub mod materials;
 pub mod model;
 pub mod norms;
+pub mod purchase;
 
 pub use engine::{MaterialEstimate, compose_quantity, estimates_for_project, estimates_for_room};
 pub use materials::{DrivingMeasure, MaterialKind, Stage, Unit};
@@ -26,3 +27,7 @@ pub use model::{
     WallsWork, Works,
 };
 pub use norms::{Confidence, NormAssumptions, NormValue};
+pub use purchase::{
+    MoneyRange, PackEstimate, PurchaseItem, PurchaseList, PurchaseStageGroup, QtyConfidence,
+    QuantityEstimate, SkuRejection, SkuView, packs_needed, purchase_list,
+};

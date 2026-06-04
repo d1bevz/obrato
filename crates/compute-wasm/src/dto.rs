@@ -576,3 +576,255 @@ pub struct EstimateResponse {
     pub norm_set_label: String,
     pub estimates: Vec<MaterialEstimate>,
 }
+
+// ---------------------------------------------------------------------------
+// Вниз: каталог-вью (гл.09 §2 — app резолвит SKU/цены ДО вызова ядра)
+// ---------------------------------------------------------------------------
+
+#[derive(Debug, Clone, Serialize, Deserialize, Tsify)]
+#[serde(rename_all = "camelCase")]
+pub struct SkuView {
+    pub material_key: MaterialKey,
+    pub sku_id: String,
+    pub pack_size: f64,
+    pub pack_unit: UnitKey,
+    #[tsify(optional)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub coverage_per_pack: Option<f64>,
+    /// Цена за упаковку, центы EUR (integer money).
+    #[tsify(optional)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub price_minor_units: Option<i64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Tsify)]
+#[tsify(from_wasm_abi)]
+#[serde(rename_all = "camelCase")]
+pub struct CatalogInput {
+    pub catalog_version: String,
+    pub skus: Vec<SkuView>,
+}
+
+impl MaterialKey {
+    fn to_core(self) -> cc::MaterialKind {
+        match self {
+            MaterialKey::FloorTile => cc::MaterialKind::FloorTile,
+            MaterialKey::WallTile => cc::MaterialKind::WallTile,
+            MaterialKey::TileAdhesive => cc::MaterialKind::TileAdhesive,
+            MaterialKey::Grout => cc::MaterialKind::Grout,
+            MaterialKey::Paint => cc::MaterialKind::Paint,
+            MaterialKey::Primer => cc::MaterialKind::Primer,
+            MaterialKey::FloorLeveler => cc::MaterialKind::FloorLeveler,
+            MaterialKey::ScreedMix => cc::MaterialKind::ScreedMix,
+            MaterialKey::Waterproofing => cc::MaterialKind::Waterproofing,
+            MaterialKey::Baseboard => cc::MaterialKind::Baseboard,
+        }
+    }
+}
+
+impl UnitKey {
+    fn to_core(self) -> cc::Unit {
+        match self {
+            UnitKey::M2 => cc::Unit::M2,
+            UnitKey::Kg => cc::Unit::Kg,
+            UnitKey::L => cc::Unit::L,
+            UnitKey::M => cc::Unit::M,
+            UnitKey::Pcs => cc::Unit::Pcs,
+        }
+    }
+}
+
+impl From<SkuView> for cc::SkuView {
+    fn from(v: SkuView) -> Self {
+        cc::SkuView {
+            material: v.material_key.to_core(),
+            sku_id: v.sku_id,
+            pack_size: v.pack_size,
+            pack_unit: v.pack_unit.to_core(),
+            coverage_per_pack: v.coverage_per_pack,
+            price_minor_units: v.price_minor_units,
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Вверх: PurchaseList (Грань A, гл.05 §5) — эфемерный, recomputable
+// ---------------------------------------------------------------------------
+
+/// Точность ЧИСЛА строки листа — НЕ NormValue.confidence (гл.08 §4).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Tsify)]
+#[serde(rename_all = "lowercase")]
+pub enum QtyConfidence {
+    Exact,
+    Estimated,
+    Wide,
+}
+
+impl From<cc::QtyConfidence> for QtyConfidence {
+    fn from(v: cc::QtyConfidence) -> Self {
+        match v {
+            cc::QtyConfidence::Exact => QtyConfidence::Exact,
+            cc::QtyConfidence::Estimated => QtyConfidence::Estimated,
+            cc::QtyConfidence::Wide => QtyConfidence::Wide,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, Tsify)]
+#[serde(rename_all = "camelCase")]
+pub struct QuantityEstimate {
+    pub low: f64,
+    pub expected: f64,
+    pub high: f64,
+    pub confidence: QtyConfidence,
+}
+
+/// Целые упаковки; high = «бери до этого» (гл.08 §4 п.5).
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, Tsify)]
+#[serde(rename_all = "camelCase")]
+pub struct PackEstimate {
+    pub low: u32,
+    pub expected: u32,
+    pub high: u32,
+}
+
+/// Деньги-диапазон, центы; is_estimate=true → UI метит «ориентир».
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, Tsify)]
+#[serde(rename_all = "camelCase")]
+pub struct MoneyRange {
+    pub low_minor_units: i64,
+    pub expected_minor_units: i64,
+    pub high_minor_units: i64,
+    pub is_estimate: bool,
+}
+
+impl From<cc::MoneyRange> for MoneyRange {
+    fn from(v: cc::MoneyRange) -> Self {
+        MoneyRange {
+            low_minor_units: v.low_minor_units,
+            expected_minor_units: v.expected_minor_units,
+            high_minor_units: v.high_minor_units,
+            is_estimate: v.is_estimate,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Tsify)]
+#[serde(rename_all = "camelCase")]
+pub struct PurchaseItem {
+    pub material_key: MaterialKey,
+    pub stage: StageKey,
+    pub quantity: QuantityEstimate,
+    pub unit: UnitKey,
+    #[tsify(optional)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sku_id: Option<String>,
+    #[tsify(optional)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pack_size: Option<f64>,
+    /// Цена за упаковку, центы — frozen by value (гл.05 §5).
+    #[tsify(optional)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub price_minor_units: Option<i64>,
+    #[tsify(optional)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub packs: Option<PackEstimate>,
+    #[tsify(optional)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub line_total: Option<MoneyRange>,
+    pub room_count: u32,
+}
+
+impl From<cc::PurchaseItem> for PurchaseItem {
+    fn from(v: cc::PurchaseItem) -> Self {
+        PurchaseItem {
+            material_key: v.material.into(),
+            stage: v.stage.into(),
+            quantity: QuantityEstimate {
+                low: v.quantity.low,
+                expected: v.quantity.expected,
+                high: v.quantity.high,
+                confidence: v.quantity.confidence.into(),
+            },
+            unit: v.unit.into(),
+            sku_id: v.sku_id,
+            pack_size: v.pack_size,
+            price_minor_units: v.price_minor_units,
+            packs: v.packs.map(|p| PackEstimate {
+                low: p.low,
+                expected: p.expected,
+                high: p.high,
+            }),
+            line_total: v.line_total.map(Into::into),
+            room_count: v.room_count,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Tsify)]
+#[serde(rename_all = "camelCase")]
+pub struct PurchaseStageGroup {
+    pub stage: StageKey,
+    pub items: Vec<PurchaseItem>,
+    pub subtotal: MoneyRange,
+}
+
+impl From<cc::PurchaseStageGroup> for PurchaseStageGroup {
+    fn from(v: cc::PurchaseStageGroup) -> Self {
+        PurchaseStageGroup {
+            stage: v.stage.into(),
+            items: v.items.into_iter().map(Into::into).collect(),
+            subtotal: v.subtotal.into(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Tsify)]
+#[serde(rename_all = "camelCase")]
+pub struct PurchaseListView {
+    pub by_stage: Vec<PurchaseStageGroup>,
+    pub total: MoneyRange,
+    pub norm_set_label: String,
+    pub catalog_version: String,
+}
+
+impl From<cc::PurchaseList> for PurchaseListView {
+    fn from(v: cc::PurchaseList) -> Self {
+        PurchaseListView {
+            by_stage: v.by_stage.into_iter().map(Into::into).collect(),
+            total: v.total.into(),
+            norm_set_label: v.norm_set_label.to_string(),
+            catalog_version: v.catalog_version,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Tsify)]
+#[serde(rename_all = "camelCase")]
+pub struct SkuRejection {
+    pub material_key: MaterialKey,
+    pub sku_id: String,
+    pub reason: String,
+}
+
+impl From<cc::SkuRejection> for SkuRejection {
+    fn from(v: cc::SkuRejection) -> Self {
+        SkuRejection {
+            material_key: v.material.into(),
+            sku_id: v.sku_id,
+            reason: v.reason,
+        }
+    }
+}
+
+/// Полный ответ P3: оценки (для деталей/тултипов) + лист закупок.
+#[derive(Debug, Clone, Serialize, Deserialize, Tsify)]
+#[tsify(into_wasm_abi)]
+#[serde(rename_all = "camelCase")]
+pub struct ComputeProjectResponse {
+    pub engine_version: String,
+    pub norm_set_label: String,
+    pub estimates: Vec<MaterialEstimate>,
+    pub purchase: PurchaseListView,
+    pub rejections: Vec<SkuRejection>,
+}

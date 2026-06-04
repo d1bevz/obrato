@@ -5,6 +5,7 @@ import { ProjectList } from './components/ProjectList';
 import { ProjectDetail } from './components/ProjectDetail';
 import { PurchaseList } from './components/PurchaseList';
 import { RoomEditor } from './components/RoomEditor';
+import { SnapshotView } from './components/SnapshotView';
 import { useProject, useProjects } from './store/hooks';
 import type { ProjectDoc } from './store/db';
 
@@ -100,6 +101,16 @@ const RoomNewScreen = withProject((project) => (
   </>
 ));
 
+function SnapshotScreen() {
+  const { snapshotId } = useParams();
+  return (
+    <>
+      <Topbar title="Снапшот листа" back />
+      {snapshotId && <SnapshotView snapshotId={snapshotId} />}
+    </>
+  );
+}
+
 const RoomEditScreen = withProject((project, roomId) => (
   <>
     <Topbar
@@ -122,6 +133,10 @@ export default function App() {
       <Route
         path="/project/:projectId/room/:roomId"
         element={<RoomEditScreen />}
+      />
+      <Route
+        path="/project/:projectId/snapshot/:snapshotId"
+        element={<SnapshotScreen />}
       />
     </Routes>
   );

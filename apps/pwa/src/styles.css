@@ -347,9 +347,14 @@ main {
 
 .prow-meta {
   display: flex;
+  flex-wrap: wrap; /* полный набор бейджей + длинные суммы на 360px */
   align-items: center;
   gap: 6px;
   margin-top: 6px;
+}
+
+.prow-meta .badge {
+  flex-shrink: 0;
 }
 
 .prow-meta .spacer {
@@ -613,6 +618,95 @@ main {
 .opening-row input.invalid {
   border-color: #d8a39a;
   background: #fdf4f2;
+}
+
+/* --- P3: лист «в магазин» --- */
+.badge.q-exact {
+  background: #e9f6ef;
+  border-color: #c4e6d3;
+  color: var(--green-d);
+}
+
+.badge.q-estimated {
+  background: #fdf6e9;
+  border-color: #f0e2c4;
+  color: var(--warn);
+}
+
+.badge.q-wide {
+  background: #f7efed;
+  border-color: #e4cfc9;
+  color: #a04a3a;
+}
+
+.badge.buyupto {
+  background: #e8f3fb;
+  border-color: #bcdcf1;
+  color: var(--wet);
+  font-weight: 600;
+}
+
+.prow.subtotal {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+  padding-top: 9px;
+}
+
+.prow.subtotal .muted {
+  color: var(--muted);
+}
+
+.print-header {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.print-only {
+  display: none;
+}
+
+/* --- Печать (P3): лист → PDF браузером --- */
+@media print {
+  .topbar,
+  .cta,
+  .screen-only,
+  .roadmap,
+  .offline-badge {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  #root {
+    max-width: none;
+  }
+
+  main {
+    padding: 0;
+    gap: 8px;
+  }
+
+  .card {
+    box-shadow: none;
+    border-color: #bbb;
+    border-radius: 4px;
+  }
+
+  .stage {
+    break-inside: avoid;
+  }
+
+  .badge {
+    border-color: #bbb;
+  }
 }
 
 .icon-btn {

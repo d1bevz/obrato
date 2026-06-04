@@ -2,12 +2,12 @@
 // (generation-supersede, гл.09 §2) — устаревший ответ не перетирает свежий.
 
 import { useEffect, useState } from 'react';
-import type { EstimateResponse } from 'compute-wasm';
+import type { ComputeProjectResponse } from 'compute-wasm';
 import type { Project } from '../types';
 import { ComputeFailure, computeEstimates } from './client';
 
 export interface EstimatesState {
-  data: EstimateResponse | null;
+  data: ComputeProjectResponse | null;
   error: ComputeFailure | null;
   loading: boolean;
 }

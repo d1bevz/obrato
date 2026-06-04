@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { ProjectDoc } from '../store/db';
+import type { ProjectDoc, SnapshotDoc } from '../store/db';
 import { deleteProject, updateProject } from '../store/projectStore';
+import { listSnapshots } from '../store/snapshots';
 import type { Room } from '../types';
 import {
   FLOOR_FINISH_LABEL,
@@ -87,6 +88,18 @@ export function ProjectDetail({ project }: { project: ProjectDoc }) {
   const navigate = useNavigate();
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(project.title);
+  const [snapshots, setSnapshots] = useState<SnapshotDoc[]>([]);
+
+  useEffect(() => {
+    let gone = false;
+    listSnapshots(project.id).then(
+      (s) => !gone && setSnapshots(s),
+      () => undefined, // нет снапшотов — не повод ронять экран
+    );
+    return () => {
+      gone = true;
+    };
+  }, [project.id]);
 
   const [opError, setOpError] = useState<string | null>(null);
 
@@ -163,6 +176,44 @@ export function ProjectDetail({ project }: { project: ProjectDoc }) {
         >
           + Комната
         </button>
+        {snapshots.length > 0 && (
+          <>
+            <div className="summary">
+              <span>взято в магазин (снапшоты)</span>
+            </div>
+            {snapshots.map((s) => (
+              <div
+                key={s.id}
+                className="card tappable"
+                role="button"
+                tabIndex={0}
+                onClick={() => navigate(`/project/${project.id}/snapshot/${s.id}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigate(`/project/${project.id}/snapshot/${s.id}`);
+                  }
+                }}
+              >
+                <div className="row">
+                  <div className="grow">
+                    ❄{' '}
+                    {new Date(s.createdAt).toLocaleString('ru', {
+                      dateStyle: 'short',
+                      timeStyle: 'short',
+                    })}
+                  </div>
+                  <div className="metric">
+                    <div className="num">
+                      ≈ {Math.round(s.frozenList.total.expectedMinorUnits / 100)} €
+                    </div>
+                    <div className="lbl">ориентир</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
         {project.rooms.length === 0 && (
           <div className="roadmap">
             добавь первую комнату: тип → размеры → состав работ
