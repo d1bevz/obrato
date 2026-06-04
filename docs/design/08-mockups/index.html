@@ -745,13 +745,22 @@
             <div class="v">47.20 <span class="faint" style="font-size:12px">€</span></div></div>
         </div>
 
+        <div class="row" style="gap:9px;margin-bottom:4px">
+          <div class="field" style="flex:1;margin:0"><div class="label">Израсходовано</div>
+            <div class="v" style="color:var(--ink-2)">4 <span class="faint" style="font-size:12px">короба · rough</span></div></div>
+          <div class="field" style="flex:1;margin:0"><div class="label">Остаток</div>
+            <div class="v" style="color:var(--ink-2)">0 <span class="faint" style="font-size:12px">авто</span></div></div>
+        </div>
+        <div class="note" style="margin:0 2px 9px;font-size:10.5px">введи любые два — третье посчитается
+          (куплено − израсходовано = остаток); после работ уточни расход новой записью</div>
+
         <div class="alloc">
           <span>↳</span><div>Привязка: <span class="num">санузел · этап «плитка»</span><br>
           <span class="mono" style="font-size:10.5px;opacity:.8">single-room → consumed_fraction = 1.0</span></div></div>
 
         <div class="guard" style="margin-top:10px">
-          <span>ⓘ</span><div>Источник: <b>чек магазина</b> → сужает диапазон нормы.
-          Оценка «на глаз» помечается non-narrowing (self-confirmation guard).</div>
+          <span>ⓘ</span><div>Чек подтверждает <b>цену и куплено</b>; норму сузит только
+          уточнённый расход — «на глаз» (rough) остаётся non-narrowing (self-confirmation guard).</div>
         </div>
 
         <div class="amigo-tip" style="margin-top:10px">

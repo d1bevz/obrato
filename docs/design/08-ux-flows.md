@@ -360,10 +360,19 @@ construction (гл. 09 §3).
 - **Цель:** записать факт закупки, **часто офлайн в магазине**.
 - **Сущности:** `ProcurementActual` (insert-only), `ActualAllocation` (фан-аут факта на
   1+ оценку).
-- **Элементы:** позиция (Sku/Material), купленное кол-во + цена факт; привязка к frozen
-  `MaterialEstimate` того же material/stage; single-room → авто-`ActualAllocation
+- **Элементы:** позиция (Sku/Material); привязка к frozen `MaterialEstimate` того же
+  material/stage; цена факта; single-room → авто-`ActualAllocation
   (consumed_fraction=1.0)`, >1 комната → ручной split; self-confirmation guard визуально
   (`estimated_by_david`/`rough` = non-narrowing, не сужает диапазон).
+- **Количества — три связанных поля** (Q#9, гл. 05 §3: «решён сейчас, не позже»):
+  **куплено** (`purchased_quantity`, packs × pack_size), **израсходовано**
+  (`consumed_quantity` — обязательный минимум записи, ground-truth `per_unit`),
+  **остаток** (`leftover_quantity` — сырьё `waste_observed`). Ввод **любых двух** —
+  третье вычисляется (`purchased − consumed = leftover`) и подставляется серым
+  авто-значением; перекрывается рукой (все три храним явно — устойчивость к ручному
+  вводу). Типовой путь: в магазине — «куплено» + цена, расход по умолчанию = куплено
+  с `confidence=rough` (честно non-narrowing); после работ — уточнение
+  израсходовано/остатка **новой записью** (insert-only).
 - **Состояния:** офлайн (норма работы); записано → insert-only (правка = новая запись);
   `mutation_id` защищает от двойного факта при потерянном ACK (Risk #1, гл. 09 §3 фаза 7).
 - **Не на пилоте:** автоskan чеков, OCR, интеграция кассы.
