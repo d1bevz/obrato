@@ -489,7 +489,7 @@ Tipologia `T`+N = число спален (quartos); sala/cozinha/WC/hall ест
 
 WC-count — рыночное правило, не норматив (новостройка чаще +1 suite); сделать конфигурируемым флагом [medium].
 
-**Дефолтные точки на комнату** (project-baseline; **comfort** в скобках). ⚠️ **Расхождение с кодом:** текущий `ELECTRIC_TEMPLATES` (`compute-core/src/electric/point-templates.ts`) держит **верхний край** этого диапазона (sala/living 6, cozinha/kitchen 6, quarto/bedroom 4), а project-baseline — нижний (sala 5, quarto 3). Per-room диапазоны ниже накрывают оба; сводные «дефолт»-итоги взяты по project-baseline (нижний край), поэтому они **ниже** код-дефолтов. При сведении кода и seed зафиксировать одну линию (рекоменд.: код = предзаполнение). Числа per-room:
+**Дефолтные точки на комнату** (project-baseline; **comfort** в скобках). ✅ **Вилка код-vs-baseline РЕШЕНА (2026-06-04):** `ELECTRIC_TEMPLATES` (`compute-core/src/electric/point-templates.ts`, верхний край: sala/living 6, cozinha/kitchen 6, quarto/bedroom 4) = **источник UI-предзаполнения** (прораб правит дельту вниз легче, чем вспоминает забытое); project-baseline (нижний край: sala 5, quarto 3) — **справочная нижняя граница** для сверки, в код не переносится. Per-room диапазоны ниже накрывают оба; сводные «дефолт»-итоги взяты по project-baseline (нижний край), поэтому они **ниже** код-дефолтов — это ожидаемо, не дефект. Числа per-room:
 | Комната | Tomadas | Pontos de luz | Interruptores |
 |---|---|---|---|
 | Sala | 5–6 (комфорт 8–12) | 2–4 | 2–3 |

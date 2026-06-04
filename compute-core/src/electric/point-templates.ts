@@ -13,6 +13,11 @@ export interface ElectricPoints {
  * Это же — общий паттерн всего ввода в Obrato: шаблон по типу комнаты
  * предзаполняет, прораб правит только дельту. Снимает конфликт "минимум ввода
  * vs геометрии нужно много чисел" (design.md, П3 + Open Question Q4).
+ *
+ * РЕШЕНО 2026-06-04 (docs/research/electrics-pt.md, B.4): эти числа — ВЕРХНИЙ
+ * край рыночного диапазона PT и являются источником UI-предзаполнения (дельту
+ * вниз править легче, чем вспоминать забытое). Project-baseline из research
+ * (sala 5, quarto 3 — нижний край) — справочная граница, в код не переносится.
  */
 export const ELECTRIC_TEMPLATES: Record<RoomType, ElectricPoints> = {
   bathroom: { sockets: 1, switches: 1, lights: 2 },

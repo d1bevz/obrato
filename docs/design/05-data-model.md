@@ -586,7 +586,7 @@ Offline-first: данные рождаются в IndexedDB на стройке,
 **Решено в этой версии (бывшие open):** estimate-freeze lifecycle (поле `frozen`), unit-инвариант + `coverage_per_pack`, catalog=global, calibration-provenance (`applied_coefficients`), waste/consumption split, error-decomposition, cross-room `ActualAllocation`, server-assigned revision + mutation_id + trust-boundary + insert-only + tombstone-окно, self-confirmation guard, geometry-error attribution, range-composition rule, integer money, `Material.key` как join-ключ, `line_key=stage::material`, soft-ref `created_by`.
 
 **DECIDE BEFORE / EARLY PILOT (нужен вход Димы):**
-1. **Seed-источник коэффициентов** (`basis=expert_seed`): Leroy datasheets vs gut Давида vs published PT-нормы. Влияет на стартовые confidence-метки. Sourcing, не схема.
+1. **Seed-источник коэффициентов** (`basis=expert_seed`) — ✅ **РЕШЕНО (гл.07)**: фабричные fichas брендов (CIN/Weber/Mapei/Kerakoll/Sika) + confidence-метки per-material; остаётся только верификация фактом Давида (M0-prep, гл.12). Sourcing, не схема.
 2. **Корреляция waste_factor ↔ per_unit** (диагональ повышает И подрез, И слегка клей): пилот трактует независимо (range-composition выше). Флаг если reconciliation покажет coupled errors — covariance-поля не вводим сейчас.
 3. **Off-catalog actuals** (`sku_free_text`): на N=1 ручная сверка / lightweight «map free-text → material» (через `ActualAllocation.basis=free_text_map`). Подтвердить ручной режим.
 
