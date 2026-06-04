@@ -4,24 +4,34 @@
 // ловим и отдаём status:'panic' наружу, приложение не падает (клиент после
 // паники пересоздаёт worker: инстанс WASM считается отравленным).
 
-import init, { computeProject } from 'compute-wasm';
+import init, { computeProject, floorGrid } from 'compute-wasm';
 import type { ComputeRequest, ComputeResponse } from './protocol';
 
 const ready = init();
 
 self.onmessage = async (e: MessageEvent<ComputeRequest>) => {
-  const { requestId, project, catalog } = e.data;
+  const req = e.data;
   let msg: ComputeResponse;
   try {
     await ready;
-    msg = {
-      requestId,
-      status: 'ok',
-      response: computeProject(project, catalog),
-    };
+    if (req.kind === 'grid') {
+      msg = {
+        requestId: req.requestId,
+        status: 'ok-grid',
+        response:
+          floorGrid(req.roomLengthM, req.roomWidthM, req.tileWM, req.tileHM) ??
+          null,
+      };
+    } else {
+      msg = {
+        requestId: req.requestId,
+        status: 'ok',
+        response: computeProject(req.project, req.catalog),
+      };
+    }
   } catch (err) {
     msg = {
-      requestId,
+      requestId: req.requestId,
       status: err instanceof WebAssembly.RuntimeError ? 'panic' : 'error',
       message: err instanceof Error ? err.message : String(err),
     };

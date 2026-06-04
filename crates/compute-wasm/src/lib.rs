@@ -46,6 +46,19 @@ pub fn compute_project(
     }
 }
 
+/// P5: naive grid раскладки пола В МЕТРАХ (датум corner, паттерн grid —
+/// «черновая раскладка», solver — фаза 2). None-вход ядра (вырожденная
+/// геометрия) → undefined на JS-стороне.
+#[wasm_bindgen(js_name = floorGrid)]
+pub fn floor_grid(
+    room_length_m: f64,
+    room_width_m: f64,
+    tile_w_m: f64,
+    tile_h_m: f64,
+) -> Option<dto::DrawingGeometry> {
+    compute_core::floor_grid(room_length_m, room_width_m, tile_w_m, tile_h_m).map(Into::into)
+}
+
 /// Общий хвост: core-оценки → DTO-конверт.
 fn respond(estimates: Vec<compute_core::MaterialEstimate>) -> dto::EstimateResponse {
     dto::EstimateResponse {

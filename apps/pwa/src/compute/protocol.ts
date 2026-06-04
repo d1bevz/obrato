@@ -5,15 +5,32 @@
 import type {
   CatalogInput,
   ComputeProjectResponse,
+  DrawingGeometry,
   ProjectInput,
 } from 'compute-wasm';
 
-export interface ComputeRequest {
-  requestId: number;
-  project: ProjectInput;
-  catalog: CatalogInput;
-}
+export type ComputeRequest =
+  | {
+      requestId: number;
+      kind: 'project';
+      project: ProjectInput;
+      catalog: CatalogInput;
+    }
+  | {
+      requestId: number;
+      kind: 'grid';
+      roomLengthM: number;
+      roomWidthM: number;
+      tileWM: number;
+      tileHM: number;
+    };
 
 export type ComputeResponse =
   | { requestId: number; status: 'ok'; response: ComputeProjectResponse }
+  | {
+      requestId: number;
+      status: 'ok-grid';
+      /** null — вырожденная геометрия (ядро отказалось строить сетку). */
+      response: DrawingGeometry | null;
+    }
   | { requestId: number; status: 'error' | 'panic'; message: string };

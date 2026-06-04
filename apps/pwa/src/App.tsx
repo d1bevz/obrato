@@ -7,6 +7,7 @@ import { PurchaseList } from './components/PurchaseList';
 import { RoomEditor } from './components/RoomEditor';
 import { SnapshotView } from './components/SnapshotView';
 import { ProcurementEntry } from './components/ProcurementEntry';
+import { LayoutCanvas } from './components/LayoutCanvas';
 import { useProject, useProjects } from './store/hooks';
 import type { ProjectDoc } from './store/db';
 
@@ -122,6 +123,16 @@ function ActualsScreen() {
   );
 }
 
+const LayoutScreen = withProject((project, roomId) => (
+  <>
+    <Topbar
+      title={`Чертёж · ${project.rooms.find((r) => r.id === roomId)?.name ?? ''}`}
+      back
+    />
+    <LayoutCanvas project={project} roomId={roomId!} />
+  </>
+));
+
 const RoomEditScreen = withProject((project, roomId) => (
   <>
     <Topbar
@@ -144,6 +155,10 @@ export default function App() {
       <Route
         path="/project/:projectId/room/:roomId"
         element={<RoomEditScreen />}
+      />
+      <Route
+        path="/project/:projectId/room/:roomId/layout"
+        element={<LayoutScreen />}
       />
       <Route
         path="/project/:projectId/snapshot/:snapshotId"

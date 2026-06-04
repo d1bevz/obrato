@@ -87,6 +87,29 @@ export interface ActualDoc {
   schemaVersion: 1;
 }
 
+/** Правка ячейки чертежа — ДАННЫЕ, адресованные логической ячейкой
+ * (cell col/row, стабильна под zoom/pan), не пикселем (гл.05 §6). */
+export interface CutOverrideDoc {
+  col: number;
+  row: number;
+  kind: 'mark_cut' | 'suppress';
+}
+
+/** LayoutState (P5, упрощённо): пин размеров плитки + правки поверх
+ * recomputed baseline. Геометрия ядра НЕ мутируется правкой (Граница C);
+ * stale-детект через baselineParamsHash (гл.05 §6). */
+export interface LayoutDoc {
+  projectId: string;
+  roomId: string;
+  orgId: string;
+  tileWCm: number;
+  tileHCm: number;
+  overrides: CutOverrideDoc[];
+  baselineParamsHash: string;
+  updatedAt: string;
+  schemaVersion: 1;
+}
+
 interface ObratoDB extends DBSchema {
   projects: { key: string; value: ProjectDoc };
   meta: { key: string; value: OrgDoc | SeedMark };
@@ -100,10 +123,11 @@ interface ObratoDB extends DBSchema {
     value: ActualDoc;
     indexes: { 'by-snapshot': string };
   };
+  layouts: { key: string; value: LayoutDoc };
 }
 
 const DB_NAME = 'obrato';
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 let dbPromise: Promise<IDBPDatabase<ObratoDB>> | null = null;
 
@@ -122,6 +146,10 @@ export function getDb(): Promise<IDBPDatabase<ObratoDB>> {
       if (oldVersion < 3) {
         const actuals = db.createObjectStore('actuals', { keyPath: 'id' });
         actuals.createIndex('by-snapshot', 'snapshotId');
+      }
+      if (oldVersion < 4) {
+        // layouts — out-of-line ключ `${projectId}:${roomId}`
+        db.createObjectStore('layouts');
       }
     },
   });

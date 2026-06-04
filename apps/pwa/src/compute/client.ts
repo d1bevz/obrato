@@ -6,6 +6,7 @@
 
 import type {
   ComputeProjectResponse,
+  DrawingGeometry,
   ProjectInput,
   Room as RoomInput,
 } from 'compute-wasm';
@@ -23,10 +24,17 @@ export class ComputeFailure extends Error {
   }
 }
 
-type Pending = {
-  resolve: (r: ComputeProjectResponse) => void;
-  reject: (e: ComputeFailure) => void;
-};
+type Pending =
+  | {
+      kind: 'project';
+      resolve: (r: ComputeProjectResponse) => void;
+      reject: (e: ComputeFailure) => void;
+    }
+  | {
+      kind: 'grid';
+      resolve: (r: DrawingGeometry | null) => void;
+      reject: (e: ComputeFailure) => void;
+    };
 
 let worker: Worker | null = null;
 let nextRequestId = 1;
@@ -49,8 +57,14 @@ function ensureWorker(): Worker {
     const p = pending.get(msg.requestId);
     if (!p) return; // ответ на superseded-запрос — уже никому не нужен
     pending.delete(msg.requestId);
-    if (msg.status === 'ok') {
+    if (msg.status === 'ok' && p.kind === 'project') {
       p.resolve(msg.response);
+    } else if (msg.status === 'ok-grid' && p.kind === 'grid') {
+      p.resolve(msg.response);
+    } else if (msg.status === 'ok' || msg.status === 'ok-grid') {
+      p.reject(
+        new ComputeFailure('error', 'протокол: вид ответа не совпал с запросом'),
+      );
     } else {
       p.reject(new ComputeFailure(msg.status, msg.message));
       if (msg.status === 'panic') {
@@ -123,12 +137,28 @@ export function computeEstimates(
 ): Promise<ComputeProjectResponse> {
   const requestId = nextRequestId++;
   return new Promise<ComputeProjectResponse>((resolve, reject) => {
-    pending.set(requestId, { resolve, reject });
+    pending.set(requestId, { kind: 'project', resolve, reject });
     const req: ComputeRequest = {
       requestId,
+      kind: 'project',
       project: projectToInput(project),
       catalog: CATALOG_INPUT,
     };
+    ensureWorker().postMessage(req);
+  });
+}
+
+/** Naive grid пола В МЕТРАХ (S4). null — вырожденная геометрия. */
+export function computeFloorGrid(params: {
+  roomLengthM: number;
+  roomWidthM: number;
+  tileWM: number;
+  tileHM: number;
+}): Promise<DrawingGeometry | null> {
+  const requestId = nextRequestId++;
+  return new Promise<DrawingGeometry | null>((resolve, reject) => {
+    pending.set(requestId, { kind: 'grid', resolve, reject });
+    const req: ComputeRequest = { requestId, kind: 'grid', ...params };
     ensureWorker().postMessage(req);
   });
 }

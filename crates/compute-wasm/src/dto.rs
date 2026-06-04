@@ -817,6 +817,66 @@ impl From<cc::SkuRejection> for SkuRejection {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Вверх: DrawingGeometry (гл.09 §2) — baseline grid В МЕТРАХ, не пиксели
+// ---------------------------------------------------------------------------
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, Tsify)]
+#[serde(rename_all = "camelCase")]
+pub struct GridCell {
+    pub col: u32,
+    pub row: u32,
+    pub x_m: f64,
+    pub y_m: f64,
+    pub w_m: f64,
+    pub h_m: f64,
+    /// Краевая подрезка baseline-сетки (не CutOverride — это правки app-слоя).
+    pub cut: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Tsify)]
+#[tsify(into_wasm_abi)]
+#[serde(rename_all = "camelCase")]
+pub struct DrawingGeometry {
+    pub room_length_m: f64,
+    pub room_width_m: f64,
+    pub tile_w_m: f64,
+    pub tile_h_m: f64,
+    pub cols: u32,
+    pub rows: u32,
+    pub cells: Vec<GridCell>,
+    pub full_count: u32,
+    pub cut_count: u32,
+}
+
+impl From<cc::DrawingGeometry> for DrawingGeometry {
+    fn from(g: cc::DrawingGeometry) -> Self {
+        DrawingGeometry {
+            room_length_m: g.room_length_m,
+            room_width_m: g.room_width_m,
+            tile_w_m: g.tile_w_m,
+            tile_h_m: g.tile_h_m,
+            cols: g.cols,
+            rows: g.rows,
+            cells: g
+                .cells
+                .into_iter()
+                .map(|c| GridCell {
+                    col: c.col,
+                    row: c.row,
+                    x_m: c.x_m,
+                    y_m: c.y_m,
+                    w_m: c.w_m,
+                    h_m: c.h_m,
+                    cut: c.cut,
+                })
+                .collect(),
+            full_count: g.full_count,
+            cut_count: g.cut_count,
+        }
+    }
+}
+
 /// Полный ответ P3: оценки (для деталей/тултипов) + лист закупок.
 #[derive(Debug, Clone, Serialize, Deserialize, Tsify)]
 #[tsify(into_wasm_abi)]

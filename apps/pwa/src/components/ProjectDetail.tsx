@@ -34,7 +34,16 @@ function workBadges(r: Room): string[] {
   return out;
 }
 
-function RoomCard({ room, onOpen }: { room: Room; onOpen: () => void }) {
+function RoomCard({
+  room,
+  onOpen,
+  onLayout,
+}: {
+  room: Room;
+  onOpen: () => void;
+  /** S4: чертёж пола — есть только у плиточных полов (naive grid, P5). */
+  onLayout?: () => void;
+}) {
   return (
     <div
       className="card tappable"
@@ -78,6 +87,18 @@ function RoomCard({ room, onOpen }: { room: Room; onOpen: () => void }) {
         ))}
         {room.openings.length > 0 && (
           <span className="badge muted">проёмов: {room.openings.length}</span>
+        )}
+        {onLayout && (
+          <button
+            type="button"
+            className="chip"
+            onClick={(e) => {
+              e.stopPropagation();
+              onLayout();
+            }}
+          >
+            📐 чертёж пола
+          </button>
         )}
       </div>
     </div>
@@ -167,6 +188,11 @@ export function ProjectDetail({ project }: { project: ProjectDoc }) {
             key={r.id}
             room={r}
             onOpen={() => navigate(`/project/${project.id}/room/${r.id}`)}
+            onLayout={
+              r.works.floor?.finish === 'tile'
+                ? () => navigate(`/project/${project.id}/room/${r.id}/layout`)
+                : undefined
+            }
           />
         ))}
         <button

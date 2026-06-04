@@ -12,6 +12,7 @@
 //! Приёмка M0: golden-тесты квартиры flatplan №1001_527
 //! (docs/reference/flatplan-1001_527/) — tests/flatplan_golden.rs.
 
+pub mod drawing;
 pub mod engine;
 pub mod formulas;
 pub mod geometry;
@@ -20,6 +21,7 @@ pub mod model;
 pub mod norms;
 pub mod purchase;
 
+pub use drawing::{DrawingGeometry, GridCell, floor_grid};
 pub use engine::{MaterialEstimate, compose_quantity, estimates_for_project, estimates_for_room};
 pub use materials::{DrivingMeasure, MaterialKind, Stage, Unit};
 pub use model::{

@@ -30,7 +30,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         // .wasm — precached asset: расчёт работает полностью офлайн (гл.09 ③)
-        globPatterns: ['**/*.{js,css,html,svg,wasm}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,wasm}'],
       },
       manifest: {
         name: 'Obrato — ассистент прораба',
@@ -43,6 +43,9 @@ export default defineConfig({
         icons: [
           { src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
           { src: '/icon-maskable.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'maskable' },
+          // PNG — инсталлируемость (Android/Play требуют растровые 192/512)
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
         ],
       },
     }),

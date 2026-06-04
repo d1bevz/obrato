@@ -699,6 +699,76 @@ main {
   margin-top: 8px;
 }
 
+/* --- S4 · LayoutCanvas (P5) --- */
+.canvas-card {
+  padding: 10px;
+}
+
+.layout-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  touch-action: manipulation;
+}
+
+.layout-svg .cell {
+  fill: #fff;
+  stroke: var(--line);
+  stroke-width: 0.012;
+  cursor: pointer;
+}
+
+.layout-svg .cell.edge-cut {
+  fill: #fdf6e9; /* янтарный — краевая подрезка baseline */
+}
+
+.layout-svg .cell.marked {
+  fill: #f7e8e4; /* помеченный подрез */
+}
+
+.layout-svg .cell.suppress {
+  fill: var(--paper);
+}
+
+.layout-svg .cut-mark {
+  stroke: #a04a3a;
+  stroke-width: 0.02;
+  pointer-events: none;
+}
+
+.layout-svg .suppress-mark {
+  font-size: 0.18px;
+  fill: var(--muted);
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.layout-svg .room-border {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.025;
+  pointer-events: none;
+}
+
+.legend {
+  margin-top: 0;
+}
+
+.notice.stale {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dim-static {
+  padding: 10px 4px;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
 .print-only {
   display: none;
 }
