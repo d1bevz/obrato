@@ -116,8 +116,15 @@ CSV-шаблон: [templates/m0-prep-points.csv](templates/m0-prep-points.csv).
 | `actual_confidence` | exact / estimated / rough. |
 | `norm_delta_pct` | `(actual_used - estimate_expected) / estimate_expected`. |
 | `packaging_delta` | Разница от округления до упаковок; не путать с ошибкой нормы. |
+| `in_range` | yes/no: `actual_used` внутри `estimate_low..estimate_high` (поле сверки гл. 11 §11.4). |
+| `beats_gut` | yes/no: оценка не хуже `david_gut` (ближе к `actual_used` или равна; гл. 11 §11.4). |
 | `reconciliation` | cutting / waste / buffer / reorder / one_off / unknown. |
 | `verdict` | seed_ok / seed_high / seed_low / insufficient_data / excluded. |
+
+CSV денормализует комнату и точку в одну строку: первой колонкой идёт `point_id`
+(стабильный ключ строки), затем `project` / `room` / `room_type` из таблицы 12.3,
+`unit` (единица estimate/actual: kg / L / m² / m) и `notes` в конце. Набор полей
+выше — ядро точки данных; ключ строки при сомнении = `project+room+surface+material`.
 
 ## 12.5 Быстрые seed-формулы для M0-prep
 
@@ -153,6 +160,9 @@ Seed нужен только там, где M0-prep проверяет саму 
 
 ### По материалу
 
+**Usable строка** = `actual_confidence ∈ {exact, estimated}` И `verdict ≠ excluded`
+(rough-факт и excluded-строки сохраняются, но в правила ниже не считаются).
+
 Первый M0-prep не обязан «победить». Он обязан честно сказать, что делать дальше:
 
 - `confirm_seed`: 2+ usable точки попали в диапазон, направление ошибки не видно.
@@ -174,7 +184,9 @@ Seed нужен только там, где M0-prep проверяет саму 
 2. Зафиксировать размеры и состав работ. Если данных нет, попросить фото/план/замер,
    а не спорить по памяти.
 3. Для каждого материала спросить: «Сколько ты бы заложил на глаз до расчёта?»
-4. Потом поднять чек/фото/остатки и восстановить `actual_used`.
+4. Потом поднять чек/фото/остатки и восстановить `actual_used` = куплено − возврат
+   − остаток (спрашивать все три по отдельности; «сколько мешков купил» само по
+   себе — это `packaging`, не расход).
 5. Отдельно спросить причину расхождения: подрезка, бой, запас, дозаказ, разовый
    выброс, неизвестно.
 6. В конце показать только verdict по материалам, не весь spreadsheet.
