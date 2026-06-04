@@ -23,8 +23,8 @@
     --hair:#ddd6c8;
     --hair-2:#e9e3d7;
     /* brand / signal */
-    --amber:#1f9d57;        /* brand accent — green (action / precise) */
-    --amber-deep:#14723d;
+    --green:#1f9d57;        /* brand accent — green (action / precise) */
+    --green-d:#14723d;
     --cyan:#1c7e8c;       /* blueprint / wet */
     --cyan-soft:#d6ebee;
     /* confidence language */
@@ -64,13 +64,13 @@
   }
   .kicker{
     font-family:var(--mono); font-size:12px; letter-spacing:.34em;
-    text-transform:uppercase; color:var(--amber); margin-bottom:14px;
+    text-transform:uppercase; color:var(--green); margin-bottom:14px;
   }
   h1{
     font-weight:700; font-size:clamp(30px,5.4vw,58px); line-height:.98;
     letter-spacing:-.01em; text-transform:uppercase; max-width:16ch;
   }
-  h1 em{font-style:normal; color:var(--amber)}
+  h1 em{font-style:normal; color:var(--green)}
   .dek{
     margin-top:16px; max-width:62ch; color:#b9b3a6;
     font-size:clamp(14px,1.5vw,17px); font-weight:400; line-height:1.5;
@@ -83,7 +83,7 @@
     border:1px solid rgba(255,255,255,.14); color:#cfc9bc;
     padding:5px 11px; border-radius:2px; text-transform:uppercase;
   }
-  .tag b{color:var(--amber); font-weight:600}
+  .tag b{color:var(--green); font-weight:600}
 
   /* ---------- legend ---------- */
   .legend{
@@ -105,7 +105,7 @@
   }
   .dot{width:11px;height:11px;border-radius:50%;flex:none}
   .d-hi{background:var(--hi)} .d-mid{background:var(--mid)} .d-lo{background:var(--lo)}
-  .d-cyan{background:var(--cyan)} .d-amber{background:var(--amber)}
+  .d-cyan{background:var(--cyan)} .d-amber{background:var(--green)}
 
   /* ---------- gallery ---------- */
   .gallery{
@@ -119,7 +119,7 @@
     padding-left:4px;
   }
   .cap .id{
-    font-family:var(--mono); font-weight:600; font-size:13px; color:var(--amber);
+    font-family:var(--mono); font-weight:600; font-size:13px; color:var(--green);
     background:rgba(31,157,87,.10); border:1px solid rgba(31,157,87,.3);
     padding:1px 8px; border-radius:2px;
   }
@@ -189,8 +189,8 @@
     font-size:16px; letter-spacing:.02em; text-transform:uppercase;
     padding:15px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:9px;
   }
-  .btn.amber{background:var(--amber); color:#f2fbf5; box-shadow:0 3px 0 var(--amber-deep)}
-  .btn.amber:active{transform:translateY(2px); box-shadow:0 1px 0 var(--amber-deep)}
+  .btn.amber{background:var(--green); color:#f2fbf5; box-shadow:0 3px 0 var(--green-d)}
+  .btn.amber:active{transform:translateY(2px); box-shadow:0 1px 0 var(--green-d)}
   .btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink)}
   .btn .tiny{font-family:var(--mono); font-weight:400; font-size:11px; opacity:.75; text-transform:none}
 
@@ -241,7 +241,7 @@
   .seg{display:grid; grid-template-columns:repeat(3,1fr); gap:7px}
   .seg .t{border:1px solid var(--hair); border-radius:9px; padding:9px 4px; text-align:center;
     font-size:13px; font-weight:500; background:var(--surface); color:var(--ink-2)}
-  .seg .t.on{background:#eaf5ee; border-color:var(--amber); color:var(--ink); box-shadow:inset 0 0 0 1px var(--amber)}
+  .seg .t.on{background:#eaf5ee; border-color:var(--green); color:var(--ink); box-shadow:inset 0 0 0 1px var(--green)}
   .seg .t small{display:block; font-size:17px; margin-bottom:1px}
 
   .dims{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:4px}
@@ -256,21 +256,21 @@
   .sw::after{content:"";position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:#fff;
     box-shadow:0 1px 3px rgba(0,0,0,.25);transition:.15s}
   .sw.on{background:var(--cyan)} .sw.on::after{left:22px}
-  .sw.amber.on{background:var(--amber)}
+  .sw.amber.on{background:var(--green)}
 
   .work{border:1px solid var(--hair); border-radius:11px; background:var(--surface); margin-bottom:8px; overflow:hidden}
   .work .hd{display:flex; align-items:center; gap:11px; padding:11px 12px}
   .checkbox{width:24px;height:24px;border-radius:6px;border:1.5px solid var(--hair);flex:none;
     display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;background:var(--surface)}
-  .checkbox.on{background:var(--amber);border-color:var(--amber-deep)}
+  .checkbox.on{background:var(--green);border-color:var(--green-d)}
   .work .nm{font-weight:600; font-size:15px; letter-spacing:.01em}
   .work .param{margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--ink-2);
     background:var(--paper); border:1px solid var(--hair); border-radius:6px; padding:3px 8px}
-  .work .param.usr{color:var(--amber-deep); background:#e7f3ec; border-color:#bcd9c2}
+  .work .param.usr{color:var(--green-d); background:#e7f3ec; border-color:#bcd9c2}
   .work.off{opacity:.5}
   .work.off .checkbox{background:var(--surface);border-color:var(--hair)}
   .prov{font-family:var(--mono); font-size:9.5px; letter-spacing:.05em; text-transform:uppercase}
-  .prov.t{color:var(--ink-3)} .prov.u{color:var(--amber-deep)}
+  .prov.t{color:var(--ink-3)} .prov.u{color:var(--green-d)}
 
   .assume{margin-top:9px; border-top:1px dashed var(--hair); padding-top:10px}
   .assume .nv{display:flex; align-items:center; gap:9px; font-family:var(--mono); font-size:11px; color:var(--ink-2)}
@@ -319,13 +319,13 @@
     background:var(--ink); color:var(--paper); border-radius:13px; margin-top:4px}
   .total .lab{font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:#c9c2b4}
   .total .v{font-family:var(--mono); font-size:22px; font-weight:600}
-  .total .v small{font-size:11px; color:var(--amber)}
+  .total .v small{font-size:11px; color:var(--green)}
 
   /* procurement entry */
   .field{border:1px solid var(--hair); border-radius:11px; background:var(--surface); padding:10px 12px; margin-bottom:9px}
   .field .label{margin-bottom:5px}
   .field .v{font-family:var(--mono); font-size:18px; font-weight:500}
-  .field.focus{border-color:var(--amber); box-shadow:inset 0 0 0 1px var(--amber)}
+  .field.focus{border-color:var(--green); box-shadow:inset 0 0 0 1px var(--green)}
   .keypad{display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-top:4px}
   .key{border:1px solid var(--hair); border-radius:10px; background:var(--surface); padding:13px 0;
     text-align:center; font-family:var(--mono); font-size:19px; font-weight:500}
@@ -344,13 +344,13 @@
     font-family:var(--mono); font-size:12px; line-height:1.7;
   }
   .foot b{color:#cfc9bc; font-weight:500}
-  .foot a{color:var(--amber); text-decoration:none}
+  .foot a{color:var(--green); text-decoration:none}
 
   /* ===== Amigo mascot (гл. 08 §10) — периферийный помощник ===== */
   .amigo-av{flex:none; display:block}
   .amigo-head{width:46px; height:auto; flex:none; display:block}
   .amigo-tip{display:flex; align-items:center; gap:10px; background:var(--surface);
-    border:1px solid var(--hair); border-left:3px solid var(--amber); border-radius:11px;
+    border:1px solid var(--hair); border-left:3px solid var(--green); border-radius:11px;
     padding:8px 11px; margin-bottom:10px}
   .amigo-tip.unc{border-left-color:var(--lo)}
   .amigo-tip.ok{border-left-color:var(--hi)}
