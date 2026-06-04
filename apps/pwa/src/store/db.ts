@@ -51,6 +51,42 @@ export interface SnapshotDoc {
   schemaVersion: 1;
 }
 
+/** Причина расхождения — фиксированный enum (гл.11 §11.4): cutting/waste —
+ * сигнал нормы; buffer/reorder/one_off — шум, норму не трогает. */
+export type ReconciliationReason =
+  | 'cutting'
+  | 'waste'
+  | 'buffer'
+  | 'reorder'
+  | 'one_off';
+
+/** ProcurementActual (P4, упрощённо): факт закупки/расхода по позиции
+ * снапшота (material × stage). Insert-only — правка = новая запись (история
+ * хранится, отчёт берёт последнюю на позицию). Q#9: все три количества
+ * храним явно (устойчивость к ручному вводу), в base_unit материала. */
+export interface ActualDoc {
+  id: string;
+  orgId: string;
+  projectId: string;
+  /** Якорь сверки — frozen-лист (оценочный якорь, гл.05 §5). */
+  snapshotId: string;
+  materialKey: string;
+  stage: string;
+  purchasedPacks: number | null;
+  purchasedQuantity: number | null;
+  consumedQuantity: number | null;
+  leftoverQuantity: number | null;
+  /** Факт цены за позицию (всего), центы. */
+  pricePaidMinorUnits: number | null;
+  /** rough = расход взят «по умолчанию = куплено» (non-narrowing,
+   * self-confirmation guard гл.08 §6); measured = введён рукой. */
+  confidence: 'measured' | 'rough';
+  reason: ReconciliationReason | null;
+  note: string | null;
+  createdAt: string;
+  schemaVersion: 1;
+}
+
 interface ObratoDB extends DBSchema {
   projects: { key: string; value: ProjectDoc };
   meta: { key: string; value: OrgDoc | SeedMark };
@@ -59,10 +95,15 @@ interface ObratoDB extends DBSchema {
     value: SnapshotDoc;
     indexes: { 'by-project': string };
   };
+  actuals: {
+    key: string;
+    value: ActualDoc;
+    indexes: { 'by-snapshot': string };
+  };
 }
 
 const DB_NAME = 'obrato';
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 let dbPromise: Promise<IDBPDatabase<ObratoDB>> | null = null;
 
@@ -77,6 +118,10 @@ export function getDb(): Promise<IDBPDatabase<ObratoDB>> {
       if (oldVersion < 2) {
         const snapshots = db.createObjectStore('snapshots', { keyPath: 'id' });
         snapshots.createIndex('by-project', 'projectId');
+      }
+      if (oldVersion < 3) {
+        const actuals = db.createObjectStore('actuals', { keyPath: 'id' });
+        actuals.createIndex('by-snapshot', 'snapshotId');
       }
     },
   });

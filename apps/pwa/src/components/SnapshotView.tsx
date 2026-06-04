@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getSnapshot } from '../store/snapshots';
 import type { SnapshotDoc } from '../store/db';
 import { PurchaseListBody } from './PurchaseList';
@@ -7,6 +8,7 @@ import { PurchaseListBody } from './PurchaseList';
 // самодостаточен (гл.05 §5), пересчёта нет, история иммутабельна.
 
 export function SnapshotView({ snapshotId }: { snapshotId: string }) {
+  const navigate = useNavigate();
   const [snap, setSnap] = useState<SnapshotDoc | null | 'loading'>('loading');
 
   useEffect(() => {
@@ -54,6 +56,15 @@ export function SnapshotView({ snapshotId }: { snapshotId: string }) {
         ориентир
       </div>
       <PurchaseListBody list={snap.frozenList} skuTitles={snap.skuTitles} />
+      <button
+        type="button"
+        className="btn primary screen-only"
+        onClick={() =>
+          navigate(`/project/${snap.projectId}/snapshot/${snap.id}/actuals`)
+        }
+      >
+        Записать факт закупки
+      </button>
       <button
         type="button"
         className="btn outline screen-only"

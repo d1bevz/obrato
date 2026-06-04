@@ -6,6 +6,7 @@ import { ProjectDetail } from './components/ProjectDetail';
 import { PurchaseList } from './components/PurchaseList';
 import { RoomEditor } from './components/RoomEditor';
 import { SnapshotView } from './components/SnapshotView';
+import { ProcurementEntry } from './components/ProcurementEntry';
 import { useProject, useProjects } from './store/hooks';
 import type { ProjectDoc } from './store/db';
 
@@ -111,6 +112,16 @@ function SnapshotScreen() {
   );
 }
 
+function ActualsScreen() {
+  const { snapshotId } = useParams();
+  return (
+    <>
+      <Topbar title="Факт закупки" back />
+      {snapshotId && <ProcurementEntry snapshotId={snapshotId} />}
+    </>
+  );
+}
+
 const RoomEditScreen = withProject((project, roomId) => (
   <>
     <Topbar
@@ -137,6 +148,10 @@ export default function App() {
       <Route
         path="/project/:projectId/snapshot/:snapshotId"
         element={<SnapshotScreen />}
+      />
+      <Route
+        path="/project/:projectId/snapshot/:snapshotId/actuals"
+        element={<ActualsScreen />}
       />
     </Routes>
   );

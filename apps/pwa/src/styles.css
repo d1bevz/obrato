@@ -663,6 +663,42 @@ main {
   line-height: 1.5;
 }
 
+/* --- S6 · Факт закупки (P4) --- */
+.actual-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 12px;
+  background: var(--paper);
+  border-radius: 10px;
+}
+
+.actual-form select {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 6px;
+  font-size: 14px;
+  background: #fff;
+  width: 100%;
+}
+
+.btn.slim {
+  padding: 11px;
+  font-size: 14px;
+}
+
+.recon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.prow-meta.facts {
+  margin-top: 8px;
+}
+
 .print-only {
   display: none;
 }
