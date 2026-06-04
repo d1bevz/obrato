@@ -112,6 +112,7 @@ PWA-инсталляция, якорь `device_id` для multi-device sync-orde
 - `length_m / width_m / height_m: float` — >0, прямоугольная.
 - `measurement_source: enum{manual, laser, template_default}` — происхождение размеров (D5/D6). `template_default` = ещё не замерено → авто low-trust сигнал: **комнаты с template_default исключаются из фита** (защита от garbage-геометрии).
 - `wet: bool` — ЯВНЫЙ вход прораба (не вывод из type). true → ветка гидроизоляция+плитка. Дефолт из шаблона, перекрывается.
+- `wet_zone_height_m: float?` — высота захода гидроизоляции на стены (upstand). Релевантно при `wet=true`; дефолт из шаблона (bathroom ≈ 2.0 в душевой логике мастера), перекрывается. Вместе с периметром даёт `waterproofing_area_m2 = floor_area + perimeter × wet_zone_height` (формула гл.07 §1.3; та же — в гл.12 §12.3). Периметр мокрой зоны на пилоте = весь периметр комнаты (кастомный контур — deferred). Это Risk #1-вход (гл.07 §3.4): зависит от планировки, не от Д×Ш×В.
 - `openings: array<Opening>` — проёмы, вычитаются из площади стен.
 - `works: array<WorkSelection>` — состав работ.
 - `site_conditions: JobConditions?` *(embedded)* — site-facts, замеренные раз на комнату (substrate flatness и т.п.). Дефолт для `ProcurementActual.observed_conditions`. Зеркало `NormAssumptions`.
@@ -151,6 +152,7 @@ PWA-инсталляция, якорь `device_id` для multi-device sync-orde
 - `room_type: enum RoomType`
 - `version: int` — D6-стиль.
 - `default_wet: bool` — bathroom=true, перекрывается.
+- `default_wet_zone_height_m: float?` — дефолт захода гидро для `Room.wet_zone_height_m` (bathroom ≈ 2.0; перекрывается прорабом).
 - `default_works: array<WorkSelection>` — source=template, копируется в Room.works.
 - `default_openings: array<Opening>`
 - `is_active: bool` — мягкое выведение старой версии.
@@ -184,12 +186,12 @@ PWA-инсталляция, якорь `device_id` для multi-device sync-orde
 - `id: uuid` (адресуемо и как (norm_set_id, material)).
 - `norm_set_id: ref<NormSet>`
 - `material: ref<Material>` — по `Material.key` (§4). Unique в NormSet.
-- `driving_measure: enum{floor_area_m2, wall_area_m2, ceiling_area_m2, perimeter_m, wet_floor_area_m2}` — что коэффициент умножает.
+- `driving_measure: enum{floor_area_m2, wall_area_m2, ceiling_area_m2, perimeter_m, wet_floor_area_m2, waterproofing_area_m2}` — что коэффициент умножает. `waterproofing_area_m2` = пол + периметр × `Room.wet_zone_height_m` (upstand, гл.07 §1.3) — площадь гидроизоляции БОЛЬШЕ площади пола; считается геометрическим слоем ядра.
 - `per_unit: NormValue` *(embedded)* — central+lo/hi+confidence (D7). Предсказывает ПОТРЕБЛЕНИЕ (без отхода).
 - `unit: enum Unit{m2, kg, l, m, pcs}` — выходная единица.
 - `waste_factor: NormValue` *(embedded)* — тоже диапазон (straight~0.10, diagonal~0.15+). Предсказывает ОВЕР-закуп (подрез/бой/паттерн) поверх потребления.
 - `assumptions: NormAssumptions` *(embedded)* — структурные условия коэффициента.
-- `variability_source: array<enum{substrate_flatness, trowel_notch, layout_pattern, tile_format, joint_width, substrate_absorbency, coats}>` — почему неопределён; драйвит «confirm by experience»-UI и подсказывает что фитить.
+- `variability_source: array<enum{substrate_flatness, trowel_notch, layout_pattern, tile_format, joint_width, substrate_absorbency, coats, upstand_height}>` — почему неопределён; драйвит «confirm by experience»-UI и подсказывает что фитить.
 - `applies_when: enum{always, wet_only, dry_only}` — wet/dry-ветвление.
 - + `SyncMeta` — insert-only (живёт/умирает с NormSet).
 
@@ -214,6 +216,7 @@ PWA-инсталляция, якорь `device_id` для multi-device sync-orde
 - `layer_thickness_mm: float?` — стяжка/гидро/постель клея. Стяжка = Risk#1-неизвестное.
 - `substrate_flatness: enum{good, medium, poor, unknown}?` — стяжка: НЕ выводимо из Д×Ш×В, канонический «норма соврёт здесь». Default unknown → широкий range.
 - `substrate_absorbency: enum{low, medium, high}?` — краска: l/m².
+- `upstand_height_mm: float?` — гидроизоляция: применённая высота захода на стены (снапшот `Room.wet_zone_height_m` на момент оценки; reconciliation атрибутирует ошибку площади гидро в assumption_mismatch, а не в коэффициент). Risk #1-вход (гл.07 §2, §3.4).
 - `free_notes: array<string>` — escape-hatch; структурные поля «выпускаются» отсюда со временем.
 
 #### MaterialEstimate *(pilot core)*
