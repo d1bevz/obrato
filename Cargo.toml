@@ -1,0 +1,5 @@
+# Монорепо-workspace (гл.09 §5): crates/ — Rust-ядро; packages/ и apps/
+# появятся на слайсе 3 (WASM-граница + PWA).
+[workspace]
+members = ["crates/compute-core"]
+resolver = "2"
