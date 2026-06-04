@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amigo · 03 Сетка и правки — чертёж</title>
+<style>
+:root{--ink:#1b1813;--helmet:#f7b500;--helmet-d:#d49400;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--green:#d98324}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.title{color:#6b6456;font-size:13px;letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase}
+.scene{position:relative;width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.scene svg{width:330px;height:auto;display:block;overflow:visible}
+.ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.fill-ink{fill:var(--ink);stroke:none}
+.mustache{fill:var(--ink);stroke:none}
+  .mcurl{fill:none;stroke:var(--ink);stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+  .hl{fill:var(--surface)}
+.helmet{fill:var(--helmet);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
+.helmet-sh{fill:var(--helmet-d);stroke:none}
+.paper-fill{fill:var(--surface)}
+
+/* ===== blueprint sheet ===== */
+.sheet{fill:var(--paper);stroke:var(--ink);stroke-width:4;stroke-linejoin:round}
+.grid-line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.78}
+.dim-line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+.dim-ext{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;opacity:.6}
+.dim-arrow{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cut-cell{fill:none;stroke:var(--green);stroke-width:3.4;stroke-linejoin:round}
+.mark{fill:none;stroke:var(--green);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== realistic hexagonal pencil ===== */
+.pencil-body{fill:var(--surface);stroke:var(--ink);stroke-width:3.4;stroke-linejoin:round}
+.pencil-facet{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;opacity:.5}
+.pencil-cone{fill:var(--paper);stroke:var(--ink);stroke-width:3.2;stroke-linejoin:round}
+.pencil-lead{fill:var(--ink);stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.pencil-ferrule{fill:var(--paper);stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+.pencil-ferrule-band{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;opacity:.6}
+.pencil-eraser{fill:var(--surface);stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+
+/* ===== hands ===== */
+.hand-fill{fill:var(--surface);stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.knuck{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;opacity:.7}
+
+/* ===== STATIC (calm) defaults ===== */
+.mark{opacity:0}
+.cut-cell{opacity:.9}
+
+/* ===== ANIMATION — ONLY under .play (remove .play => static calm) ===== */
+.scene.play .write-arm{animation:writeStroke 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:150px 250px}
+.scene.play .mark{animation:markDraw 3.6s ease-in-out infinite}
+.scene.play .cut-cell{animation:cellGlow 3.6s ease-in-out infinite}
+.scene.play .sheet-grp{animation:sheetSettle 3.6s ease-in-out infinite;transform-box:view-box;transform-origin:130px 245px}
+.scene.play .eyeL,.scene.play .eyeR{animation:blink 5.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+
+/* the writing hand+pencil makes a tiny pressing/stroking motion at the cell */
+@keyframes writeStroke{
+  0%,8%   {transform:translate(0,0) rotate(0deg)}
+  20%     {transform:translate(-3px,3px) rotate(1.4deg)}
+  30%     {transform:translate(-1px,1px) rotate(.6deg)}
+  42%     {transform:translate(-3px,3px) rotate(1.4deg)}
+  56%,100%{transform:translate(0,0) rotate(0deg)}
+}
+@keyframes markDraw{
+  0%,16%  {opacity:0}
+  34%     {opacity:1}
+  84%     {opacity:1}
+  94%,100%{opacity:0}
+}
+@keyframes cellGlow{
+  0%,12%  {opacity:.35}
+  30%     {opacity:1}
+  84%     {opacity:1}
+  96%,100%{opacity:.35}
+}
+@keyframes sheetSettle{
+  0%,100% {transform:translate(0,0) rotate(0deg)}
+  24%     {transform:translate(.6px,-.6px) rotate(-.4deg)}
+}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95.5%{transform:scaleY(.08)}}
+
+@media (prefers-reduced-motion: reduce){ .play *{animation:none!important} }
+</style>
+</head>
+<body>
+<div class="title">03 · Сетка и правки — чертёж</div>
+<div class="scene play">
+  <svg viewBox="2 26 320 308" role="img" aria-label="Amigo склонился над чертежом и ставит карандашом метку на ячейке плиточной сетки">
+
+    <!-- ===== AMIGO BUST — fixed geometry verbatim, scaled .92 + nudged so it leans over the sheet ===== -->
+    <g class="amigo" transform="translate(14,-6) scale(.92)">
+      <!-- shoulders -->
+      <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
+      <path class="ln-thin" d="M95 214 q20 14 40 0"/>
+      <path class="ln-thin" d="M115 222 q0 19 0 38"/>
+      <!-- head -->
+      <g class="head">
+    <path class="ln paper-fill" d="M63 143 q-11 1 -10 13 q1 10 11 7"/>
+    <path class="ln paper-fill" d="M167 143 q11 1 10 13 q-1 10 -11 7"/>
+    <path class="ln paper-fill" d="M64 118 C 58 140 60 162 75 173 C 88 182 102 186 115 186 C 128 186 142 182 155 173 C 170 162 172 140 166 118 C 132 110 98 110 64 118 Z"/>
+    <path class="helmet" d="M58 110 q1 -56 57 -56 q56 0 57 56 q-28 -10 -57 -10 q-29 0 -57 10 Z"/>
+    <path class="helmet-sh" d="M58 110 q28 -10 57 -10 q29 0 57 10 q-3 7 -11 6 q-46 -9 -92 0 q-8 1 -11 -6 Z"/>
+    <path class="ln" d="M115 55 q0 27 0 45" opacity=".5"/>
+    <path class="ln" d="M48 110 q67 -20 134 0"/>
+    <circle class="fill-ink" cx="92" cy="124" r="6.4"/>
+    <circle class="fill-ink" cx="138" cy="124" r="6.4"/>
+    <circle class="hl" cx="94.3" cy="121.7" r="2"/>
+    <circle class="hl" cx="140.3" cy="121.7" r="2"/>
+    <path class="ln-thin" d="M111 132 q4 8 4 10 q0 3 5 2"/>
+    <g class="stache"><path class="mustache" d="M91.7 151.4 L92.03 151.62 L92.36 152.08 L92.69 152.55 L93.03 152.96 L93.36 153.31 L93.69 153.61 L94.02 153.86 L94.35 154.08 L94.68 154.25 L95.01 154.38 L95.34 154.47 L95.68 154.54 L96.01 154.57 L96.34 154.55 L96.67 154.5 L97 154.41 L97.33 154.3 L97.66 154.14 L98 153.93 L98.33 153.67 L98.66 153.36 L98.99 153.03 L99.32 152.7 L99.65 152.37 L99.98 152.07 L100.31 151.8 L100.65 151.55 L100.98 151.3 L101.31 151.06 L101.64 150.83 L101.97 150.62 L102.3 150.41 L102.63 150.21 L102.96 150.02 L103.3 149.85 L103.63 149.69 L103.96 149.54 L104.29 149.4 L104.62 149.27 L104.95 149.14 L105.28 149.03 L105.62 148.94 L105.95 148.84 L106.28 148.77 L106.61 148.7 L106.94 148.63 L107.27 148.57 L107.6 148.52 L107.93 148.5 L108.27 148.5 L108.6 148.5 L108.93 148.5 L109.26 148.51 L109.59 148.53 L109.92 148.58 L110.25 148.64 L110.59 148.7 L110.92 148.77 L111.25 148.87 L111.58 148.98 L111.91 149.1 L112.24 149.23 L112.57 149.37 L112.9 149.52 L113.24 149.69 L113.57 149.87 L113.9 150.07 L114.23 150.27 L114.56 150.49 L114.89 150.73 L115.22 150.94 L115.56 151 L115.89 150.88 L116.22 150.65 L116.55 150.42 L116.88 150.2 L117.21 150 L117.54 149.81 L117.87 149.63 L118.21 149.47 L118.54 149.31 L118.87 149.17 L119.2 149.05 L119.53 148.95 L119.86 148.85 L120.19 148.76 L120.53 148.69 L120.86 148.62 L121.19 148.57 L121.52 148.52 L121.85 148.5 L122.18 148.5 L122.51 148.5 L122.84 148.5 L123.18 148.51 L123.51 148.55 L123.84 148.59 L124.17 148.64 L124.5 148.71 L124.83 148.79 L125.16 148.88 L125.49 148.97 L125.83 149.07 L126.16 149.19 L126.49 149.32 L126.82 149.45 L127.15 149.59 L127.48 149.74 L127.81 149.91 L128.15 150.09 L128.48 150.28 L128.81 150.47 L129.14 150.68 L129.47 150.89 L129.8 151.13 L130.13 151.37 L130.46 151.64 L130.8 151.91 L131.13 152.19 L131.46 152.49 L131.79 152.81 L132.12 153.14 L132.45 153.46 L132.78 153.76 L133.12 154.01 L133.45 154.2 L133.78 154.35 L134.11 154.46 L134.44 154.52 L134.77 154.56 L135.1 154.57 L135.43 154.53 L135.77 154.46 L136.1 154.34 L136.43 154.2 L136.76 154.01 L137.09 153.77 L137.42 153.51 L137.75 153.2 L138.09 152.84 L138.42 152.41 L138.75 151.93 L139.08 151.56 L139.3 151.41 L139.3 151.75 L139.08 151.96 L138.75 152.5 L138.42 153.22 L138.09 153.86 L137.75 154.43 L137.42 154.97 L137.09 155.45 L136.76 155.89 L136.43 156.29 L136.1 156.66 L135.77 156.99 L135.43 157.27 L135.1 157.52 L134.77 157.75 L134.44 157.96 L134.11 158.15 L133.78 158.33 L133.45 158.5 L133.12 158.66 L132.78 158.81 L132.45 158.96 L132.12 159.12 L131.79 159.26 L131.46 159.39 L131.13 159.51 L130.8 159.62 L130.46 159.73 L130.13 159.84 L129.8 159.94 L129.47 160.03 L129.14 160.11 L128.81 160.19 L128.48 160.27 L128.15 160.33 L127.81 160.38 L127.48 160.42 L127.15 160.46 L126.82 160.5 L126.49 160.53 L126.16 160.54 L125.83 160.54 L125.49 160.54 L125.16 160.54 L124.83 160.53 L124.5 160.5 L124.17 160.46 L123.84 160.42 L123.51 160.38 L123.18 160.33 L122.84 160.27 L122.51 160.21 L122.18 160.13 L121.85 160.06 L121.52 159.97 L121.19 159.88 L120.86 159.78 L120.53 159.68 L120.19 159.58 L119.86 159.45 L119.53 159.32 L119.2 159.19 L118.87 159.05 L118.54 158.91 L118.21 158.77 L117.87 158.62 L117.54 158.47 L117.21 158.3 L116.88 158.13 L116.55 157.95 L116.22 157.76 L115.89 157.6 L115.56 157.52 L115.22 157.57 L114.89 157.7 L114.56 157.87 L114.23 158.06 L113.9 158.24 L113.57 158.41 L113.24 158.57 L112.9 158.72 L112.57 158.87 L112.24 159.01 L111.91 159.15 L111.58 159.28 L111.25 159.41 L110.92 159.54 L110.59 159.65 L110.25 159.75 L109.92 159.84 L109.59 159.94 L109.26 160.03 L108.93 160.11 L108.6 160.18 L108.27 160.25 L107.93 160.31 L107.6 160.36 L107.27 160.41 L106.94 160.45 L106.61 160.49 L106.28 160.52 L105.95 160.54 L105.62 160.54 L105.28 160.54 L104.95 160.54 L104.62 160.54 L104.29 160.52 L103.96 160.47 L103.63 160.43 L103.3 160.39 L102.96 160.34 L102.63 160.29 L102.3 160.22 L101.97 160.14 L101.64 160.06 L101.31 159.97 L100.98 159.87 L100.65 159.76 L100.31 159.65 L99.98 159.54 L99.65 159.41 L99.32 159.29 L98.99 159.16 L98.66 159.01 L98.33 158.85 L98 158.69 L97.66 158.53 L97.33 158.37 L97 158.2 L96.67 158.01 L96.34 157.81 L96.01 157.59 L95.68 157.34 L95.34 157.08 L95.01 156.77 L94.68 156.43 L94.35 156.03 L94.02 155.59 L93.69 155.11 L93.36 154.61 L93.03 154.06 L92.69 153.44 L92.36 152.73 L92.03 152.05 L91.7 151.73 Z"/></g>
+    <path class="ln-thin mouth" d="M105 181 q10 6 20 0"/>
+  </g>
+    </g>
+
+    <!-- ===== DESK GROUP: sheet + both hands + pencil, scaled & nudged to fit with margins =====
+         The whole apparatus is built large for clarity, then shrunk .9 about its
+         centre (150,252) [= translate(15,25.2) scale(.9)] and nudged a touch left/up
+         so nothing crowds the right/bottom frame. -->
+    <g class="desk" transform="translate(11,21.2) scale(.9)">
+
+    <!-- ===== BLUEPRINT SHEET (in front of Amigo, clearly below the face) ===== -->
+    <g class="sheet-grp">
+      <!-- sheet body: clean rounded-rectangle blueprint -->
+      <rect class="sheet" x="44" y="204" width="214" height="92" rx="5"/>
+
+      <!-- ===== TILE GRID — 4 cols x 3 rows, cells 50w x 28h, inset x52..252 / y212..296 ===== -->
+      <!-- vertical lines -->
+      <line class="grid-line" x1="102" y1="212" x2="102" y2="294"/>
+      <line class="grid-line" x1="152" y1="212" x2="152" y2="294"/>
+      <line class="grid-line" x1="202" y1="212" x2="202" y2="294"/>
+      <!-- horizontal lines -->
+      <line class="grid-line" x1="52" y1="240" x2="252" y2="240"/>
+      <line class="grid-line" x1="52" y1="268" x2="252" y2="268"/>
+
+      <!-- ===== DIMENSION LINE (top), spanning two middle columns, with arrowheads ===== -->
+      <line class="dim-ext" x1="102" y1="214" x2="102" y2="226"/>
+      <line class="dim-ext" x1="202" y1="214" x2="202" y2="226"/>
+      <line class="dim-line" x1="105" y1="222" x2="199" y2="222"/>
+      <path class="dim-arrow" d="M110 218 L103 222 L110 226"/>
+      <path class="dim-arrow" d="M194 218 L201 222 L194 226"/>
+
+      <!-- ===== DIMENSION LINE (left edge, vertical), full height, with arrowheads ===== -->
+      <line class="dim-ext" x1="54" y1="214" x2="66" y2="214"/>
+      <line class="dim-ext" x1="54" y1="292" x2="66" y2="292"/>
+      <line class="dim-line" x1="61" y1="218" x2="61" y2="288"/>
+      <path class="dim-arrow" d="M57 224 L61 217 L65 224"/>
+      <path class="dim-arrow" d="M57 282 L61 289 L65 282"/>
+
+      <!-- ===== TARGET CELL being corrected: bottom-mid cell x152..202 / y268..294 ===== -->
+      <rect class="cut-cell" x="152" y="268" width="50" height="26" rx="2.5"/>
+      <!-- the green correction mark the pencil is drawing in that cell -->
+      <path class="mark" d="M161 283 l7 6 l16 -14"/>
+    </g>
+
+    <!-- ===== LEFT HAND — steadies the sheet, fingers splayed over the left edge =====
+         Wrist enters from lower-left; four fingers press the top face, thumb tucks under. -->
+    <g class="lhand">
+      <!-- back of hand / palm cushion resting on the sheet edge -->
+      <path class="hand-fill" d="M30 300 q-8 -10 0 -22 q6 -9 18 -8 q8 1 13 6 l6 7 q5 7 -1 14 q-7 8 -19 9 q-9 1 -17 -6 Z"/>
+      <!-- four fingers reaching onto the sheet (overlap the surface => holding it) -->
+      <path class="hand-fill" d="M60 266 q11 -3 13 5 q1 7 -7 9"/>
+      <path class="hand-fill" d="M62 276 q11 -2 12 6 q0 7 -8 8"/>
+      <path class="hand-fill" d="M62 287 q10 -1 11 6 q0 6 -8 7"/>
+      <!-- thumb pressing up the near edge -->
+      <path class="hand-fill" d="M40 274 q-6 -8 2 -13 q9 -4 14 4"/>
+      <!-- knuckle creases for grip read -->
+      <path class="knuck" d="M68 271 q1 4 -2 8"/>
+      <path class="knuck" d="M68 282 q1 4 -2 7"/>
+    </g>
+
+    <!-- ===== RIGHT ARM + PENCIL — real writing grip =====
+         The pencil is built along its axis (graphite tip down-left in the target cell
+         ~(166,286), eraser up-right ~(257,226)). The hand is ONE solid mass over the
+         barrel with the thumb pad pressing the near side and curled-finger creases
+         over the back; the barrel passes UNDER the hand and the ferrule+eraser emerge
+         above the knuckles. The whole unit animates as one (write-arm) so the grip
+         stays locked to the pencil during the writing stroke. -->
+    <g class="write-arm">
+
+      <!-- forearm: a short stub emerging from the wrist (heel of the hand) up toward
+           Amigo's right shoulder; kept tucked behind the hand, not into the margin. -->
+      <path class="ln" d="M243 272 q14 -3 20 -16"/>
+
+      <!-- ===== PENCIL (hexagonal, sharpened) ===== built tip→eraser along axis ~ -36deg -->
+      <g class="pencil">
+        <!-- hex barrel: from wood-cone base up to ferrule -->
+        <path class="pencil-body" d="M188.2 278.4 L243.0 238.6 L235.4 228.2 L180.6 268.0 Z"/>
+        <!-- facet lines along the barrel for hexagon read -->
+        <line class="pencil-facet" x1="185.7" y1="275.0" x2="240.5" y2="235.2"/>
+        <line class="pencil-facet" x1="183.1" y1="271.5" x2="237.9" y2="231.7"/>
+        <!-- sharpened wooden cone from barrel base to tip -->
+        <path class="pencil-cone" d="M188.2 278.4 L180.6 268.0 L166.0 286.0 Z"/>
+        <!-- dark graphite point touching the cell -->
+        <path class="pencil-lead" d="M166.0 286.0 L174.4 282.6 L171.2 278.2 Z"/>
+        <!-- metal ferrule -->
+        <path class="pencil-ferrule" d="M243.0 238.6 L235.4 228.2 L243.6 222.2 L251.2 232.6 Z"/>
+        <line class="pencil-ferrule-band" x1="241.5" y1="236.6" x2="237.4" y2="231.0"/>
+        <line class="pencil-ferrule-band" x1="244.4" y1="234.5" x2="240.3" y2="228.9"/>
+        <!-- rounded eraser cap -->
+        <path class="pencil-eraser" d="M251.2 232.6 L243.6 222.2 Q246.6 218.4 250.8 219.8 Q255.4 221.4 257.2 226.6 Q258.6 230.7 255.8 232.6 Z"/>
+      </g>
+
+      <!-- ===== PENCIL GRIP HAND — ONE clean mitten-mass holding the barrel =====
+           Drawn AFTER the pencil so the hand overlaps it and reads as "held".
+           The barrel passes UNDER the hand: it enters at the thumb/index web (~210,258)
+           and emerges as the ferrule+eraser above-right of the knuckles. Finger
+           separations are CREASE lines on the mass (not separate lobes) -> no noise. -->
+
+      <!-- (a) the single hand silhouette: a solid mass over the barrel (x208..250,
+              y240..282). Knuckle ridge upper-left; back of hand to the right;
+              heel/wrist at the lower-right meeting the forearm. The barrel slips
+              UNDER it; the ferrule+eraser emerge at the top-left of the mass.
+              Path order: index knuckle -> across knuckles -> far side -> wrist/heel
+              -> under palm -> near edge -> back to index knuckle. -->
+      <path class="hand-fill" d="M213 244 q9 -6 19 -2 q12 5 16 17 q4 12 -5 20 q-9 8 -21 4 q-12 -4 -13 -16 q0 -10 9 -14 Z"/>
+
+      <!-- (b) thumb: a tapered pad pressing the NEAR (lower-left) side of the barrel,
+              set off from the hand by the thumb-web notch. -->
+      <path class="hand-fill" d="M204 266 q-11 -1 -13 -10 q-1 -9 7 -12 q8 -2 12 5 q3 6 0 11 q-2 5 -6 6 Z"/>
+
+      <!-- (c) finger-separation creases across the knuckle ridge (index|middle|ring) -->
+      <path class="knuck" d="M222 244 q3 7 0 14"/>
+      <path class="knuck" d="M231 247 q3 7 0 14"/>
+      <path class="knuck" d="M240 252 q2 6 0 12"/>
+      <!-- (d) thumb crease -->
+      <path class="knuck" d="M200 261 q4 3 5 9"/>
+    </g>
+
+    </g><!-- /desk -->
+
+  </svg>
+</div>
+
+<script>addEventListener("message",function(e){var s=document.querySelector(".scene");if(s)s.classList.toggle("play",e.data!=="calm");});</script>
+</body>
+</html>

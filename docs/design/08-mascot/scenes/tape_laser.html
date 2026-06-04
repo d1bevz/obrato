@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amigo · 02 Замеры — лазер + рулетка</title>
+<style>
+:root{--ink:#1b1813;--helmet:#f7b500;--helmet-d:#d49400;--green:#1f9d57;--green-d:#14723d;--surface:#fffdf8;--paper:#f3efe6;--green:#d98324}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.title{color:#6b6456;font-size:13px;letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase}
+.scene{position:relative;width:380px;height:420px;background:var(--surface);border:1px solid #ddd6c8;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.scene svg{width:336px;height:auto;display:block;overflow:visible}
+.ln{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ln-thin{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.fill-ink{fill:var(--ink);stroke:none}
+.mustache{fill:var(--ink);stroke:none}
+  .mcurl{fill:none;stroke:var(--ink);stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+  .hl{fill:var(--surface)}
+.helmet{fill:var(--helmet);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
+.helmet-sh{fill:var(--helmet-d);stroke:none}
+.paper-fill{fill:var(--surface)}
+
+/* prop styling */
+.prop{fill:var(--surface);stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.prop-thin{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.prop-metal{fill:var(--paper);stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.groove{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;opacity:.5}
+.wall{fill:none;stroke:var(--ink);stroke-width:4.4;stroke-linecap:round;opacity:.8}
+.beam{fill:none;stroke:#e23;stroke-width:2.6;stroke-linecap:round}
+.aperture{fill:#e23;stroke:none}
+.dot{fill:#e23;stroke:none}
+.hand-fill{fill:var(--surface);stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== STATIC (calm) state defaults — no animation ===== */
+/* beam length ~= hypot(320-268,118-180) ~= 81; draw it along its own axis with a dash */
+.beam{stroke-dasharray:82;stroke-dashoffset:0}
+.dot{transform-origin:320px 118px;opacity:1;transform:scale(1)}
+
+/* ===== ANIMATIONS — ONLY under .play (remove .play => static calm) ===== */
+.scene.play .beam{animation:beamShoot 2.6s ease-in-out infinite}
+.scene.play .dot{animation:dotPing 2.6s ease-in-out infinite}
+.scene.play .laser-arm{animation:aim 2.6s ease-in-out infinite;transform-origin:200px 220px}
+.scene.play .eyeL,.scene.play .eyeR{animation:blink 5.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+
+/* beam "doezzhaet" (travels) from the aperture to the wall along its real path */
+@keyframes beamShoot{
+  0%   {stroke-dashoffset:82}
+  16%  {stroke-dashoffset:0}
+  46%  {stroke-dashoffset:0}
+  54%  {stroke-dashoffset:0;opacity:.55}
+  62%  {opacity:1}
+  100% {stroke-dashoffset:0}
+}
+@keyframes dotPing{
+  0%,14%   {opacity:0;transform:scale(.2)}
+  20%      {opacity:1;transform:scale(1.55)}
+  28%      {opacity:1;transform:scale(1)}
+  52%      {opacity:.5;transform:scale(1)}
+  66%      {opacity:1;transform:scale(1.3)}
+  80%,100% {opacity:1;transform:scale(1)}
+}
+@keyframes aim{
+  0%,100% {transform:rotate(0deg) translateY(0)}
+  22%     {transform:rotate(-1.2deg) translateY(-1px)}
+  60%     {transform:rotate(.7deg) translateY(.5px)}
+}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95.5%{transform:scaleY(.08)}}
+
+@media (prefers-reduced-motion: reduce){ .play *{animation:none!important} }
+</style>
+</head>
+<body>
+<div class="title">02 · Замеры — лазер + рулетка</div>
+<div class="scene play">
+  <svg viewBox="16 38 324 276" role="img" aria-label="Amigo целится лазерным дальномером в стену, рулетка на поясе">
+
+    <!-- ===== WALL (background, right) ===== -->
+    <path class="wall" d="M322 78 q4 50 0 100"/>
+
+    <!-- ===== AMIGO BUST — fixed geometry verbatim, nudged up-left via group ===== -->
+    <g class="amigo" transform="translate(-4,-2)">
+      <!-- shoulders -->
+      <path class="ln paper-fill" d="M56 260 q0 -54 59 -54 q59 0 59 54"/>
+      <path class="ln-thin" d="M95 214 q20 14 40 0"/>
+      <path class="ln-thin" d="M115 222 q0 19 0 38"/>
+      <!-- head -->
+      <g class="head">
+    <path class="ln paper-fill" d="M63 143 q-11 1 -10 13 q1 10 11 7"/>
+    <path class="ln paper-fill" d="M167 143 q11 1 10 13 q-1 10 -11 7"/>
+    <path class="ln paper-fill" d="M64 118 C 58 140 60 162 75 173 C 88 182 102 186 115 186 C 128 186 142 182 155 173 C 170 162 172 140 166 118 C 132 110 98 110 64 118 Z"/>
+    <path class="helmet" d="M58 110 q1 -56 57 -56 q56 0 57 56 q-28 -10 -57 -10 q-29 0 -57 10 Z"/>
+    <path class="helmet-sh" d="M58 110 q28 -10 57 -10 q29 0 57 10 q-3 7 -11 6 q-46 -9 -92 0 q-8 1 -11 -6 Z"/>
+    <path class="ln" d="M115 55 q0 27 0 45" opacity=".5"/>
+    <path class="ln" d="M48 110 q67 -20 134 0"/>
+    <circle class="fill-ink" cx="92" cy="124" r="6.4"/>
+    <circle class="fill-ink" cx="138" cy="124" r="6.4"/>
+    <circle class="hl" cx="94.3" cy="121.7" r="2"/>
+    <circle class="hl" cx="140.3" cy="121.7" r="2"/>
+    <path class="ln-thin" d="M111 132 q4 8 4 10 q0 3 5 2"/>
+    <g class="stache"><path class="mustache" d="M91.7 151.4 L92.03 151.62 L92.36 152.08 L92.69 152.55 L93.03 152.96 L93.36 153.31 L93.69 153.61 L94.02 153.86 L94.35 154.08 L94.68 154.25 L95.01 154.38 L95.34 154.47 L95.68 154.54 L96.01 154.57 L96.34 154.55 L96.67 154.5 L97 154.41 L97.33 154.3 L97.66 154.14 L98 153.93 L98.33 153.67 L98.66 153.36 L98.99 153.03 L99.32 152.7 L99.65 152.37 L99.98 152.07 L100.31 151.8 L100.65 151.55 L100.98 151.3 L101.31 151.06 L101.64 150.83 L101.97 150.62 L102.3 150.41 L102.63 150.21 L102.96 150.02 L103.3 149.85 L103.63 149.69 L103.96 149.54 L104.29 149.4 L104.62 149.27 L104.95 149.14 L105.28 149.03 L105.62 148.94 L105.95 148.84 L106.28 148.77 L106.61 148.7 L106.94 148.63 L107.27 148.57 L107.6 148.52 L107.93 148.5 L108.27 148.5 L108.6 148.5 L108.93 148.5 L109.26 148.51 L109.59 148.53 L109.92 148.58 L110.25 148.64 L110.59 148.7 L110.92 148.77 L111.25 148.87 L111.58 148.98 L111.91 149.1 L112.24 149.23 L112.57 149.37 L112.9 149.52 L113.24 149.69 L113.57 149.87 L113.9 150.07 L114.23 150.27 L114.56 150.49 L114.89 150.73 L115.22 150.94 L115.56 151 L115.89 150.88 L116.22 150.65 L116.55 150.42 L116.88 150.2 L117.21 150 L117.54 149.81 L117.87 149.63 L118.21 149.47 L118.54 149.31 L118.87 149.17 L119.2 149.05 L119.53 148.95 L119.86 148.85 L120.19 148.76 L120.53 148.69 L120.86 148.62 L121.19 148.57 L121.52 148.52 L121.85 148.5 L122.18 148.5 L122.51 148.5 L122.84 148.5 L123.18 148.51 L123.51 148.55 L123.84 148.59 L124.17 148.64 L124.5 148.71 L124.83 148.79 L125.16 148.88 L125.49 148.97 L125.83 149.07 L126.16 149.19 L126.49 149.32 L126.82 149.45 L127.15 149.59 L127.48 149.74 L127.81 149.91 L128.15 150.09 L128.48 150.28 L128.81 150.47 L129.14 150.68 L129.47 150.89 L129.8 151.13 L130.13 151.37 L130.46 151.64 L130.8 151.91 L131.13 152.19 L131.46 152.49 L131.79 152.81 L132.12 153.14 L132.45 153.46 L132.78 153.76 L133.12 154.01 L133.45 154.2 L133.78 154.35 L134.11 154.46 L134.44 154.52 L134.77 154.56 L135.1 154.57 L135.43 154.53 L135.77 154.46 L136.1 154.34 L136.43 154.2 L136.76 154.01 L137.09 153.77 L137.42 153.51 L137.75 153.2 L138.09 152.84 L138.42 152.41 L138.75 151.93 L139.08 151.56 L139.3 151.41 L139.3 151.75 L139.08 151.96 L138.75 152.5 L138.42 153.22 L138.09 153.86 L137.75 154.43 L137.42 154.97 L137.09 155.45 L136.76 155.89 L136.43 156.29 L136.1 156.66 L135.77 156.99 L135.43 157.27 L135.1 157.52 L134.77 157.75 L134.44 157.96 L134.11 158.15 L133.78 158.33 L133.45 158.5 L133.12 158.66 L132.78 158.81 L132.45 158.96 L132.12 159.12 L131.79 159.26 L131.46 159.39 L131.13 159.51 L130.8 159.62 L130.46 159.73 L130.13 159.84 L129.8 159.94 L129.47 160.03 L129.14 160.11 L128.81 160.19 L128.48 160.27 L128.15 160.33 L127.81 160.38 L127.48 160.42 L127.15 160.46 L126.82 160.5 L126.49 160.53 L126.16 160.54 L125.83 160.54 L125.49 160.54 L125.16 160.54 L124.83 160.53 L124.5 160.5 L124.17 160.46 L123.84 160.42 L123.51 160.38 L123.18 160.33 L122.84 160.27 L122.51 160.21 L122.18 160.13 L121.85 160.06 L121.52 159.97 L121.19 159.88 L120.86 159.78 L120.53 159.68 L120.19 159.58 L119.86 159.45 L119.53 159.32 L119.2 159.19 L118.87 159.05 L118.54 158.91 L118.21 158.77 L117.87 158.62 L117.54 158.47 L117.21 158.3 L116.88 158.13 L116.55 157.95 L116.22 157.76 L115.89 157.6 L115.56 157.52 L115.22 157.57 L114.89 157.7 L114.56 157.87 L114.23 158.06 L113.9 158.24 L113.57 158.41 L113.24 158.57 L112.9 158.72 L112.57 158.87 L112.24 159.01 L111.91 159.15 L111.58 159.28 L111.25 159.41 L110.92 159.54 L110.59 159.65 L110.25 159.75 L109.92 159.84 L109.59 159.94 L109.26 160.03 L108.93 160.11 L108.6 160.18 L108.27 160.25 L107.93 160.31 L107.6 160.36 L107.27 160.41 L106.94 160.45 L106.61 160.49 L106.28 160.52 L105.95 160.54 L105.62 160.54 L105.28 160.54 L104.95 160.54 L104.62 160.54 L104.29 160.52 L103.96 160.47 L103.63 160.43 L103.3 160.39 L102.96 160.34 L102.63 160.29 L102.3 160.22 L101.97 160.14 L101.64 160.06 L101.31 159.97 L100.98 159.87 L100.65 159.76 L100.31 159.65 L99.98 159.54 L99.65 159.41 L99.32 159.29 L98.99 159.16 L98.66 159.01 L98.33 158.85 L98 158.69 L97.66 158.53 L97.33 158.37 L97 158.2 L96.67 158.01 L96.34 157.81 L96.01 157.59 L95.68 157.34 L95.34 157.08 L95.01 156.77 L94.68 156.43 L94.35 156.03 L94.02 155.59 L93.69 155.11 L93.36 154.61 L93.03 154.06 L92.69 153.44 L92.36 152.73 L92.03 152.05 L91.7 151.73 Z"/></g>
+    <path class="ln-thin mouth" d="M105 181 q10 6 20 0"/>
+  </g>
+    </g>
+
+    <!-- ===== LEFT SIDE — TAPE MEASURE clipped LOW on the belt (well below + left of laser) ===== -->
+    <g class="tape" transform="translate(6,-8)">
+      <!-- belt strap segment behind the case -->
+      <path class="prop-metal" d="M40 254 h54" stroke-width="6" opacity=".55"/>
+      <!-- belt clip hooking over the strap (top of case) -->
+      <path class="prop-metal" d="M58 250 q-2 -8 6 -9 q8 -1 8 8" fill="none" stroke-width="3.6"/>
+      <circle class="fill-ink" cx="64" cy="244" r="1.6"/>
+
+      <!-- tape case: rounded-square body, sitting at the belt -->
+      <rect class="prop" x="44" y="252" width="40" height="38" rx="11"/>
+      <!-- reel disc seen through the case -->
+      <circle class="prop-thin" cx="64" cy="271" r="10"/>
+      <circle class="prop-thin" cx="64" cy="271" r="3.6"/>
+      <circle class="fill-ink" cx="64" cy="271" r="1.7"/>
+      <!-- lock / stop button on top of the case -->
+      <rect class="prop" x="55" y="244" width="18" height="10" rx="3.5"/>
+      <line x1="59" y1="249" x2="69" y2="249" class="groove"/>
+
+      <!-- short metal blade poking out the bottom with L-hook, kept tight to the case -->
+      <path class="prop-metal" d="M48 288 q-9 6 -18 6" fill="none" stroke-width="5.2"/>
+      <path class="prop-thin" d="M49 292 q-8 5 -16 5.5" opacity=".4"/>
+      <!-- L-shaped steel end hook -->
+      <path class="prop-metal" d="M30 294 q-5 0 -6 5 q-1 5 2 9" fill="none" stroke-width="4.6"/>
+      <!-- mouth slot where blade feeds out -->
+      <path class="prop-thin" d="M48 284 q-3 2 -3 5" opacity=".5"/>
+    </g>
+
+    <!-- ===== RIGHT ARM (extended) + LASER RANGEFINDER held in a real grip ===== -->
+    <!-- Device is built UPRIGHT, then the whole unit is rotated +34deg about the grip
+         point (240,222) so it tilts up-right toward the wall. Aperture lands at ~(268,180),
+         the grip/lower body lands at ~(220..247, 222..241): the fist wraps there. -->
+    <g class="laser-arm">
+      <!-- forearm: from right shoulder reaching forward/out to the wrist at the grip -->
+      <path class="ln" d="M170 224 q24 4 46 -4"/>
+
+      <g transform="rotate(34 240 222)">
+        <!-- body: tall rounded-rectangle case -->
+        <rect class="prop" x="224" y="166" width="32" height="68" rx="9"/>
+        <!-- top end-cap seam where the aperture sits -->
+        <path class="prop-thin" d="M224 178 q16 -5 32 0"/>
+        <!-- laser aperture at the very top, beam exits here -->
+        <circle class="prop-thin" cx="240" cy="172" r="3.8"/>
+        <circle class="aperture" cx="240" cy="172" r="1.8"/>
+        <!-- DISPLAY with measured value -->
+        <rect x="229" y="183" width="22" height="16" rx="2.5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.4"/>
+        <text x="240" y="194.8" text-anchor="middle" font-family="Menlo,Consolas,monospace" font-weight="700" font-size="9" fill="var(--ink)" letter-spacing=".3">2.45</text>
+        <!-- buttons: green 'measure' (left) + plain (right) -->
+        <circle cx="233" cy="209" r="4.3" fill="var(--green)" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M231 209 l1.5 1.6 l2.7 -3.1" fill="none" stroke="var(--surface)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="247" cy="209" r="4.3" class="prop-thin"/>
+        <line x1="247" y1="207.2" x2="247" y2="210.8" class="prop-thin"/>
+      </g>
+
+      <!-- ===== GRIP HAND: real fist wrapping the lower body of the tilted device =====
+           Drawn AFTER the device so fingers + thumb overlap the case -> reads as held. -->
+      <!-- back of the fist / palm mass cupping the underside of the lower body -->
+      <path class="hand-fill" d="M209 240 q-10 -2 -11 -13 q-1 -11 11 -13 q9 -1 14 5 l8 10 q4 6 -1 12 q-7 8 -18 6 q-2 0 -3 -1 Z"/>
+      <!-- four fingers curling OVER the front face of the body (overlap the case) -->
+      <path class="hand-fill" d="M225 223 q9 -2 11 5 q1 6 -6 8"/>
+      <path class="hand-fill" d="M228 231 q8 -1 9 5 q0 5 -7 7"/>
+      <path class="hand-fill" d="M229 239 q7 0 8 5 q0 4 -6 6"/>
+      <!-- thumb pressing up the near side of the body -->
+      <path class="hand-fill" d="M215 222 q-4 -7 3 -11 q7 -3 11 3"/>
+      <!-- knuckle creases for grip read -->
+      <path class="ln-thin" d="M232 226 q1 4 -2 7" opacity=".7"/>
+      <path class="ln-thin" d="M234 234 q1 3 -2 6" opacity=".7"/>
+    </g>
+
+    <!-- ===== LASER BEAM + DOT (from rotated aperture ~(268,180) to the wall) ===== -->
+    <line class="beam" x1="268" y1="180" x2="320" y2="118"/>
+    <circle class="dot" cx="320" cy="118" r="4.4"/>
+
+  </svg>
+</div>
+
+<script>addEventListener("message",function(e){var s=document.querySelector(".scene");if(s)s.classList.toggle("play",e.data!=="calm");});</script>
+</body>
+</html>

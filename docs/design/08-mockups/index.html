@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obrato · UX-макеты ключевых экранов (гл. 08)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* presentation surface (the "spec sheet") */
+    --sheet:#141619;
+    --sheet-2:#1b1e22;
+    --grid:rgba(255,255,255,.045);
+    --bezel:#0a0b0d;
+    /* app screen */
+    --paper:#f3efe6;
+    --surface:#fffdf8;
+    --ink:#1b1813;--helmet:#f7b500;--helmet-d:#d49400;
+    --ink-2:#6c6457;
+    --ink-3:#9a9182;
+    --hair:#ddd6c8;
+    --hair-2:#e9e3d7;
+    /* brand / signal */
+    --green:#1f9d57;        /* brand accent — green (action / precise) */
+    --green-d:#14723d;
+    --cyan:#1c7e8c;       /* blueprint / wet */
+    --cyan-soft:#d6ebee;
+    /* confidence language */
+    --hi:#2f7d4f;  --hi-bg:#e2f0e6;
+    --mid:#d07d18; --mid-bg:#fbeed6;
+    --lo:#c0492f;  --lo-bg:#f7e0d9;
+    --ui:'Saira Semi Condensed',-apple-system,system-ui,sans-serif;
+    --mono:'Spline Sans Mono',ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--ui);
+    color:#e8e3d8;
+    background:
+      linear-gradient(0deg,var(--grid) 1px,transparent 1px) 0 0/26px 26px,
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/26px 26px,
+      radial-gradient(120% 90% at 80% -10%, #23272d 0%, var(--sheet) 55%);
+    min-height:100vh;
+    padding:0 0 80px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- spec-sheet header ---------- */
+  .masthead{
+    border-bottom:1px solid rgba(255,255,255,.08);
+    padding:38px clamp(20px,5vw,72px) 30px;
+    position:relative;
+    overflow:hidden;
+  }
+  .masthead::after{
+    content:"08";
+    position:absolute; right:clamp(8px,4vw,56px); top:-26px;
+    font-family:var(--mono); font-weight:600;
+    font-size:clamp(90px,18vw,220px); line-height:1;
+    color:rgba(31,157,87,.10); letter-spacing:-.04em; pointer-events:none;
+  }
+  .kicker{
+    font-family:var(--mono); font-size:12px; letter-spacing:.34em;
+    text-transform:uppercase; color:var(--green); margin-bottom:14px;
+  }
+  h1{
+    font-weight:700; font-size:clamp(30px,5.4vw,58px); line-height:.98;
+    letter-spacing:-.01em; text-transform:uppercase; max-width:16ch;
+  }
+  h1 em{font-style:normal; color:var(--green)}
+  .dek{
+    margin-top:16px; max-width:62ch; color:#b9b3a6;
+    font-size:clamp(14px,1.5vw,17px); font-weight:400; line-height:1.5;
+  }
+  .meta-row{
+    margin-top:22px; display:flex; flex-wrap:wrap; gap:10px;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.04em;
+  }
+  .tag{
+    border:1px solid rgba(255,255,255,.14); color:#cfc9bc;
+    padding:5px 11px; border-radius:2px; text-transform:uppercase;
+  }
+  .tag b{color:var(--green); font-weight:600}
+
+  /* ---------- legend ---------- */
+  .legend{
+    display:flex; flex-wrap:wrap; gap:26px 40px;
+    padding:22px clamp(20px,5vw,72px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    align-items:flex-start;
+  }
+  .legend h3{
+    font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--ink-3); font-weight:600; margin-bottom:10px;
+  }
+  .legend .col{min-width:200px}
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px}
+  .swatch{
+    display:inline-flex; align-items:center; gap:7px;
+    font-family:var(--mono); font-size:11px; color:#d7d1c4;
+    border:1px solid rgba(255,255,255,.10); border-radius:2px; padding:5px 9px;
+  }
+  .dot{width:11px;height:11px;border-radius:50%;flex:none}
+  .d-hi{background:var(--hi)} .d-mid{background:var(--mid)} .d-lo{background:var(--lo)}
+  .d-cyan{background:var(--cyan)} .d-amber{background:var(--green)}
+
+  /* ---------- gallery ---------- */
+  .gallery{
+    display:flex; flex-wrap:wrap; gap:clamp(26px,3vw,46px);
+    justify-content:center;
+    padding:clamp(34px,5vw,64px) clamp(16px,4vw,56px) 0;
+  }
+  .device{width:344px; max-width:92vw}
+  .device .cap{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:13px;
+    padding-left:4px;
+  }
+  .cap .id{
+    font-family:var(--mono); font-weight:600; font-size:13px; color:var(--green);
+    background:rgba(31,157,87,.10); border:1px solid rgba(31,157,87,.3);
+    padding:1px 8px; border-radius:2px;
+  }
+  .cap .nm{font-weight:600; font-size:16px; letter-spacing:.01em; color:#f1ece1; text-transform:uppercase}
+  .cap .sub{font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-left:auto}
+
+  .phone{
+    background:var(--bezel);
+    border-radius:34px;
+    padding:10px;
+    box-shadow:0 1px 0 rgba(255,255,255,.05) inset,
+               0 30px 60px -24px rgba(0,0,0,.8),
+               0 0 0 1px rgba(255,255,255,.04);
+  }
+  .screen{
+    background:var(--paper);
+    border-radius:25px;
+    overflow:hidden;
+    color:var(--ink);
+    height:704px;
+    display:flex; flex-direction:column;
+    position:relative;
+  }
+
+  /* status bar + offline badge */
+  .statusbar{
+    flex:none; height:30px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 16px; font-family:var(--mono); font-size:11px; color:var(--ink-2);
+    background:var(--paper);
+  }
+  .statusbar .right{display:flex; align-items:center; gap:10px}
+  .ob{
+    display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:500;
+    letter-spacing:.05em; text-transform:uppercase;
+    color:#b5670f; background:#fcefd5; border:1px solid #f3d79a;
+    padding:1px 7px 1px 6px; border-radius:20px;
+  }
+  .ob .pulse{width:6px;height:6px;border-radius:50%;background:#d98324;
+    box-shadow:0 0 0 0 rgba(224,122,16,.5); animation:p 2.4s infinite}
+  @keyframes p{0%{box-shadow:0 0 0 0 rgba(224,122,16,.45)}70%{box-shadow:0 0 0 6px rgba(224,122,16,0)}100%{box-shadow:0 0 0 0 rgba(224,122,16,0)}}
+  .ob.sync{color:#2f7d4f;background:#e6f1e8;border-color:#bcd9c2}
+  .ob.sync .pulse{background:#2f7d4f;animation:none}
+
+  /* app header */
+  .apphead{
+    flex:none; padding:13px 16px 12px; background:var(--surface);
+    border-bottom:1px solid var(--hair);
+    display:flex; align-items:center; gap:11px;
+  }
+  .apphead .back{font-family:var(--mono); font-size:20px; color:var(--ink-2); line-height:1}
+  .apphead .ttl{font-weight:600; font-size:18px; letter-spacing:.01em; text-transform:uppercase}
+  .apphead .ttl small{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.04em;
+    color:var(--ink-3); text-transform:none; font-weight:400; margin-top:1px}
+  .apphead .h-right{margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--ink-3)}
+
+  .body{flex:1; overflow:hidden; position:relative}
+  .scroll{position:absolute; inset:0; overflow:auto; padding:14px}
+  .scroll::-webkit-scrollbar{width:0}
+
+  /* primary action bar */
+  .actionbar{
+    flex:none; padding:11px 14px 13px; background:var(--surface);
+    border-top:1px solid var(--hair);
+  }
+  .btn{
+    width:100%; border:none; cursor:pointer; font-family:var(--ui); font-weight:600;
+    font-size:16px; letter-spacing:.02em; text-transform:uppercase;
+    padding:15px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:9px;
+  }
+  .btn.amber{background:var(--green); color:#f2fbf5; box-shadow:0 3px 0 var(--green-d)}
+  .btn.amber:active{transform:translateY(2px); box-shadow:0 1px 0 var(--green-d)}
+  .btn.ghost{background:transparent; color:var(--ink); border:1.5px solid var(--ink)}
+  .btn .tiny{font-family:var(--mono); font-weight:400; font-size:11px; opacity:.75; text-transform:none}
+
+  /* ---------- generic app bits ---------- */
+  .card{background:var(--surface); border:1px solid var(--hair); border-radius:13px; padding:13px; margin-bottom:11px}
+  .row{display:flex; align-items:center; gap:10px}
+  .between{justify-content:space-between}
+  .muted{color:var(--ink-2)} .faint{color:var(--ink-3)}
+  .mono{font-family:var(--mono)}
+  .num{font-family:var(--mono); font-variant-numeric:tabular-nums}
+  .label{font-family:var(--mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3)}
+
+  .statuschip{font-family:var(--mono); font-size:10px; font-weight:500; letter-spacing:.06em;
+    text-transform:uppercase; padding:2px 8px; border-radius:20px; border:1px solid}
+  .st-plan{color:#7a6a18;background:#f6efd2;border-color:#e4d28b}
+  .st-active{color:#1c5e8c;background:#dceaf4;border-color:#a8cae3}
+  .st-done{color:#2f7d4f;background:#e2f0e6;border-color:#bcd9c2}
+
+  .conf{display:inline-flex; align-items:center; gap:5px; font-family:var(--mono);
+    font-size:10px; font-weight:500; letter-spacing:.04em; text-transform:uppercase;
+    padding:2px 7px; border-radius:4px}
+  .c-hi{color:var(--hi);background:var(--hi-bg)}
+  .c-mid{color:var(--mid);background:var(--mid-bg)}
+  .c-lo{color:var(--lo);background:var(--lo-bg)}
+
+  /* project list cards */
+  .proj{display:flex; gap:12px; align-items:flex-start}
+  .proj .ix{font-family:var(--mono); font-size:11px; color:var(--ink-3); width:22px; padding-top:2px}
+  .proj h4{font-size:17px; font-weight:600; letter-spacing:.01em}
+  .proj .sub{font-family:var(--mono); font-size:11px; color:var(--ink-2); margin-top:2px}
+  .proj .tot{font-family:var(--mono); font-size:13px; color:var(--ink); margin-top:7px}
+  .proj .tot b{font-weight:600}
+  .new-room,.add{display:flex;align-items:center;justify-content:center;gap:8px;
+    border:1.5px dashed var(--hair); color:var(--ink-2); border-radius:13px; padding:13px;
+    font-weight:600; letter-spacing:.02em; text-transform:uppercase; font-size:13px}
+
+  /* room chips on detail */
+  .rm{display:flex; align-items:center; gap:11px}
+  .rm .ico{width:38px;height:38px;border-radius:9px;background:var(--paper);border:1px solid var(--hair);
+    display:flex;align-items:center;justify-content:center;font-size:19px;flex:none}
+  .rm .dim{font-family:var(--mono); font-size:11px; color:var(--ink-2); margin-top:3px; display:flex; gap:6px; flex-wrap:wrap}
+  .pill{font-family:var(--mono); font-size:9.5px; letter-spacing:.04em; text-transform:uppercase;
+    padding:1px 6px; border-radius:4px; background:var(--paper); border:1px solid var(--hair); color:var(--ink-2)}
+  .pill.wet{color:var(--cyan); background:var(--cyan-soft); border-color:#b6dde2}
+  .pill.untrust{color:var(--lo); background:var(--lo-bg); border-color:#e7c3b8}
+
+  /* room editor */
+  .seg{display:grid; grid-template-columns:repeat(3,1fr); gap:7px}
+  .seg .t{border:1px solid var(--hair); border-radius:9px; padding:9px 4px; text-align:center;
+    font-size:13px; font-weight:500; background:var(--surface); color:var(--ink-2)}
+  .seg .t.on{background:#eaf5ee; border-color:var(--green); color:var(--ink); box-shadow:inset 0 0 0 1px var(--green)}
+  .seg .t small{display:block; font-size:17px; margin-bottom:1px}
+
+  .dims{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:4px}
+  .dimfield{border:1px solid var(--hair); border-radius:10px; padding:8px 9px; background:var(--surface)}
+  .dimfield .label{margin-bottom:3px}
+  .dimfield .v{font-family:var(--mono); font-size:23px; font-weight:500; letter-spacing:-.01em}
+  .dimfield .v .u{font-size:11px; color:var(--ink-3); margin-left:2px}
+
+  .toggle{display:flex; align-items:center; gap:10px; justify-content:space-between;
+    border:1px solid var(--hair); border-radius:11px; padding:11px 12px; background:var(--surface)}
+  .sw{width:46px;height:27px;border-radius:20px;background:#d9d3c6;position:relative;flex:none;transition:.15s}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.25);transition:.15s}
+  .sw.on{background:var(--cyan)} .sw.on::after{left:22px}
+  .sw.amber.on{background:var(--green)}
+
+  .work{border:1px solid var(--hair); border-radius:11px; background:var(--surface); margin-bottom:8px; overflow:hidden}
+  .work .hd{display:flex; align-items:center; gap:11px; padding:11px 12px}
+  .checkbox{width:24px;height:24px;border-radius:6px;border:1.5px solid var(--hair);flex:none;
+    display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;background:var(--surface)}
+  .checkbox.on{background:var(--green);border-color:var(--green-d)}
+  .work .nm{font-weight:600; font-size:15px; letter-spacing:.01em}
+  .work .param{margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--ink-2);
+    background:var(--paper); border:1px solid var(--hair); border-radius:6px; padding:3px 8px}
+  .work .param.usr{color:var(--green-d); background:#e7f3ec; border-color:#bcd9c2}
+  .work.off{opacity:.5}
+  .work.off .checkbox{background:var(--surface);border-color:var(--hair)}
+  .prov{font-family:var(--mono); font-size:9.5px; letter-spacing:.05em; text-transform:uppercase}
+  .prov.t{color:var(--ink-3)} .prov.u{color:var(--green-d)}
+
+  .assume{margin-top:9px; border-top:1px dashed var(--hair); padding-top:10px}
+  .assume .nv{display:flex; align-items:center; gap:9px; font-family:var(--mono); font-size:11px; color:var(--ink-2)}
+  .bar{flex:1; height:7px; border-radius:5px; background:#ece6da; position:relative; overflow:hidden}
+  .bar i{position:absolute; top:0; bottom:0; border-radius:5px; opacity:.85}
+  .bar .lohi{background:linear-gradient(90deg,var(--lo),var(--mid),var(--hi)); left:18%; right:14%}
+  .bar .cen{width:2px; background:var(--ink); left:54%; opacity:1}
+
+  /* canvas screen */
+  .toolbar{display:flex; gap:7px; margin-bottom:10px}
+  .tool{flex:1; border:1px solid var(--hair); border-radius:9px; background:var(--surface);
+    padding:8px 4px; text-align:center; font-size:11px; font-weight:600; letter-spacing:.02em; text-transform:uppercase;
+    color:var(--ink-2); cursor:pointer; user-select:none}
+  .tool small{display:block; font-size:16px; margin-bottom:2px}
+  .tool.on{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+  .canvas-wrap{border:1px solid var(--hair); border-radius:12px; background:#eef4f4; overflow:hidden; position:relative}
+  .canvas-wrap .ttl{position:absolute; top:8px; left:10px; font-family:var(--mono); font-size:10px;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--cyan); z-index:2}
+  #layout{display:block; width:100%; touch-action:none; cursor:crosshair}
+  .stale{display:flex; gap:8px; align-items:center; background:var(--lo-bg); border:1px solid #e7c3b8;
+    color:var(--lo); border-radius:9px; padding:9px 11px; font-size:12px; margin-top:10px}
+  .stale .x{font-family:var(--mono); font-size:16px}
+  .legend-min{display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:10px; font-family:var(--mono);
+    font-size:10px; color:var(--ink-2)}
+  .legend-min span{display:inline-flex; align-items:center; gap:5px}
+  .sq{width:11px;height:11px;border-radius:2px;border:1px solid}
+
+  /* purchase list */
+  .stage{margin-bottom:13px}
+  .stage .sh{display:flex; align-items:center; gap:9px; margin-bottom:7px}
+  .stage .ix{font-family:var(--mono); font-size:11px; font-weight:600; color:var(--paper);
+    background:var(--ink); border-radius:5px; padding:2px 7px; flex:none}
+  .stage .nm{font-weight:600; font-size:13px; letter-spacing:.04em; text-transform:uppercase}
+  .stage .sub{margin-left:auto; font-family:var(--mono); font-size:12px; color:var(--ink-2)}
+  .line{display:flex; align-items:flex-start; gap:10px; padding:9px 0; border-bottom:1px solid var(--hair-2)}
+  .line:last-child{border-bottom:none}
+  .line .nm{font-size:14px; font-weight:500}
+  .line .meta{font-family:var(--mono); font-size:10.5px; color:var(--ink-3); margin-top:2px}
+  .line .qty{margin-left:auto; text-align:right; flex:none}
+  .qty .big{font-family:var(--mono); font-size:16px; font-weight:600; line-height:1}
+  .qty .big .u{font-size:10px; color:var(--ink-3); font-weight:400}
+  .qty .rng{font-family:var(--mono); font-size:10px; color:var(--ink-2); margin-top:2px}
+  .qty .price{font-family:var(--mono); font-size:11px; color:var(--ink-2); margin-top:3px}
+  .orient{font-size:9px; color:var(--mid); letter-spacing:.04em; text-transform:uppercase}
+  .total{display:flex; align-items:baseline; justify-content:space-between; padding:13px;
+    background:var(--ink); color:var(--paper); border-radius:13px; margin-top:4px}
+  .total .lab{font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:#c9c2b4}
+  .total .v{font-family:var(--mono); font-size:22px; font-weight:600}
+  .total .v small{font-size:11px; color:var(--green)}
+
+  /* procurement entry */
+  .field{border:1px solid var(--hair); border-radius:11px; background:var(--surface); padding:10px 12px; margin-bottom:9px}
+  .field .label{margin-bottom:5px}
+  .field .v{font-family:var(--mono); font-size:18px; font-weight:500}
+  .field.focus{border-color:var(--green); box-shadow:inset 0 0 0 1px var(--green)}
+  .keypad{display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-top:4px}
+  .key{border:1px solid var(--hair); border-radius:10px; background:var(--surface); padding:13px 0;
+    text-align:center; font-family:var(--mono); font-size:19px; font-weight:500}
+  .alloc{display:flex; gap:9px; align-items:center; background:#e6f1e8; border:1px solid #bcd9c2;
+    border-radius:10px; padding:10px 11px; font-size:12px; color:#235e3c; margin-top:2px}
+  .alloc .num{font-weight:600; color:#1c5e3a}
+  .guard{display:flex; gap:8px; align-items:flex-start; font-size:11.5px; color:var(--ink-2);
+    background:var(--paper); border:1px dashed var(--hair); border-radius:10px; padding:9px 11px; margin-top:9px}
+
+  .note{font-family:var(--mono); font-size:11px; color:var(--ink-3); line-height:1.5; margin:6px 2px 2px}
+
+  /* footer */
+  .foot{
+    margin-top:60px; padding:30px clamp(20px,5vw,72px);
+    border-top:1px solid rgba(255,255,255,.08); color:#8d877a;
+    font-family:var(--mono); font-size:12px; line-height:1.7;
+  }
+  .foot b{color:#cfc9bc; font-weight:500}
+  .foot a{color:var(--green); text-decoration:none}
+
+  /* ===== Amigo mascot (гл. 08 §10) — периферийный помощник ===== */
+  .amigo-av{flex:none; display:block}
+  .amigo-head{width:46px; height:auto; flex:none; display:block}
+  .amigo-tip{display:flex; align-items:center; gap:10px; background:var(--surface);
+    border:1px solid var(--hair); border-left:3px solid var(--green); border-radius:11px;
+    padding:8px 11px; margin-bottom:10px}
+  .amigo-tip.unc{border-left-color:var(--lo)}
+  .amigo-tip.ok{border-left-color:var(--hi)}
+  .amigo-tip.hint{border-left-color:var(--cyan)}
+  .amigo-tip .bub{font-size:12px; line-height:1.35; color:var(--ink)}
+  .amigo-tip .bub b{font-weight:600}
+  /* SVG paint (global class selectors — like the proven symbol pattern) */
+  .ln{fill:none; stroke:var(--ink); stroke-width:5; stroke-linecap:round; stroke-linejoin:round}
+  .ln-thin{fill:none; stroke:var(--ink); stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round}
+  .fill-ink{fill:var(--ink); stroke:none}
+  .mustache{fill:var(--ink);stroke:none}
+  .mcurl{fill:none;stroke:var(--ink);stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+  .hl{fill:var(--surface)}
+  .helmet{fill:var(--helmet); stroke:var(--ink); stroke-width:5; stroke-linejoin:round}
+  .helmet-sh{fill:var(--helmet-d); stroke:none}
+  .paper-fill{fill:var(--surface)}
+  .mk-fill{fill:var(--helmet); stroke:none}
+  .mk-ridge{fill:none; stroke:var(--helmet-d); stroke-width:5; stroke-linecap:round}
+  .mk-eye{fill:var(--ink); stroke:none}
+  /* gentle motion only on the two emotional helpers */
+  .am.s-unc .head{animation:am-tilt 3.4s ease-in-out infinite; transform-box:view-box; transform-origin:115px 104px}
+  .am.s-suc .head{animation:am-tip 2.6s ease-in-out infinite; transform-box:view-box; transform-origin:150px 100px}
+  .am.s-suc .spark{animation:am-spark 2.6s ease-in-out infinite; transform-box:fill-box; transform-origin:center}
+  @keyframes am-tilt{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(2deg)}}
+  @keyframes am-tip{0%,72%,100%{transform:translateY(0) rotate(0)}84%,92%{transform:translateY(-6px) rotate(-6deg)}}
+  @keyframes am-spark{0%,55%,100%{opacity:0;transform:scale(.3) rotate(0)}78%{opacity:1;transform:scale(1) rotate(45deg)}}
+  @media (prefers-reduced-motion: reduce){.am *{animation:none!important}.am.s-suc .spark{opacity:1}}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="kicker">Obrato · UX &amp; потоки · гл. 08</div>
+  <h1>Инструмент прораба.<br><em>Нажал — получил лист.</em></h1>
+  <p class="dek">Макеты ключевых экранов пилота (N=1, прораб Давид, Лиссабон). Эстетика — полевой
+  прибор: высокий контраст под солнце, крупные таргеты под перчатку, всё работает офлайн.
+  Цифры — герой, поэтому они моноширинные; неопределённость показана честно, не спрятана.</p>
+  <div class="meta-row">
+    <span class="tag">стек: <b>React + Canvas + Worker/WASM</b></span>
+    <span class="tag">маршрут: <b>S1→S6</b></span>
+    <span class="tag">решает: <b>Open Q4</b></span>
+    <span class="tag">данные: <b>гл. 05</b></span>
+    <span class="tag">архитектура: <b>гл. 09 ①</b></span>
+  </div>
+</header>
+
+<section class="legend">
+  <div class="col">
+    <h3>Confidence НОРМЫ — NormRangeView</h3>
+    <div class="chip-row">
+      <span class="swatch"><i class="dot d-hi"></i>high</span>
+      <span class="swatch"><i class="dot d-mid"></i>medium</span>
+      <span class="swatch"><i class="dot d-lo"></i>low / unvalidated</span>
+    </div>
+    <div class="note">NormValue.confidence · гл. 05 §3 / гл. 07</div>
+  </div>
+  <div class="col">
+    <h3>Confidence КОЛИЧЕСТВА — строки листа</h3>
+    <div class="chip-row">
+      <span class="swatch"><i class="dot d-hi"></i>exact</span>
+      <span class="swatch"><i class="dot d-mid"></i>estimated</span>
+      <span class="swatch"><i class="dot d-lo"></i>wide</span>
+    </div>
+    <div class="note">QuantityEstimate.confidence · НЕ путать с нормой</div>
+  </div>
+  <div class="col">
+    <h3>Сигналы</h3>
+    <div class="chip-row">
+      <span class="swatch"><i class="dot d-amber"></i>действие / правка прораба</span>
+      <span class="swatch"><i class="dot d-cyan"></i>мокрая зона / чертёж</span>
+    </div>
+    <div class="note">деньги — всегда «ориентир» (D10)</div>
+  </div>
+</section>
+
+<main class="gallery">
+
+  <!-- ============ S1 · ProjectList ============ -->
+  <div class="device">
+    <div class="cap"><span class="id">S1</span><span class="nm">ProjectList</span><span class="sub">Project[]</span></div>
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>09:42</span><div class="right">
+        <span class="ob"><i class="pulse"></i>офлайн · 3</span><span>▮▮▮ 84%</span></div></div>
+      <div class="apphead">
+        <svg class="amigo-av" width="26" height="26" viewBox="0 0 120 120" aria-hidden="true"><use href="#amigo-mark"/></svg>
+        <span class="ttl">Объекты<small>obra · 4 активных</small></span>
+        <span class="h-right">⚙</span>
+      </div>
+      <div class="body"><div class="scroll">
+        <div class="card"><div class="proj">
+          <span class="ix">01</span>
+          <div style="flex:1">
+            <div class="row between"><h4>Кв. Алфама, 3º Dto</h4><span class="statuschip st-active">active</span></div>
+            <div class="sub">Rua de São Pedro 14 · 5 комнат</div>
+            <div class="tot">≈ <b>4 180 €</b> <span class="orient">ориентир</span> · 6 этапов</div>
+          </div></div></div>
+
+        <div class="card"><div class="proj">
+          <span class="ix">02</span>
+          <div style="flex:1">
+            <div class="row between"><h4>Студия Graça</h4><span class="statuschip st-plan">planning</span></div>
+            <div class="sub">Calçada da Graça 7 · 3 комнаты</div>
+            <div class="tot">≈ <b>2 050 €</b> <span class="orient">ориентир</span> · 5 этапов</div>
+          </div></div></div>
+
+        <div class="card"><div class="proj">
+          <span class="ix">03</span>
+          <div style="flex:1">
+            <div class="row between"><h4>Дом Belém, 1-эт</h4><span class="statuschip st-done">done</span></div>
+            <div class="sub">Rua de Belém 22 · 7 комнат</div>
+            <div class="tot">≈ <b>9 740 €</b> <span class="orient">ориентир</span> · сверено ✓</div>
+          </div></div></div>
+
+        <div class="add">＋ Новый объект</div>
+      </div></div>
+      <div class="actionbar"><button class="btn amber">＋ Создать объект</button></div>
+    </div></div>
+  </div>
+
+  <!-- ============ S2 · ProjectDetail ============ -->
+  <div class="device">
+    <div class="cap"><span class="id">S2</span><span class="nm">ProjectDetail</span><span class="sub">Room[] · MaterialEstimate</span></div>
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>09:43</span><div class="right">
+        <span class="ob"><i class="pulse"></i>офлайн · 3</span><span>▮▮▮ 84%</span></div></div>
+      <div class="apphead"><span class="back">‹</span>
+        <span class="ttl">Алфама, 3º Dto<small>5 комнат · planning→active</small></span></div>
+      <div class="body"><div class="scroll">
+
+        <div class="card" style="background:#e7f3ec;border-color:#bcd9c2">
+          <div class="row" style="gap:9px">
+            <svg class="amigo-av" width="30" height="30" viewBox="0 0 120 120" aria-hidden="true"><use href="#amigo-mark"/></svg>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13px">Уточнил нормы по твоим объектам</div>
+              <div class="note" style="margin:2px 0 0">расход стяжки теперь точнее — пересчитать лист?</div>
+            </div>
+          </div>
+          <button class="btn amber" style="margin-top:10px;padding:11px;font-size:13px">Пересчитать лист</button>
+        </div>
+
+        <div class="label" style="margin:4px 2px 8px">Комнаты</div>
+
+        <div class="card"><div class="rm">
+          <span class="ico">🚿</span>
+          <div style="flex:1">
+            <div class="row between"><div style="font-weight:600;font-size:15px">Санузел</div><span class="pill wet">wet</span></div>
+            <div class="dim"><span class="num">1.8 × 1.6 × 2.5 м</span>
+              <span class="pill">пол·стены·потолок·эл</span></div>
+          </div><span class="faint mono">›</span></div></div>
+
+        <div class="card"><div class="rm">
+          <span class="ico">🍳</span>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:15px">Кухня</div>
+            <div class="dim"><span class="num">3.2 × 2.8 × 2.6 м</span>
+              <span class="pill">пол·стены·потолок·эл</span></div>
+          </div><span class="faint mono">›</span></div></div>
+
+        <div class="card"><div class="rm">
+          <span class="ico">🛏</span>
+          <div style="flex:1">
+            <div class="row between"><div style="font-weight:600;font-size:15px">Спальня</div><span class="pill untrust">не замерено</span></div>
+            <div class="dim"><span class="num faint">— × — × —</span>
+              <span class="pill">шаблон bedroom</span></div>
+          </div><span class="faint mono">›</span></div></div>
+
+        <div class="new-room">＋ Добавить комнату</div>
+      </div></div>
+      <div class="actionbar"><button class="btn amber">Список закупок →</button></div>
+    </div></div>
+  </div>
+
+  <!-- ============ S3 · RoomEditor (Q4) ============ -->
+  <div class="device">
+    <div class="cap"><span class="id">S3</span><span class="nm">RoomEditor</span><span class="sub">★ Open Q4</span></div>
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>09:44</span><div class="right">
+        <span class="ob"><i class="pulse"></i>офлайн · 4</span><span>▮▮▮ 83%</span></div></div>
+      <div class="apphead"><span class="back">‹</span>
+        <span class="ttl">Санузел<small>тип задан → шаблон предзаполнил</small></span></div>
+      <div class="body"><div class="scroll">
+
+        <div class="label" style="margin:0 2px 7px">Тип комнаты</div>
+        <div class="seg" style="margin-bottom:14px">
+          <div class="t on"><small>🚿</small>Санузел</div>
+          <div class="t"><small>🍳</small>Кухня</div>
+          <div class="t"><small>🛏</small>Спальня</div>
+        </div>
+
+        <div class="label" style="margin:0 2px 7px">Размеры <span class="faint">· measurement_source: manual</span></div>
+        <div class="dims" style="margin-bottom:14px">
+          <div class="dimfield"><div class="label">Длина</div><div class="v">1.80<span class="u">м</span></div></div>
+          <div class="dimfield"><div class="label">Ширина</div><div class="v">1.60<span class="u">м</span></div></div>
+          <div class="dimfield"><div class="label">Высота</div><div class="v">2.50<span class="u">м</span></div></div>
+        </div>
+
+        <div class="toggle" style="margin-bottom:14px">
+          <div><div style="font-weight:600;font-size:15px">Мокрая зона</div>
+            <div class="note" style="margin:1px 0 0">→ гидроизоляция + плитка · явный вход</div></div>
+          <div class="sw on"></div>
+        </div>
+
+        <div class="label" style="margin:0 2px 8px">Состав работ — 4 галочки <span class="faint">· правь дельту</span></div>
+
+        <div class="work"><div class="hd">
+          <div class="checkbox on">✓</div><span class="nm">Пол</span>
+          <span class="param">плитка <span class="prov t">шаблон</span></span></div></div>
+
+        <div class="work"><div class="hd">
+          <div class="checkbox on">✓</div><span class="nm">Стены</span>
+          <span class="param usr">плитка ×1.8м <span class="prov u">правка</span></span></div></div>
+
+        <div class="work"><div class="hd">
+          <div class="checkbox on">✓</div><span class="nm">Потолок</span>
+          <span class="param">краска ×2 <span class="prov t">шаблон</span></span></div></div>
+
+        <div class="work"><div class="hd">
+          <div class="checkbox on">✓</div><span class="nm">Электрика</span>
+          <span class="param">2·1·2 точки <span class="prov t">шаблон</span></span></div>
+          <div style="padding:0 12px 12px">
+            <div class="assume">
+              <div class="row between" style="margin-bottom:7px"><span class="label" style="margin:0">Норма: клей плиточный</span><span class="conf c-lo">unvalidated</span></div>
+              <div class="nv"><span>2.1</span><div class="bar"><i class="lohi"></i><i class="cen"></i></div><span>5.4 кг/м²</span></div>
+              <div class="amigo-tip unc" style="margin-top:9px">
+                <svg class="am s-unc amigo-head" viewBox="46 48 134 152" aria-hidden="true"><g class="head"><use href="#head-unc"/></g></svg>
+                <div class="bub">⚑ Тут прикину с запасом — <b>уточним по первому замесу.</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="work off"><div class="hd">
+          <div class="checkbox"></div><span class="nm">Проёмы</span>
+          <span class="param">1 дверь 0.7×2.0 <span class="prov t">шаблон</span></span></div></div>
+
+      </div></div>
+      <div class="actionbar"><button class="btn amber">Готово<span class="tiny">пересчитываю лист…</span></button></div>
+    </div></div>
+  </div>
+
+  <!-- ============ S4 · LayoutCanvas ============ -->
+  <div class="device">
+    <div class="cap"><span class="id">S4</span><span class="nm">LayoutCanvas</span><span class="sub">D8 · grid only</span></div>
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>09:46</span><div class="right">
+        <span class="ob"><i class="pulse"></i>офлайн · 6</span><span>▮▮▮ 82%</span></div></div>
+      <div class="apphead"><span class="back">‹</span>
+        <span class="ttl">Раскладка · пол<small>Porcelanico 30×30 · pattern=grid</small></span>
+        <span class="h-right">⌖ датум</span></div>
+      <div class="body"><div class="scroll">
+
+        <div class="toolbar">
+          <div class="tool on" data-tool="cut"><small>✂</small>Подрез</div>
+          <div class="tool" data-tool="suppress"><small>⊘</small>Убрать</div>
+          <div class="tool" data-tool="annotate"><small>✎</small>Метка</div>
+        </div>
+
+        <div class="amigo-tip hint">
+          <svg class="am amigo-head" viewBox="46 48 134 152" aria-hidden="true"><g class="head"><use href="#head-base"/></g></svg>
+          <div class="bub">Тапни ячейку — <b>помечу подрез.</b> Правка — это данные, не пиксели.</div>
+        </div>
+
+        <div class="canvas-wrap">
+          <span class="ttl">1.80 × 1.60 м · ⌖ corner</span>
+          <canvas id="layout" width="624" height="496"></canvas>
+        </div>
+
+        <div class="legend-min">
+          <span><i class="sq" style="border-color:#9bb7bd;background:#e9f3f4"></i>целая</span>
+          <span><i class="sq" style="border-color:var(--mid);background:var(--mid-bg)"></i>подрез</span>
+          <span><i class="sq" style="border-color:var(--lo);background:var(--lo-bg)"></i>убрана (трап)</span>
+          <span><i class="sq" style="border-color:var(--ink);background:#fff"></i>тап = правка</span>
+        </div>
+
+        <div class="stale">
+          <span class="x">⚠</span>
+          <div><b>2 подрезки устарели</b> после изменения размера.<br>
+          <span class="mono" style="font-size:10.5px;opacity:.85">baseline_params_hash ≠ — рендер без них</span></div>
+        </div>
+
+        <div class="card" style="margin-top:11px">
+          <div class="row between"><span class="label" style="margin:0">Плитка (с подрезом)</span>
+            <span class="num" style="font-weight:600;font-size:16px">35 шт <span class="conf c-mid" style="margin-left:4px">estimated</span></span></div>
+          <div class="note" style="margin-top:4px">30 целых + 8 подрезов · 1 ячейка убрана (трап)</div>
+        </div>
+      </div></div>
+      <div class="actionbar"><button class="btn ghost">Сохранить раскладку</button></div>
+    </div></div>
+  </div>
+
+  <!-- ============ S5 · PurchaseList ============ -->
+  <div class="device">
+    <div class="cap"><span class="id">S5</span><span class="nm">PurchaseList</span><span class="sub">Грань-A · ephemeral</span></div>
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>09:48</span><div class="right">
+        <span class="ob"><i class="pulse"></i>офлайн · 6</span><span>▮▮▮ 82%</span></div></div>
+      <div class="apphead"><span class="back">‹</span>
+        <span class="ttl">Закупки · Алфама<small>по этапам · 5 комнат</small></span>
+        <span class="h-right">PDF</span></div>
+      <div class="body"><div class="scroll">
+
+        <div class="stage">
+          <div class="sh"><span class="ix">04</span><span class="nm">Гидроизоляция</span><span class="sub">≈ 96 €</span></div>
+          <div class="card" style="padding:4px 13px">
+            <div class="line"><div><div class="nm">Гидроизоляция обмазочная</div>
+              <div class="meta">2 ведра · 5 кг · wet 2.9 м²</div></div>
+              <div class="qty"><div class="big">9.8<span class="u">кг</span></div>
+                <div class="rng">7.2 – 13.1</div>
+                <div class="price">≈ 96 € <span class="orient">ориентир</span></div></div>
+              <span class="conf c-lo" style="align-self:center">wide</span></div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="sh"><span class="ix">05</span><span class="nm">Плиточные работы</span><span class="sub">≈ 410 €</span></div>
+          <div class="card" style="padding:4px 13px">
+            <div class="line"><div><div class="nm">Плитка Porcelanico 30×30</div>
+              <div class="meta">35 шт · короб 1.0 м² · 4 короба</div></div>
+              <div class="qty"><div class="big">4<span class="u">короба</span></div>
+                <div class="rng">3 – 4 короба</div>
+                <div class="price">≈ 188 € <span class="orient">ориентир</span></div></div>
+              <span class="conf c-mid" style="align-self:center">estimated</span></div>
+
+            <div class="line"><div><div class="nm">Клей плиточный C2</div>
+              <div class="meta">мешок 25 кг · диапазон до калибровки</div></div>
+              <div class="qty"><div class="big">1<span class="u">мешок</span></div>
+                <div class="rng">1 – 2 мешка</div>
+                <div class="price">≈ 14 € <span class="orient">ориентир</span></div></div>
+              <span class="conf c-lo" style="align-self:center">wide</span></div>
+
+            <div class="line"><div><div class="nm">Затирка · крестики</div>
+              <div class="meta">шов 2 мм · комплект</div></div>
+              <div class="qty"><div class="big">1<span class="u">компл</span></div>
+                <div class="rng">точно</div>
+                <div class="price">≈ 22 € <span class="orient">ориентир</span></div></div>
+              <span class="conf c-hi" style="align-self:center">exact</span></div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="sh"><span class="ix">06</span><span class="nm">Отделка стен/потолков</span><span class="sub">≈ 78 €</span></div>
+          <div class="card" style="padding:4px 13px">
+            <div class="line"><div><div class="nm">Краска влагостойкая</div>
+              <div class="meta">потолок 2.9 м² · 2 слоя · банка 2.5 л</div></div>
+              <div class="qty"><div class="big">1<span class="u">банка</span></div>
+                <div class="rng">1 – 1 банка</div>
+                <div class="price">≈ 34 € <span class="orient">ориентир</span></div></div>
+              <span class="conf c-mid" style="align-self:center">estimated</span></div>
+          </div>
+        </div>
+
+        <div class="total"><span class="lab">Итого · санузел</span>
+          <span class="v">≈ 584 € <small>ориентир</small></span></div>
+        <div class="note" style="text-align:center">диапазон 470 – 690 € · цены низкой свежести (D10)</div>
+
+        <div class="amigo-tip ok" style="margin-top:11px">
+          <svg class="am s-suc amigo-head" viewBox="42 48 146 152" aria-hidden="true">
+            <g class="head"><use href="#head-suc"/></g>
+            <g class="spark" transform="translate(178,62)"><path class="helmet-sh" d="M0 -8 L1.9 -1.9 L8 0 L1.9 1.9 L0 8 L-1.9 1.9 L-8 0 L-1.9 -1.9 Z"/></g>
+          </svg>
+          <div class="bub"><b>Лист готов</b> — можно в магазин.</div>
+        </div>
+      </div></div>
+      <div class="actionbar"><button class="btn amber">🛒 Взять в магазин<span class="tiny">freeze · снимок листа</span></button></div>
+    </div></div>
+  </div>
+
+  <!-- ============ S6 · ProcurementEntry ============ -->
+  <div class="device">
+    <div class="cap"><span class="id">S6</span><span class="nm">ProcurementEntry</span><span class="sub">офлайн в магазине</span></div>
+    <div class="phone"><div class="screen">
+      <div class="statusbar"><span>11:20</span><div class="right">
+        <span class="ob"><i class="pulse"></i>офлайн · 8</span><span>▮▮ 76%</span></div></div>
+      <div class="apphead"><span class="back">‹</span>
+        <span class="ttl">Факт закупки<small>Leroy Merlin · снимок «плитка»</small></span></div>
+      <div class="body"><div class="scroll">
+
+        <div class="card" style="background:#f6efd2;border-color:#e4d28b;padding:11px 13px">
+          <div class="row" style="gap:8px"><span>🔒</span><div>
+            <div style="font-weight:600;font-size:13px">PurchaseSnapshot заморожен</div>
+            <div class="note" style="margin:1px 0 0">оценки insert-only · факт морозит связанную оценку</div></div></div>
+        </div>
+
+        <div class="label" style="margin:6px 2px 7px">Позиция</div>
+        <div class="field"><div class="label">Материал</div>
+          <div class="v">Плитка Porcelanico 30×30</div></div>
+
+        <div class="row" style="gap:9px;margin-bottom:9px">
+          <div class="field focus" style="flex:1;margin:0"><div class="label">Куплено</div>
+            <div class="v">4 <span class="faint" style="font-size:12px">короба</span></div></div>
+          <div class="field" style="flex:1;margin:0"><div class="label">Цена факт</div>
+            <div class="v">47.20 <span class="faint" style="font-size:12px">€</span></div></div>
+        </div>
+
+        <div class="row" style="gap:9px;margin-bottom:4px">
+          <div class="field" style="flex:1;margin:0"><div class="label">Израсходовано</div>
+            <div class="v" style="color:var(--ink-2)">4 <span class="faint" style="font-size:12px">короба · rough</span></div></div>
+          <div class="field" style="flex:1;margin:0"><div class="label">Остаток</div>
+            <div class="v" style="color:var(--ink-2)">0 <span class="faint" style="font-size:12px">авто</span></div></div>
+        </div>
+        <div class="note" style="margin:0 2px 9px;font-size:10.5px">введи любые два — третье посчитается
+          (куплено − израсходовано = остаток); после работ уточни расход новой записью</div>
+
+        <div class="alloc">
+          <span>↳</span><div>Привязка: <span class="num">санузел · этап «плитка»</span><br>
+          <span class="mono" style="font-size:10.5px;opacity:.8">single-room → consumed_fraction = 1.0</span></div></div>
+
+        <div class="guard" style="margin-top:10px">
+          <span>ⓘ</span><div>Чек подтверждает <b>цену и куплено</b>; норму сузит только
+          уточнённый расход — «на глаз» (rough) остаётся non-narrowing (self-confirmation guard).</div>
+        </div>
+
+        <div class="amigo-tip" style="margin-top:10px">
+          <svg class="amigo-av" width="34" height="34" viewBox="0 0 120 120" aria-hidden="true"><use href="#amigo-mark"/></svg>
+          <div class="bub">В магазине без сети — <b>запишу локально</b>, синканёт потом.</div>
+        </div>
+
+        <div class="keypad">
+          <div class="key">1</div><div class="key">2</div><div class="key">3</div>
+          <div class="key">4</div><div class="key">5</div><div class="key">6</div>
+          <div class="key">7</div><div class="key">8</div><div class="key">9</div>
+          <div class="key">.</div><div class="key">0</div><div class="key">⌫</div>
+        </div>
+
+      </div></div>
+      <div class="actionbar"><button class="btn amber">Записать факт<span class="tiny">insert-only · в outbox</span></button></div>
+    </div></div>
+  </div>
+
+</main>
+
+<!-- ===== Amigo mascot symbols (гл. 08 §10 · геометрия V4 бюст + V5 марка) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="head-base">
+    <path class="ln paper-fill" d="M63 143 q-11 1 -10 13 q1 10 11 7"/>
+    <path class="ln paper-fill" d="M167 143 q11 1 10 13 q-1 10 -11 7"/>
+    <path class="ln paper-fill" d="M64 118 C 58 140 60 162 75 173 C 88 182 102 186 115 186 C 128 186 142 182 155 173 C 170 162 172 140 166 118 C 132 110 98 110 64 118 Z"/>
+    <path class="helmet" d="M58 110 q1 -56 57 -56 q56 0 57 56 q-28 -10 -57 -10 q-29 0 -57 10 Z"/>
+    <path class="helmet-sh" d="M58 110 q28 -10 57 -10 q29 0 57 10 q-3 7 -11 6 q-46 -9 -92 0 q-8 1 -11 -6 Z"/>
+    <path class="ln" d="M115 55 q0 27 0 45" opacity=".5"/>
+    <path class="ln" d="M48 110 q67 -20 134 0"/>
+    <circle class="fill-ink" cx="92" cy="124" r="6.4"/>
+    <circle class="fill-ink" cx="138" cy="124" r="6.4"/>
+    <circle class="hl" cx="94.3" cy="121.7" r="2"/>
+    <circle class="hl" cx="140.3" cy="121.7" r="2"/>
+    <path class="ln-thin" d="M111 132 q4 8 4 10 q0 3 5 2"/>
+    <g class="stache"><path id="stache-sil" class="mustache" d="M91.7 151.4 L92.03 151.62 L92.36 152.08 L92.69 152.55 L93.03 152.96 L93.36 153.31 L93.69 153.61 L94.02 153.86 L94.35 154.08 L94.68 154.25 L95.01 154.38 L95.34 154.47 L95.68 154.54 L96.01 154.57 L96.34 154.55 L96.67 154.5 L97 154.41 L97.33 154.3 L97.66 154.14 L98 153.93 L98.33 153.67 L98.66 153.36 L98.99 153.03 L99.32 152.7 L99.65 152.37 L99.98 152.07 L100.31 151.8 L100.65 151.55 L100.98 151.3 L101.31 151.06 L101.64 150.83 L101.97 150.62 L102.3 150.41 L102.63 150.21 L102.96 150.02 L103.3 149.85 L103.63 149.69 L103.96 149.54 L104.29 149.4 L104.62 149.27 L104.95 149.14 L105.28 149.03 L105.62 148.94 L105.95 148.84 L106.28 148.77 L106.61 148.7 L106.94 148.63 L107.27 148.57 L107.6 148.52 L107.93 148.5 L108.27 148.5 L108.6 148.5 L108.93 148.5 L109.26 148.51 L109.59 148.53 L109.92 148.58 L110.25 148.64 L110.59 148.7 L110.92 148.77 L111.25 148.87 L111.58 148.98 L111.91 149.1 L112.24 149.23 L112.57 149.37 L112.9 149.52 L113.24 149.69 L113.57 149.87 L113.9 150.07 L114.23 150.27 L114.56 150.49 L114.89 150.73 L115.22 150.94 L115.56 151 L115.89 150.88 L116.22 150.65 L116.55 150.42 L116.88 150.2 L117.21 150 L117.54 149.81 L117.87 149.63 L118.21 149.47 L118.54 149.31 L118.87 149.17 L119.2 149.05 L119.53 148.95 L119.86 148.85 L120.19 148.76 L120.53 148.69 L120.86 148.62 L121.19 148.57 L121.52 148.52 L121.85 148.5 L122.18 148.5 L122.51 148.5 L122.84 148.5 L123.18 148.51 L123.51 148.55 L123.84 148.59 L124.17 148.64 L124.5 148.71 L124.83 148.79 L125.16 148.88 L125.49 148.97 L125.83 149.07 L126.16 149.19 L126.49 149.32 L126.82 149.45 L127.15 149.59 L127.48 149.74 L127.81 149.91 L128.15 150.09 L128.48 150.28 L128.81 150.47 L129.14 150.68 L129.47 150.89 L129.8 151.13 L130.13 151.37 L130.46 151.64 L130.8 151.91 L131.13 152.19 L131.46 152.49 L131.79 152.81 L132.12 153.14 L132.45 153.46 L132.78 153.76 L133.12 154.01 L133.45 154.2 L133.78 154.35 L134.11 154.46 L134.44 154.52 L134.77 154.56 L135.1 154.57 L135.43 154.53 L135.77 154.46 L136.1 154.34 L136.43 154.2 L136.76 154.01 L137.09 153.77 L137.42 153.51 L137.75 153.2 L138.09 152.84 L138.42 152.41 L138.75 151.93 L139.08 151.56 L139.3 151.41 L139.3 151.75 L139.08 151.96 L138.75 152.5 L138.42 153.22 L138.09 153.86 L137.75 154.43 L137.42 154.97 L137.09 155.45 L136.76 155.89 L136.43 156.29 L136.1 156.66 L135.77 156.99 L135.43 157.27 L135.1 157.52 L134.77 157.75 L134.44 157.96 L134.11 158.15 L133.78 158.33 L133.45 158.5 L133.12 158.66 L132.78 158.81 L132.45 158.96 L132.12 159.12 L131.79 159.26 L131.46 159.39 L131.13 159.51 L130.8 159.62 L130.46 159.73 L130.13 159.84 L129.8 159.94 L129.47 160.03 L129.14 160.11 L128.81 160.19 L128.48 160.27 L128.15 160.33 L127.81 160.38 L127.48 160.42 L127.15 160.46 L126.82 160.5 L126.49 160.53 L126.16 160.54 L125.83 160.54 L125.49 160.54 L125.16 160.54 L124.83 160.53 L124.5 160.5 L124.17 160.46 L123.84 160.42 L123.51 160.38 L123.18 160.33 L122.84 160.27 L122.51 160.21 L122.18 160.13 L121.85 160.06 L121.52 159.97 L121.19 159.88 L120.86 159.78 L120.53 159.68 L120.19 159.58 L119.86 159.45 L119.53 159.32 L119.2 159.19 L118.87 159.05 L118.54 158.91 L118.21 158.77 L117.87 158.62 L117.54 158.47 L117.21 158.3 L116.88 158.13 L116.55 157.95 L116.22 157.76 L115.89 157.6 L115.56 157.52 L115.22 157.57 L114.89 157.7 L114.56 157.87 L114.23 158.06 L113.9 158.24 L113.57 158.41 L113.24 158.57 L112.9 158.72 L112.57 158.87 L112.24 159.01 L111.91 159.15 L111.58 159.28 L111.25 159.41 L110.92 159.54 L110.59 159.65 L110.25 159.75 L109.92 159.84 L109.59 159.94 L109.26 160.03 L108.93 160.11 L108.6 160.18 L108.27 160.25 L107.93 160.31 L107.6 160.36 L107.27 160.41 L106.94 160.45 L106.61 160.49 L106.28 160.52 L105.95 160.54 L105.62 160.54 L105.28 160.54 L104.95 160.54 L104.62 160.54 L104.29 160.52 L103.96 160.47 L103.63 160.43 L103.3 160.39 L102.96 160.34 L102.63 160.29 L102.3 160.22 L101.97 160.14 L101.64 160.06 L101.31 159.97 L100.98 159.87 L100.65 159.76 L100.31 159.65 L99.98 159.54 L99.65 159.41 L99.32 159.29 L98.99 159.16 L98.66 159.01 L98.33 158.85 L98 158.69 L97.66 158.53 L97.33 158.37 L97 158.2 L96.67 158.01 L96.34 157.81 L96.01 157.59 L95.68 157.34 L95.34 157.08 L95.01 156.77 L94.68 156.43 L94.35 156.03 L94.02 155.59 L93.69 155.11 L93.36 154.61 L93.03 154.06 L92.69 153.44 L92.36 152.73 L92.03 152.05 L91.7 151.73 Z"/></g>
+    <path class="ln-thin mouth" d="M105 181 q10 6 20 0"/>
+  </g>
+  <g id="head-unc"><use href="#head-base"/><path class="ln-thin" d="M82 112 q9 -6 18 -1"/><path d="M103 181 q12 6 24 0" fill="none" stroke="var(--surface)" stroke-width="8" stroke-linecap="round"/><path class="ln-thin" d="M105 181 q10 -1 20 1"/></g>
+  <g id="head-suc"><use href="#head-base"/><circle class="paper-fill" cx="92" cy="124" r="9"/><circle class="paper-fill" cx="138" cy="124" r="9"/><path class="ln-thin" d="M86 126 q6 -8 12 0"/><path class="ln-thin" d="M132 126 q6 -8 12 0"/></g>
+  <g id="amigo-mark">
+    <path class="mk-fill" d="M30 56 A30 30 0 0 1 90 56 Z"/>
+    <rect class="mk-fill" x="26" y="54" width="68" height="7" rx="3.5"/>
+    <line class="mk-ridge" x1="60" y1="29" x2="60" y2="54"/>
+    <circle class="mk-eye" cx="48" cy="74" r="5"/>
+    <circle class="mk-eye" cx="72" cy="74" r="5"/>
+    <use href="#stache-sil" transform="translate(-51.62 -62.51) scale(0.9664)"/>
+  </g>
+</defs></svg>
+
+<footer class="foot">
+  <b>Obrato · docs/design/08-ux-flows.md</b> — карта экранов, флоу, модель ввода (Open Q4), UX-принципы.<br>
+  Макет согласован с <b>гл. 05</b> (данные — новых сущностей не вводит) и <b>гл. 09 ①</b> (фронт-архитектура).
+  Решения D1–D10 и контракт ядра (гл. 05 §8) — без изменений.<br>
+  <span style="opacity:.7">Self-contained: открой в браузере. Тап по сетке S4 — живая правка раскладки (CutOverride-as-data).</span>
+</footer>
+
+<script>
+/* ---- S4 · LayoutCanvas: naive grid baseline + tap-to-edit (CutOverride-as-data) ----
+   Демонстрирует контракт гл.05 §6 / гл.09 ①: правка — это ДАННЫЕ (cell_col/cell_row),
+   адресованные логической ячейкой, НЕ пиксели. pattern=grid (пилот). */
+(function(){
+  const cv = document.getElementById('layout');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  const DPR = Math.min(window.devicePixelRatio||1, 2);
+  cv.width = 624*DPR; cv.height = 496*DPR; ctx.scale(DPR,DPR);
+  const W=624, H=496;
+
+  // baseline geometry (в метрах → данные, не пиксели)
+  const room={l:1.80, w:1.60}, tile=0.30;            // Porcelanico 30×30
+  const cols=Math.ceil(room.l/tile), rows=Math.ceil(room.w/tile);
+  const pad=34;
+  const cw=(W-pad*2)/cols, ch=(H-pad*2)/rows;
+
+  // CutOverride-as-data: адрес ЛОГИЧЕСКОЙ ячейки (col,row) + kind
+  const overrides = new Map();                         // "c,r" -> kind
+  overrides.set('5,0','cut'); overrides.set('5,1','cut');   // подрезы у дальней стены (room.l не кратна плитке)
+  overrides.set('5,2','cut'); overrides.set('5,3','cut');
+  overrides.set('5,4','cut'); overrides.set('0,4','suppress'); // трап в углу
+
+  let activeTool='cut';
+  document.querySelectorAll('.tool').forEach(t=>{
+    t.addEventListener('click',()=>{
+      document.querySelectorAll('.tool').forEach(x=>x.classList.remove('on'));
+      t.classList.add('on'); activeTool=t.dataset.tool; });
+  });
+
+  const C={ whole:'#e9f3f4', wholeLine:'#9bb7bd', cut:'#fbeed6', cutLine:'#d07d18',
+            sup:'#f7e0d9', supLine:'#c0492f', txt:'#1c7e8c' };
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // blueprint backdrop
+    ctx.fillStyle='#eef4f4'; ctx.fillRect(0,0,W,H);
+    for(let c=0;c<cols;c++) for(let r=0;r<rows;r++){
+      const x=pad+c*cw, y=pad+r*ch, k=overrides.get(c+','+r);
+      ctx.fillStyle = k==='suppress'?C.sup : k==='cut'?C.cut : C.whole;
+      ctx.strokeStyle = k==='suppress'?C.supLine : k==='cut'?C.cutLine : C.wholeLine;
+      ctx.lineWidth = k? 2 : 1;
+      ctx.fillRect(x+1.5,y+1.5,cw-3,ch-3);
+      ctx.strokeRect(x+1.5,y+1.5,cw-3,ch-3);
+      if(k==='suppress'){ // трап — диагональ
+        ctx.strokeStyle=C.supLine; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(x+8,y+8); ctx.lineTo(x+cw-8,y+ch-8);
+        ctx.moveTo(x+cw-8,y+8); ctx.lineTo(x+8,y+ch-8); ctx.stroke();
+      } else if(k==='cut'){ // линия подреза
+        ctx.strokeStyle=C.cutLine; ctx.lineWidth=2; ctx.setLineDash([4,3]);
+        ctx.beginPath(); ctx.moveTo(x+cw*0.62,y+4); ctx.lineTo(x+cw*0.62,y+ch-4); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+    // датум-маркер (corner)
+    ctx.fillStyle=C.txt; ctx.beginPath(); ctx.arc(pad,pad,5,0,7); ctx.fill();
+    ctx.font='600 11px "Spline Sans Mono",monospace'; ctx.fillStyle=C.txt;
+    ctx.fillText('⌖', pad-14, pad+4);
+  }
+
+  cv.addEventListener('pointerdown',e=>{
+    const rct=cv.getBoundingClientRect();
+    const px=(e.clientX-rct.left)*(W/rct.width), py=(e.clientY-rct.top)*(H/rct.height);
+    const c=Math.floor((px-pad)/cw), r=Math.floor((py-pad)/ch);
+    if(c<0||r<0||c>=cols||r>=rows) return;
+    const key=c+','+r, cur=overrides.get(key);
+    // tap cycles current tool's mark on/off — это запись CutOverride, не пиксельная правка
+    if(cur===activeTool) overrides.delete(key); else overrides.set(key,activeTool);
+    draw();
+  });
+
+  draw();
+})();
+</script>
+</body>
+</html>
