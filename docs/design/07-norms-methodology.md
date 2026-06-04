@@ -114,7 +114,12 @@ B. Балластная (betonilha):    kg = площадь × толщина_с
 
 **Входные переменные:** толщина (= Risk #1, см. раздел 3), consumo продукта, для betonilha — соотношение цемент:песок (1:4 стандарт, 1:3…1:5 разброс).
 
-**Seed:** наливная **1.7** (verify предлагает честнее **1.6**, диапазон 1.5–1.74) kg/м²/мм; балластная **~20** kg/м²/см.
+**Seed:** наливная **1.6** [1.5–1.74] kg/м²/мм (медиана пяти verbatim-точек — verify-правка, см. §4; research изначально завысил до 1.7); балластная **~20** [20–21] kg/м²/см.
+
+**Маппинг на каталог (гл.10 §2):** это **два разных `Material`** — `floor-leveler`
+(autonivelante, kg/м²/мм) и `screed-mix` (betonilha, kg/м²/см) — у каждого свой
+`NormRule` со своей единицей толщины. Один Material с одним коэффициентом обслуживать
+оба класса не может (~10× разрыв). Выбор класса = решение по основанию (Risk #1).
 
 **Источники:** [Topeca Nível S FT](https://topeca.pt/Imgs/produtos/004/26/24/ficheiros_pt/FT_-_Autonivelante_Nivel_S_rev09.pdf), [Sika Sikafloor-100 Level](https://prt.sika.com/dam/dms/pt01/w/sikafloor-100-leveles.pdf), [Mapei Ultraplan Eco](https://www.tradechoice.com/globalassets/productimages/103716_mapei-ultraplan-eco-3210-screed-technical-data-sheet.pdf), [Weber weberfloor flow (Adeo CDN)](https://media.adeo.com/media/2553289/media.pdf), [Eurobetonilhas](https://eurobetonilhas.com/index.php/betonilha), [BS 8204 SR-классы](https://www.speed-screed.com/knowledge-centre/surface-regularity-of-screed/).
 

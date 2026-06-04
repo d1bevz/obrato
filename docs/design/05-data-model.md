@@ -331,7 +331,7 @@ D10: цена-ориентир с timestamp+источником, multi-store. *
 Курируемый ВИД материала (таксономия), независим от продукта/магазина. Ядро рассуждает о Material. ~10–15 строк на пилоте.
 
 - `id: uuid` — surrogate PK.
-- `key: string` — **стабильный slug, UNIQUE — join-ключ контракта ядра** (`NormRule.material`, `MaterialEstimate.material`, `PurchaseItem.material` ссылаются на `Material.key`; Rust/TS остаются enum-чистыми, расцеплены с db-uuid). floor-tile, tile-adhesive, screed-mix, grout, paint, primer, waterproofing, baseboard. Глобально-уникальны и стабильны (rename = миграция).
+- `key: string` — **стабильный slug, UNIQUE — join-ключ контракта ядра** (`NormRule.material`, `MaterialEstimate.material`, `PurchaseItem.material` ссылаются на `Material.key`; Rust/TS остаются enum-чистыми, расцеплены с db-uuid). floor-tile, wall-tile, tile-adhesive, grout, paint, primer, floor-leveler (autonivelante, kg/м²/мм), screed-mix (betonilha, kg/м²/см — другой класс, гл.07 §1.4), waterproofing, baseboard. Глобально-уникальны и стабильны (rename = миграция).
 - `name: string` — локализованное («Клей плиточный / Cola de azulejo»).
 - `category: enum{tile, adhesive, grout, paint, primer, screed, waterproofing, trim, fastener, other}`
 - `base_unit: enum Unit` — каноническая единица, в которой ядро квантует; норма выдаёт raw в ней.

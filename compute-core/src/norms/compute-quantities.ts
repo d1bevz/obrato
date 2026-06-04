@@ -42,7 +42,10 @@ export function requirementsForRoom(room: Room): MaterialRequirement[] {
   const perim = floorPerimeterM(room);
 
   if (room.works.includes('floor')) {
-    out.push(requirement('screed-mix', room.id, floor, 'screed'));
+    // Выравнивание пола: по умолчанию autonivelante (floor-leveler, kg/м²/мм).
+    // Балластная betonilha (screed-mix, kg/м²/см, ~10× на мм) — выбор по состоянию
+    // основания (Risk #1), в модели ввода Д×Ш×В этого входа нет — см. гл.07 §1.4.
+    out.push(requirement('floor-leveler', room.id, floor, 'screed'));
     if (room.wet) out.push(requirement('waterproofing', room.id, floor, 'waterproofing'));
     out.push(requirement('floor-tile', room.id, floor, 'tiling'));
     out.push(requirement('tile-adhesive', room.id, floor, 'tiling'));

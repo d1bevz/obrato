@@ -163,13 +163,23 @@
       "active": true
     },
     {
-      "id": "mat-screed-mix",
-      "key": "screed-mix",
-      "name": "Стяжка / выравнивание пола / Argamassa de regularização",
+      "id": "mat-floor-leveler",
+      "key": "floor-leveler",
+      "name": "Наливной пол / Autonivelante (kg/м²/мм)",
       "category": "screed",
       "base_unit": "kg",
       "variability": "high_variance",
       "default_sku_id": "sku-sikafloor-100-level-25kg",
+      "active": true
+    },
+    {
+      "id": "mat-screed-mix",
+      "key": "screed-mix",
+      "name": "Балластная стяжка / Betonilha (kg/м²/см)",
+      "category": "screed",
+      "base_unit": "kg",
+      "variability": "high_variance",
+      "default_sku_id": "sku-secil-martinganca-cinza-30kg",
       "active": true
     },
     {
@@ -905,7 +915,7 @@
     },
     {
       "id": "sku-sikafloor-100-level-25kg",
-      "material_id": "mat-screed-mix",
+      "material_id": "mat-floor-leveler",
       "store_id": "store-leroy-pt",
       "title": "Argamassa Autonivelante Sikafloor-100 Level 1-10mm 25 kg",
       "brand": "Sika",
@@ -918,7 +928,7 @@
     },
     {
       "id": "sku-topeca-nivel-s-25kg",
-      "material_id": "mat-screed-mix",
+      "material_id": "mat-floor-leveler",
       "store_id": "store-obramat",
       "title": "Autonivelante Topeca Nível S - Saco 25 kg",
       "brand": "Topeca",
@@ -930,7 +940,7 @@
     },
     {
       "id": "sku-weberfloor-fluid-25kg",
-      "material_id": "mat-screed-mix",
+      "material_id": "mat-floor-leveler",
       "store_id": "store-leroy-pt",
       "title": "Argamassa Autonivelante com fibras weberfloor fluid 25 kg",
       "brand": "Weber",
@@ -943,7 +953,7 @@
     },
     {
       "id": "sku-weberfloor-top-25kg",
-      "material_id": "mat-screed-mix",
+      "material_id": "mat-floor-leveler",
       "store_id": "store-maxmat",
       "title": "Argamassa Autonivelante weberfloor top 25 kg",
       "brand": "Weber",
@@ -955,7 +965,7 @@
     },
     {
       "id": "sku-mapei-ultraplan-eco-23kg",
-      "material_id": "mat-screed-mix",
+      "material_id": "mat-floor-leveler",
       "store_id": "store-obramat",
       "title": "Mapei Ultraplan Eco autonivelante - Saco 23 kg",
       "brand": "Mapei",

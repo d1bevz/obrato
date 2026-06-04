@@ -59,7 +59,8 @@ export type MaterialKind =
   | 'grout'
   | 'paint'
   | 'primer'
-  | 'screed-mix'
+  | 'floor-leveler' // наливной/autonivelante: расход kg/м²/ММ — НЕ путать с betonilha (гл.07 §1.4)
+  | 'screed-mix' // балластная стяжка/betonilha: расход kg/м²/СМ, ~10× к autonivelante на мм слоя
   | 'waterproofing'
   | 'baseboard';
 

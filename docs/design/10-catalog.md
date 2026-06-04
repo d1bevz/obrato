@@ -10,7 +10,7 @@
 
 - Каталог — **глобальный read-only seed** (`org_id=null`, гл.05 §4 Q#1): `Material → Sku →
   Store → Price`. Per-tenant override — deferred.
-- Состав: **141 SKU**, **9 материалов**, **9 магазинов** (Leroy + 8 реальных по Лиссабону),
+- Состав: **141 SKU**, **10 материалов**, **9 магазинов** (Leroy + 8 реальных по Лиссабону),
   **144 цены**. Файл: `compute-core/src/catalog/seed.json` (форма `CatalogSeed`, `seed-types.ts`).
 - **Цена = ОРИЕНТИР (D10):** integer money (центы), append-only, `is_estimate=true`,
   `source=manual_curator`, `captured_at=2026-05-30`. В листе помечается «уточни в магазине».
@@ -62,11 +62,11 @@
 **Инвариант пилота:** `Sku.pack_unit == Material.base_unit`. Модель **не несёт
 conversion-факторов**, поэтому кросс-размерные SKU недопустимы; редкое исключение — через
 `coverage_per_pack` (диапазон укрывистости, гл.05 §4). На пилоте `coverage_per_pack=null`
-у всех 85 SKU — клей считается в kg (не в m²), затирка в kg и т.д., и пак продаётся в той же
+у всех 141 SKU — клей считается в kg (не в m²), затирка в kg и т.д., и пак продаётся в той же
 единице. Проекция (§6) **бросает** на нарушении — лучше упасть на загрузке, чем тихо
 ошибиться в округлении.
 
-**9 материалов пилота** (= `MaterialKind` = ключи `NormRule`, гл.07):
+**10 материалов пилота** (= `MaterialKind` = ключи `NormRule`, гл.07):
 
 | `key` | category | base_unit | variability | default-пик (Leroy, ориентир-цена) |
 |---|---|---|---|---|
@@ -76,12 +76,21 @@ conversion-факторов**, поэтому кросс-размерные SKU 
 | grout | grout | kg | ranged | Webercolor Premium 5 kg — 14.50 € |
 | paint | paint | l | ranged | Robbialac Robbiplast NG 2-em-1 15 L — 49.90 € |
 | primer | primer | l | ranged | Total Hydropliolite 3-em-1 5 L — 34.99 € |
-| screed-mix | screed | kg | high_variance | Sikafloor-100 Level 25 kg — 19.00 € |
+| floor-leveler | screed | kg | high_variance | Sikafloor-100 Level 25 kg — 19.00 € |
+| screed-mix | screed | kg | high_variance | Betonilha Secil Martingança 30 kg — 6.50 € |
 | waterproofing | waterproofing | kg | ranged | weber.dry 824 cinza 20 kg — 69.00 € |
 | baseboard | trim | m | fixed | Artens MDF lacado branco 8 cm × 2.40 m — 11.98 € |
 
-`variability` — интринсик-флаг D7 (числовой диапазон живёт в `NormRule`, гл.07): клей и
-стяжка `high_variance` (расход = f(зубец / ровность основания), Risk #1).
+**floor-leveler vs screed-mix — два РАЗНЫХ класса продукта** (гл.07 §1.4): autonivelante
+считается в **kg/м²/мм** (consumo ~1.6), betonilha — в **kg/м²/см** (consumo ~20) —
+разница ~10× на мм слоя; один Material с одной нормой обслуживать оба не может.
+Выбор класса — решение по состоянию основания (Risk #1). SKU чистого цемента CEM II
+(4 шт) живут под `screed-mix`: это ингредиент традиционной betonilha 1:4 — норма
+предсказывает массу **сухой смеси целиком**; закупка цемент+песок по отдельности
+сверяется через reconciliation / `sku_free_text` (§1 off-catalog путь).
+
+`variability` — интринсик-флаг D7 (числовой диапазон живёт в `NormRule`, гл.07): клей,
+наливной и стяжка `high_variance` (расход = f(зубец / ровность основания), Risk #1).
 
 ---
 
@@ -203,7 +212,8 @@ seed-types.ts` — зеркало гл.05 §4):
 | grout (kg/мешок) | 14 | 4.90 – 62.00 |
 | paint (l/банка) | 19 | 5.99 – 139.00 |
 | primer (l/банка) | 14 | 9.90 – 135.00 |
-| screed-mix (kg/мешок) | 17 | 4.59 – 33.00 |
+| floor-leveler (kg/мешок, autonivelante) | 5 | 19.00 – 33.00 |
+| screed-mix (kg/мешок, betonilha + цемент) | 12 | 4.59 – 11.50 |
 | waterproofing (kg/мешок) | 15 | 22.00 – 105.00 |
 | baseboard (m/хлыст) | 13 | 2.99 – 39.95 |
 | **Итого** | **141** | — |
@@ -273,13 +283,13 @@ projectCatalog(seed): Record<MaterialKind, Sku>
 `compute-core/test/catalog.test.ts` (часть из 17 тестов пакета) проверяет на каждой загрузке:
 
 - `catalog_version` присутствует; `id` уникальны внутри каждой сущности;
-- ровно **9 материалов** пилота, все active, у каждого `default_sku_id`;
+- ровно **10 материалов** пилота, все active, у каждого `default_sku_id`;
 - **ссылочная целостность**: `sku.material_id` / `sku.store_id` / `price.sku_id` резолвятся;
 - `default_sku_id` резолвится в SKU **того же** материала;
 - **ИНВАРИАНТ ПИЛОТА** `pack_unit == base_unit` (или есть `coverage_per_pack`);
 - у каждого SKU ≥1 цена; цены — **integer money, sourced, `is_estimate=true`** (D10);
-- размер каталога **50..100 SKU**; оба магазина присутствуют и непусты;
-- **проекция** покрывает все 9 видов валидными SKU движка; интеграция с пайплайном даёт
+- размер каталога **50..250 SKU**; `leroy-pt` присутствует, магазинов ≥8, у каждого ≥1 SKU;
+- **проекция** покрывает все 10 видов валидными SKU движка; интеграция с пайплайном даёт
   ненулевой лист.
 
 **Гейты:** `node --test` (17/17), `tsc --noEmit` (0 ошибок).

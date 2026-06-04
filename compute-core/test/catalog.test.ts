@@ -4,7 +4,9 @@ import type { MaterialKind, Project, Room, Unit } from '../src/types.ts';
 import { SEED, CATALOG, projectCatalog, currentPriceFor } from '../src/catalog/project-seed.ts';
 import { buildPurchaseListForProject } from '../src/pipeline.ts';
 
-// 9 видов материала пилота = MaterialKind = ключи NormRule (гл.05 §4 / гл.07).
+// 10 видов материала пилота = MaterialKind = ключи NormRule (гл.05 §4 / гл.07).
+// floor-leveler (autonivelante, kg/м²/мм) и screed-mix (betonilha, kg/м²/см) —
+// два РАЗНЫХ класса продукта (гл.07 §1.4), один Material их обслуживать не может.
 const MATERIAL_KEYS: MaterialKind[] = [
   'floor-tile',
   'wall-tile',
@@ -12,6 +14,7 @@ const MATERIAL_KEYS: MaterialKind[] = [
   'grout',
   'paint',
   'primer',
+  'floor-leveler',
   'screed-mix',
   'waterproofing',
   'baseboard',
@@ -35,9 +38,9 @@ test('id уникальны внутри каждой сущности', () => {
   }
 });
 
-test('ровно 9 материалов пилота, все active, у каждого default_sku_id', () => {
+test('ровно 10 материалов пилота, все active, у каждого default_sku_id', () => {
   const keys = SEED.materials.map((m) => m.key).sort();
-  assert.deepEqual(keys, [...MATERIAL_KEYS].sort(), 'набор материалов != 9 видов пилота');
+  assert.deepEqual(keys, [...MATERIAL_KEYS].sort(), 'набор материалов != 10 видов пилота');
   for (const m of SEED.materials) {
     assert.ok(m.active, `${m.key}: неактивен`);
     assert.ok(m.default_sku_id, `${m.key}: нет default_sku_id`);
@@ -119,7 +122,7 @@ test('multi-store: leroy-pt + ≥8 магазинов, у каждого ест�
   }
 });
 
-test('проекция покрывает все 9 видов материала, валидными SKU движка', () => {
+test('проекция покрывает все 10 видов материала, валидными SKU движка', () => {
   const storeKeys = new Set(SEED.stores.map((s) => s.key));
   const cat = projectCatalog(SEED);
   for (const key of MATERIAL_KEYS) {
