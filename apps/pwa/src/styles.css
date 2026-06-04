@@ -258,3 +258,600 @@ main {
   text-align: center;
   padding: 8px 0 2px;
 }
+
+/* --- S5 · Лист закупок (P1) --- */
+.notice {
+  font-size: 13px;
+  color: var(--warn);
+  background: #fdf6e9;
+  border: 1px solid #f0e2c4;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+}
+
+.card.center {
+  text-align: center;
+  color: var(--muted);
+}
+
+.card.error {
+  border-color: #e4b6b6;
+  background: #fdf1f1;
+  color: #8c2f2f;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stage-title {
+  margin: 4px 4px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green-d);
+}
+
+.card.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 4px 16px;
+}
+
+.prow {
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.prow:last-child {
+  border-bottom: none;
+}
+
+.prow-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.pname {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.ppt {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.pqty {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Headline — central, диапазон рядом, не спрятан (гл.08 §4 п.1). */
+.pqty .central {
+  display: block;
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pqty .range {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.prow-meta {
+  display: flex;
+  flex-wrap: wrap; /* полный набор бейджей + длинные суммы на 360px */
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.prow-meta .badge {
+  flex-shrink: 0;
+}
+
+.prow-meta .spacer {
+  flex: 1;
+}
+
+/* Цветовой язык гл.08 §4: зелёный = high, янтарный = medium,
+   серо-красный = low / unvalidated. */
+.badge.conf-high {
+  background: #e9f6ef;
+  border-color: #c4e6d3;
+  color: var(--green-d);
+}
+
+.badge.conf-medium {
+  background: #fdf6e9;
+  border-color: #f0e2c4;
+  color: var(--warn);
+}
+
+.badge.conf-low,
+.badge.conf-unvalidated {
+  background: #f7efed;
+  border-color: #e4cfc9;
+  color: #a04a3a;
+}
+
+.price {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.price-range {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.price-mark {
+  color: var(--warn);
+  font-size: 12px;
+}
+
+.psku {
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.psku-pack {
+  white-space: nowrap;
+}
+
+/* --- S3 · RoomEditor (P2): формы --- */
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green-d);
+}
+
+.form-sub {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.form-hint {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.chip.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+  font-weight: 600;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.field input,
+.title-input,
+.opening-row input,
+.opening-row select {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 16px; /* ≥16px — iOS не зумит на фокус */
+  font-family: inherit;
+  background: #fff;
+  color: var(--ink);
+  width: 100%;
+}
+
+.field-error {
+  color: #a04a3a;
+  font-size: 12px;
+}
+
+.dim-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.dim-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.dim-field input {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 8px;
+  font-size: 17px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  width: 100%;
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  flex-wrap: wrap;
+}
+
+.switch-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.switch-label input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--green);
+  flex-shrink: 0;
+}
+
+.seg-row {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.seg {
+  border: none;
+  background: #fff;
+  padding: 7px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  border-right: 1px solid var(--line);
+}
+
+.seg:last-child {
+  border-right: none;
+}
+
+.seg.active {
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+}
+
+.count-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.stepper button {
+  border: none;
+  background: var(--paper);
+  width: 34px;
+  height: 34px;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.stepper-val {
+  min-width: 28px;
+  text-align: center;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.electric-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding-left: 30px;
+}
+
+.opening-row {
+  display: grid;
+  grid-template-columns: 1fr 72px 12px 72px 36px;
+  gap: 6px;
+  align-items: center;
+}
+
+.opening-row .x {
+  text-align: center;
+  color: var(--muted);
+}
+
+.opening-row input {
+  text-align: center;
+  padding: 10px 4px;
+}
+
+.opening-row input.invalid {
+  border-color: #d8a39a;
+  background: #fdf4f2;
+}
+
+/* --- P3: лист «в магазин» --- */
+.badge.q-exact {
+  background: #e9f6ef;
+  border-color: #c4e6d3;
+  color: var(--green-d);
+}
+
+.badge.q-estimated {
+  background: #fdf6e9;
+  border-color: #f0e2c4;
+  color: var(--warn);
+}
+
+.badge.q-wide {
+  background: #f7efed;
+  border-color: #e4cfc9;
+  color: #a04a3a;
+}
+
+.badge.buyupto {
+  background: #e8f3fb;
+  border-color: #bcdcf1;
+  color: var(--wet);
+  font-weight: 600;
+}
+
+.prow.subtotal {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+  padding-top: 9px;
+}
+
+.prow.subtotal .muted {
+  color: var(--muted);
+}
+
+.print-header {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* --- S6 · Факт закупки (P4) --- */
+.actual-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 12px;
+  background: var(--paper);
+  border-radius: 10px;
+}
+
+.actual-form select {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 6px;
+  font-size: 14px;
+  background: #fff;
+  width: 100%;
+}
+
+.btn.slim {
+  padding: 11px;
+  font-size: 14px;
+}
+
+.recon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.prow-meta.facts {
+  margin-top: 8px;
+}
+
+/* --- S4 · LayoutCanvas (P5) --- */
+.canvas-card {
+  padding: 10px;
+}
+
+.layout-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  touch-action: manipulation;
+}
+
+.layout-svg .cell {
+  fill: #fff;
+  stroke: var(--line);
+  stroke-width: 0.012;
+  cursor: pointer;
+}
+
+.layout-svg .cell.edge-cut {
+  fill: #fdf6e9; /* янтарный — краевая подрезка baseline */
+}
+
+.layout-svg .cell.marked {
+  fill: #f7e8e4; /* помеченный подрез */
+}
+
+.layout-svg .cell.suppress {
+  fill: var(--paper);
+}
+
+.layout-svg .cut-mark {
+  stroke: #a04a3a;
+  stroke-width: 0.02;
+  pointer-events: none;
+}
+
+.layout-svg .suppress-mark {
+  font-size: 0.18px;
+  fill: var(--muted);
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.layout-svg .room-border {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 0.025;
+  pointer-events: none;
+}
+
+.legend {
+  margin-top: 0;
+}
+
+.notice.stale {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dim-static {
+  padding: 10px 4px;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.print-only {
+  display: none;
+}
+
+/* --- Печать (P3): лист → PDF браузером --- */
+@media print {
+  .topbar,
+  .cta,
+  .screen-only,
+  .roadmap,
+  .offline-badge {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  #root {
+    max-width: none;
+  }
+
+  main {
+    padding: 0;
+    gap: 8px;
+  }
+
+  .card {
+    box-shadow: none;
+    border-color: #bbb;
+    border-radius: 4px;
+  }
+
+  .stage {
+    break-inside: avoid;
+  }
+
+  .badge {
+    border-color: #bbb;
+  }
+}
+
+.icon-btn {
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.btn.outline {
+  background: #fff;
+  border: 1.5px dashed var(--line);
+  color: var(--green-d);
+}
+
+.btn.danger-link {
+  background: none;
+  color: #a04a3a;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px;
+}
+
+.title-edit {
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.title-input {
+  font-size: 15px;
+  font-weight: 600;
+  max-width: 60%;
+}

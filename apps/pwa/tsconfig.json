@@ -10,7 +10,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "compute-wasm": ["../../crates/compute-wasm/pkg/compute_wasm"]
+    }
   },
   "include": ["src"]
 }
