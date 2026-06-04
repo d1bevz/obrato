@@ -54,8 +54,9 @@ npm run typecheck    # tsc --noEmit
 
 **Задача первого пилота — не угадать эти числа здесь, а узнать настоящие**: прогнать
 один реальный объект Давида через движок → PDF-лист → сверить каждое количество с его
-фактической закупкой. См. `test/pipeline.test.ts` (TODO в конце) и `docs/design.md`
-(Risk #1, The Assignment).
+фактической закупкой. До этого есть бумажный M0-prep без кода: см.
+`docs/design/12-m0-prep-worksheet.md`, `test/pipeline.test.ts` (TODO в конце) и
+`docs/design.md` (Risk #1, The Assignment).
 
 ## Что сознательно НЕ здесь (фаза 2)
 

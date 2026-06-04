@@ -1,0 +1,2 @@
+project,room,room_type,surface,material,area_m2,seed_formula,assumptions,estimate_low,estimate_expected,estimate_high,unit,pack_size,buy_packages,david_gut,actual_used,actual_confidence,norm_delta_pct,packaging_delta,reconciliation,verdict,notes
+David Apt A,Bathroom,bathroom,floor,adhesive,3.40,"tile_area_m2 * kg_per_m2","seed 3.5 kg/m2; trowel unknown",6.80,11.90,27.20,kg,20 kg bag,1,,,,,,,insufficient_data,"example row; replace with real actuals"
