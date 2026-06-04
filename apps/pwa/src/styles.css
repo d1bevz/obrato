@@ -258,3 +258,149 @@ main {
   text-align: center;
   padding: 8px 0 2px;
 }
+
+/* --- S5 · Лист закупок (P1) --- */
+.notice {
+  font-size: 13px;
+  color: var(--warn);
+  background: #fdf6e9;
+  border: 1px solid #f0e2c4;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+}
+
+.card.center {
+  text-align: center;
+  color: var(--muted);
+}
+
+.card.error {
+  border-color: #e4b6b6;
+  background: #fdf1f1;
+  color: #8c2f2f;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stage-title {
+  margin: 4px 4px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green-d);
+}
+
+.card.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 4px 16px;
+}
+
+.prow {
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.prow:last-child {
+  border-bottom: none;
+}
+
+.prow-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.pname {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.ppt {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.pqty {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Headline — central, диапазон рядом, не спрятан (гл.08 §4 п.1). */
+.pqty .central {
+  display: block;
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pqty .range {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.prow-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.prow-meta .spacer {
+  flex: 1;
+}
+
+/* Цветовой язык гл.08 §4: зелёный = high, янтарный = medium,
+   серо-красный = low / unvalidated. */
+.badge.conf-high {
+  background: #e9f6ef;
+  border-color: #c4e6d3;
+  color: var(--green-d);
+}
+
+.badge.conf-medium {
+  background: #fdf6e9;
+  border-color: #f0e2c4;
+  color: var(--warn);
+}
+
+.badge.conf-low,
+.badge.conf-unvalidated {
+  background: #f7efed;
+  border-color: #e4cfc9;
+  color: #a04a3a;
+}
+
+.price {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.price-range {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.price-mark {
+  color: var(--warn);
+  font-size: 12px;
+}
+
+.psku {
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.psku-pack {
+  white-space: nowrap;
+}

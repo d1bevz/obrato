@@ -42,8 +42,8 @@ export function ProjectList({ projects }: { projects: Project[] }) {
           </div>
         ))}
         <div className="roadmap">
-          P0 · демо-квартира из реального дизайн-проекта · дальше: расчёт листа
-          на устройстве (P1) → свои замеры (P2)
+          P1 · лист закупок считается ядром прямо на устройстве · дальше: свои
+          замеры (P2) → упаковки «в магазин» (P3)
         </div>
       </main>
       <div className="cta">

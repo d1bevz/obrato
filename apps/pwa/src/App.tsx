@@ -3,8 +3,9 @@ import { FLATPLAN_DEMO } from './demo/flatplan';
 import { OfflineBadge } from './components/OfflineBadge';
 import { ProjectList } from './components/ProjectList';
 import { ProjectDetail } from './components/ProjectDetail';
+import { PurchaseList } from './components/PurchaseList';
 
-// P0: один демо-проект, навигация S1 → S2 (гл.09 §1 маршруты).
+// P1: демо-проект + лист закупок (расчёт ядром на устройстве).
 // P2 добавит создание/редактирование и персист в IndexedDB.
 const PROJECTS = [FLATPLAN_DEMO];
 
@@ -54,11 +55,33 @@ function DetailScreen() {
   );
 }
 
+function PurchaseScreen() {
+  const { projectId } = useParams();
+  const project = PROJECTS.find((p) => p.id === projectId);
+  if (!project) {
+    return (
+      <>
+        <Topbar title="Obrato" back />
+        <main>
+          <div className="card">Объект не найден.</div>
+        </main>
+      </>
+    );
+  }
+  return (
+    <>
+      <Topbar title="Лист закупок" back />
+      <PurchaseList project={project} />
+    </>
+  );
+}
+
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<ListScreen />} />
       <Route path="/project/:projectId" element={<DetailScreen />} />
+      <Route path="/project/:projectId/purchase" element={<PurchaseScreen />} />
     </Routes>
   );
 }

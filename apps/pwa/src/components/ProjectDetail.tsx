@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import type { Project, Room } from '../types';
 import {
   FLOOR_FINISH_LABEL,
@@ -8,7 +9,7 @@ import {
 } from '../types';
 
 // S2 · ProjectDetail (гл.08 §6): хаб объекта — комнаты, статус, итог.
-// P0: read-only; CTA «Список закупок» — заглушка до P1 (ядро в браузере).
+// P1: CTA «Список закупок» ведёт на S5 (расчёт ядром на устройстве).
 
 function workBadges(r: Room): string[] {
   const out: string[] = [];
@@ -67,6 +68,7 @@ function RoomCard({ room }: { room: Room }) {
 }
 
 export function ProjectDetail({ project }: { project: Project }) {
+  const navigate = useNavigate();
   return (
     <>
       <main>
@@ -84,11 +86,14 @@ export function ProjectDetail({ project }: { project: Project }) {
         ))}
       </main>
       <div className="cta">
-        <button className="btn primary" disabled>
+        <button
+          className="btn primary"
+          onClick={() => navigate(`/project/${project.id}/purchase`)}
+        >
           Список закупок
         </button>
         <div className="hint">
-          P1: расчёт на устройстве — нормы гл.07, диапазоны + цены-«ориентир»
+          расчёт на устройстве — нормы гл.07, диапазоны + цены-«ориентир»
         </div>
       </div>
     </>

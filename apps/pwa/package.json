@@ -5,8 +5,11 @@
   "type": "module",
   "description": "Obrato PWA — оболочка прораба (гл.09 §1). P0: S1/S2 на демо-квартире.",
   "scripts": {
+    "predev": "node scripts/ensure-wasm.mjs",
     "dev": "vite",
+    "prebuild": "npm run build:wasm",
     "build": "tsc -b && vite build",
+    "build:wasm": "wasm-pack build ../../crates/compute-wasm --target web --out-dir pkg",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,36 +1,34 @@
-// View-типы P0 — ручное зеркало модели ввода ядра (crates/compute-core/src/model.rs).
-// На P1 заменяются типами, сгенерёнными из Rust (tsify, D3/D4) — НЕ развивать
-// эту копию сверх нужд экранов.
+// View-типы приложения. С P1 модель ввода едет ИЗ RUST (crates/compute-wasm,
+// tsify, D3/D4) — ручного зеркала больше нет: меняешь поле в Rust → здесь
+// перестаёт компилиться. App-слой добавляет только своё: электрика-точки
+// (шаблоны, вне 10 материалов ядра) и метаданные проекта (address/status).
 
-export type RoomType = 'bathroom' | 'kitchen' | 'bedroom' | 'living' | 'hallway' | 'other';
+import type {
+  FloorFinish,
+  Opening,
+  OpeningKind,
+  Room as CoreRoom,
+  RoomType,
+  Works as CoreWorks,
+} from 'compute-wasm';
 
-export type FloorFinish = 'tile' | 'laminate' | 'vinyl' | 'none';
+export type { Confidence, FloorFinish, LayoutPattern, MaterialEstimate, MaterialKey, NormValue, Opening, OpeningKind, RoomType, StageKey, UnitKey } from 'compute-wasm';
 
-export type OpeningKind = 'door' | 'window' | 'passage';
-
-export interface Opening {
-  kind: OpeningKind;
-  widthM: number;
-  heightM: number;
+/** Точки электрики — app-слой (счётчики по шаблонам, гл.02 MVP п.2). */
+export interface ElectricPoints {
+  sockets: number;
+  switches: number;
+  lights: number;
 }
 
-export interface Works {
-  floor?: { finish: FloorFinish };
-  walls?: { paintCoats?: number };
-  ceiling?: { paintCoats?: number };
-  electricPoints?: { sockets: number; switches: number; lights: number };
+/** Состав работ комнаты = ядро + app-слой (электрика). */
+export interface Works extends CoreWorks {
+  electricPoints?: ElectricPoints;
 }
 
-export interface Room {
-  id: string;
-  name: string;
-  type: RoomType;
-  lengthM: number;
-  widthM: number;
-  heightM: number;
-  wet: boolean;
-  /** Заход гидроизоляции на стены, м (релевантно при wet). */
-  wetZoneHeightM?: number;
+/** Комната = модель ядра + app-расширение works; для ввода wasm openings/works
+ * опциональны (serde default), в app-слое — обязательны (строгость форм). */
+export interface Room extends Omit<CoreRoom, 'works' | 'openings'> {
   openings: Opening[];
   works: Works;
 }
@@ -66,6 +64,12 @@ export const FLOOR_FINISH_LABEL: Record<FloorFinish, string> = {
   laminate: 'ламинат',
   vinyl: 'винил',
   none: '—',
+};
+
+export const OPENING_KIND_LABEL: Record<OpeningKind, string> = {
+  door: 'дверь',
+  window: 'окно',
+  passage: 'проём',
 };
 
 export function floorAreaM2(r: Room): number {

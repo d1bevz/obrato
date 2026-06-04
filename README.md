@@ -40,6 +40,25 @@ PWA, нормы докручиваются онлайн по сверкам из
 - [`crates/compute-core/`](crates/compute-core/) — **продуктовое Rust-ядро** (слайс 0):
   формулы гл.07, диапазоны+confidence (контракт гл.05 §8), floor_finish-ветвление,
   30 тестов вкл. golden-приёмку по реальной квартире. Ноль зависимостей сверх std.
+- [`crates/compute-wasm/`](crates/compute-wasm/) — WASM-обёртка ядра (Граница A,
+  гл.09 §2): единственное место с wasm-bindgen/serde/tsify; TS-типы генерятся из
+  Rust. Сборка: `wasm-pack` (см. ниже).
+- [`apps/pwa/`](apps/pwa/) — **PWA приложения** (React + Vite + TS): экраны S1–S5,
+  расчёт листа закупок ядром в Web Worker на устройстве.
 - [`compute-core/`](compute-core/) — TypeScript-прототип (заморожен как референс,
   НЕ продукт): 17 тестов + курируемый каталог (141 SKU, 9 магазинов Лиссабона) —
   каталог остаётся источником seed-данных для слайса 1.
+
+## Сборка
+
+Требуются: Node 20+, Rust stable + `rustup target add wasm32-unknown-unknown` +
+[wasm-pack](https://rustwasm.github.io/wasm-pack/).
+
+```sh
+cargo test                  # ядро + WASM-обёртка (parity-тесты), нативно
+cd apps/pwa && npm ci
+npm run dev                 # predev сам соберёт crates/compute-wasm/pkg при отсутствии
+npm run build               # prebuild всегда пересобирает wasm (деплой = свежий контракт)
+```
+
+Деплой на VPS: `deploy/deploy.sh` (build + rsync + caddy).
