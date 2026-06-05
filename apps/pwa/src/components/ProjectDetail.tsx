@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ObjectPlan } from './ObjectPlan';
+import { RoomMap } from './RoomMap';
 import type { ProjectDoc, SnapshotDoc } from '../store/db';
 import { deleteProject, updateProject } from '../store/projectStore';
 import { listSnapshots } from '../store/snapshots';
@@ -202,6 +204,14 @@ export function ProjectDetail({ project }: { project: ProjectDoc }) {
         >
           + Комната
         </button>
+        {/* D12 (обкатка v1 #2): план-картинка + условная схема-карта.
+            ПОСЛЕ комнат: рабочий объект S2 — комнаты и CTA листа, план —
+            референс для глаза (находка ревью: не топить основной флоу). */}
+        <ObjectPlan project={project} />
+        <RoomMap
+          project={project}
+          onRoom={(roomId) => navigate(`/project/${project.id}/room/${roomId}`)}
+        />
         {snapshots.length > 0 && (
           <>
             <div className="summary">

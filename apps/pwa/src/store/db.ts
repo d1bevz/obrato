@@ -6,6 +6,7 @@
 
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb';
 import type { PurchaseListView } from 'compute-wasm';
+import { FLATPLAN_DEMO } from '../demo/flatplan';
 import type { Project } from '../types';
 
 /** Документ проекта = app-Project + tenancy/служебные поля (Грань B-минимум). */
@@ -114,6 +115,18 @@ export interface LayoutDoc {
   schemaVersion: 1;
 }
 
+/** План своего объекта (D12a): фото/скан дизайн-проекта как Blob — приложение
+ * его НЕ интерпретирует (референс для глаза), офлайн работает из IndexedDB.
+ * Один план на проект (replace при повторной загрузке). */
+export interface PlanDoc {
+  projectId: string;
+  orgId: string;
+  blob: Blob;
+  mime: string;
+  updatedAt: string;
+  schemaVersion: 1;
+}
+
 interface ObratoDB extends DBSchema {
   projects: { key: string; value: ProjectDoc };
   meta: { key: string; value: OrgDoc | SeedMark };
@@ -128,16 +141,19 @@ interface ObratoDB extends DBSchema {
     indexes: { 'by-snapshot': string };
   };
   layouts: { key: string; value: LayoutDoc };
+  plans: { key: string; value: PlanDoc };
 }
 
 const DB_NAME = 'obrato';
-const DB_VERSION = 4;
+const DB_VERSION = 5;
 
 let dbPromise: Promise<IDBPDatabase<ObratoDB>> | null = null;
 
 export function getDb(): Promise<IDBPDatabase<ObratoDB>> {
   dbPromise ??= openDB<ObratoDB>(DB_NAME, DB_VERSION, {
-    upgrade(db, oldVersion) {
+    // async-upgrade: idb держит versionchange-tx открытой через await'ы по её
+    // сторам; ошибка любого шага роняет openDB (не тихий полу-апгрейд).
+    async upgrade(db, oldVersion, _newVersion, tx) {
       if (oldVersion < 1) {
         db.createObjectStore('projects', { keyPath: 'id' });
         // meta — out-of-line ключи ('org' и т.п.), значение несёт свой id.
@@ -155,7 +171,24 @@ export function getDb(): Promise<IDBPDatabase<ObratoDB>> {
         // layouts — out-of-line ключ `${projectId}:${roomId}`
         db.createObjectStore('layouts');
       }
+      if (oldVersion < 5) {
+        db.createObjectStore('plans', { keyPath: 'projectId' });
+        // Бэкфилл D12a: демо посеяно на v1–v4 ДО появления planAssets —
+        // догоняем персистированный док до фикстуры (единый источник —
+        // FLATPLAN_DEMO, не дублируем пути; находки ревью итерации 2).
+        const projects = tx.objectStore('projects');
+        const demo = await projects.get(FLATPLAN_DEMO.id);
+        if (demo && !demo.planAssets && FLATPLAN_DEMO.planAssets) {
+          demo.planAssets = [...FLATPLAN_DEMO.planAssets];
+          await projects.put(demo);
+        }
+      }
     },
+  }).catch((e: unknown) => {
+    // провал открытия (private mode/quota/блокированный апгрейд) не залипает:
+    // ремаунт повторит попытку — контракт ensureStore (находка ревью)
+    dbPromise = null;
+    throw e;
   });
   return dbPromise;
 }

@@ -946,6 +946,161 @@ main {
   font-size: 11px;
 }
 
+/* --- D12 · План объекта (картинка) + схема-карта комнат --- */
+.plan-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.plan-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--green-d);
+}
+
+.plan-note {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.plan-note.center {
+  display: block;
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* honesty-баннер схемы (D12b): читается, а не пропускается глазом */
+.schema-warn {
+  font-size: 12px;
+  color: var(--warn);
+  background: #fdf6e9;
+  border: 1px solid #f0e2c4;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+}
+
+.plan-thumbs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.plan-thumb {
+  flex: none;
+  width: 148px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  padding: 4px 4px 2px;
+  cursor: pointer;
+  font: inherit;
+  color: var(--muted);
+}
+
+.plan-thumb img {
+  display: block;
+  width: 100%;
+  height: 96px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.plan-thumb span {
+  display: block;
+  font-size: 11px;
+  padding: 2px 0 3px;
+  text-align: center;
+}
+
+.plan-empty {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 6px 0 2px;
+}
+
+.file-btn {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.file-btn.busy {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(27, 24, 19, 0.93);
+  overflow: auto;
+  cursor: zoom-out;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lightbox img {
+  width: 100%;
+  height: auto;
+  margin: auto;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.lightbox-hint {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  flex: none;
+}
+
+.roommap {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.rm-room rect {
+  fill: #fcfbf7;
+  stroke: var(--ink);
+  stroke-width: 0.045;
+}
+
+.rm-room.wet rect {
+  fill: rgba(35, 129, 196, 0.13);
+  stroke: var(--wet);
+}
+
+.rm-room {
+  cursor: pointer;
+}
+
+.rm-room:focus-visible rect {
+  stroke: var(--green);
+  stroke-width: 0.09;
+}
+
+.rm-name,
+.rm-area {
+  font-size: 0.3px;
+  text-anchor: middle;
+  fill: var(--ink);
+}
+
+.rm-area {
+  font-size: 0.26px;
+  fill: var(--muted);
+}
+
 .print-only {
   display: none;
 }

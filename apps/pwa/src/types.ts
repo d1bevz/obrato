@@ -39,6 +39,10 @@ export interface Project {
   address?: string;
   status: 'planning' | 'active' | 'done';
   rooms: Room[];
+  /** Бандл-страницы плана дизайн-проекта (D12a, относительно BASE_URL) —
+   * только у демо-объекта; план своего объекта — фото/скан в IndexedDB
+   * (store 'plans'), не здесь. */
+  planAssets?: string[];
 }
 
 export const ROOM_TYPE_LABEL: Record<RoomType, string> = {

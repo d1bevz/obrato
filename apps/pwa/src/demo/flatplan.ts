@@ -9,6 +9,12 @@ export const FLATPLAN_DEMO: Project = {
   title: 'Квартира 53.7 м² (демо)',
   address: 'flatplan.design · проект №1001_527',
   status: 'planning',
+  // Реальные страницы дизайн-проекта (D12a): планировка + обмерный план,
+  // отрендерены из docs/reference/flatplan-1001_527.pdf (стр. 8 и 7).
+  planAssets: [
+    'plans/flatplan-1001_527-p8-layout.png',
+    'plans/flatplan-1001_527-p7-measure.png',
+  ],
   rooms: [
     {
       id: 'kitchen-living',
