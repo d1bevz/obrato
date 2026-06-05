@@ -127,6 +127,25 @@ export interface PlanDoc {
   schemaVersion: 1;
 }
 
+/** Позиция комнаты на схеме (D12c): презентационный слой, НЕ данные ядра —
+ * расчёты от расположения не зависят. rotated = повёрнута на 90°
+ * (length и width меняются местами при отрисовке). */
+export interface RoomPosition {
+  xM: number;
+  yM: number;
+  rotated: boolean;
+}
+
+/** Ручная расстановка комнат проекта (D12c): roomId → позиция. Комнаты без
+ * позиции доразмещаются автоматически; мёртвые roomId чистятся при записи. */
+export interface PlacementDoc {
+  projectId: string;
+  orgId: string;
+  positions: Record<string, RoomPosition>;
+  updatedAt: string;
+  schemaVersion: 1;
+}
+
 interface ObratoDB extends DBSchema {
   projects: { key: string; value: ProjectDoc };
   meta: { key: string; value: OrgDoc | SeedMark };
@@ -142,10 +161,11 @@ interface ObratoDB extends DBSchema {
   };
   layouts: { key: string; value: LayoutDoc };
   plans: { key: string; value: PlanDoc };
+  placements: { key: string; value: PlacementDoc };
 }
 
 const DB_NAME = 'obrato';
-const DB_VERSION = 5;
+const DB_VERSION = 6;
 
 let dbPromise: Promise<IDBPDatabase<ObratoDB>> | null = null;
 
@@ -182,6 +202,10 @@ export function getDb(): Promise<IDBPDatabase<ObratoDB>> {
           demo.planAssets = [...FLATPLAN_DEMO.planAssets];
           await projects.put(demo);
         }
+      }
+      if (oldVersion < 6) {
+        // D12c: ручная расстановка комнат на схеме
+        db.createObjectStore('placements', { keyPath: 'projectId' });
       }
     },
   }).catch((e: unknown) => {

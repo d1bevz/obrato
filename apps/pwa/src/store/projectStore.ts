@@ -10,6 +10,7 @@
 import { FLATPLAN_DEMO } from '../demo/flatplan';
 import type { Project, Room } from '../types';
 import { getDb, type OrgDoc, type ProjectDoc } from './db';
+import { pruneRoomPosition } from './placements';
 import { uuidv7 } from './uuid';
 
 let cache = new Map<string, ProjectDoc>();
@@ -161,4 +162,7 @@ export async function deleteRoom(
   const p = cache.get(projectId);
   if (!p) return;
   await persist(touch({ ...p, rooms: p.rooms.filter((r) => r.id !== roomId) }));
+  // позиция на схеме (D12c) — презентационный слой: чистим best-effort,
+  // провал не должен ронять удаление комнаты
+  void pruneRoomPosition(projectId, roomId).catch(() => undefined);
 }

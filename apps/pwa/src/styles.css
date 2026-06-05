@@ -1067,6 +1067,34 @@ main {
   display: block;
   width: 100%;
   height: auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* режим расстановки (D12c): палец таскает комнаты, не скроллит страницу */
+.roommap.editing {
+  touch-action: none;
+}
+
+.rm-canvas {
+  fill: rgba(31, 157, 87, 0.04);
+  stroke: var(--line);
+  stroke-width: 0.03;
+  stroke-dasharray: 0.18 0.12;
+}
+
+.rm-room.editing {
+  cursor: grab;
+}
+
+/* комбинированный селектор: пересечение мокрой комнаты тоже красное
+   (.wet с равной специфичностью шла позже и съедала цвет — находка ревью);
+   толщина — не-цветовой сигнал (a11y) */
+.rm-room.overlap rect,
+.rm-room.overlap.wet rect {
+  stroke: #c0392b;
+  stroke-width: 0.07;
+  stroke-dasharray: 0.14 0.09;
 }
 
 .rm-room rect {
